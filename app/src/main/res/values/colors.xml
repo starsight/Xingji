@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6495ED</color>
+    <color name="colorPrimaryDark">#6495ED</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="green">#45C01A</color>
+    <color name="gray">#999</color>
+    <color name="fadegray">#DCDCDC</color>
+    <color name="whitesmoke">#F5F5F5</color>
+    <color name="tittle_background">#434343</color>
+
+    <color name="choose_log_reg_bg">#6495ED</color>
+
+
+
+
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/nav_header_vertical_spacing"
+        android:id="@+id/bt_choose_register"
+        android:text="@string/login_button_register"
+        android:textSize="20sp"
+        android:layout_marginLeft="@dimen/choose_reg_login_margin"
+        android:background="@drawable/corner_textview"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_choose_login"
+        android:text="@string/login_button_login"
+        android:layout_below="@+id/bt_choose_register"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/choose_reg_login_margin"
+        android:textSize="20sp"
+        android:background="@drawable/corner_textview"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_above="@id/bt_choose_register"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="90dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:id="@+id/iv_choose_icon"
+        />
+
+
+</RelativeLayout>

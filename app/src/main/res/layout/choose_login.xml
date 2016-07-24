@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:id="@+id/loginlayout"
+    android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/et_loginUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true"
+            android:hint="请输入用户名"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            />
+
+        <EditText
+            android:id="@+id/et_loginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:hint="请输入密码"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dip"
+            android:layout_marginTop="15dip"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="#7EC0EE"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/bt_login"
+            android:text="登录"
+            android:textSize="20sp"
+            >
+        </Button>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/bt_login"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="15dip"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="right|center_vertical"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/tv_loginForgetPassword"
+            android:text="忘记密码"
+            android:textSize="16sp"
+            >
+        </TextView>
+
+        </RelativeLayout>
+</LinearLayout>
