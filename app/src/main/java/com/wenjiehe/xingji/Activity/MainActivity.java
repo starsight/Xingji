@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentTransaction ft;
     public SignFragment sf;
 
-    public static ImageView iv_barSign;
+   // public static ImageView iv_barSign;
 
     public static ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
 
@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        iv_barSign = (ImageView)findViewById(R.id.barSign);
+
+
+        //iv_barSign = (ImageView)findViewById(R.id.barSign);
         //activity = this;
     }
 

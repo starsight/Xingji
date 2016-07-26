@@ -3,6 +3,7 @@ package com.wenjiehe.xingji;
 import android.content.Context;
 import android.location.Location;
 import android.os.Environment;
+import android.util.Log;
 
 import com.baidu.mapapi.model.LatLng;
 
@@ -38,8 +39,15 @@ public class SignInfo {
         this.event = event;
     }
 
-    public static ArrayList<SignInfo>  readSignInfoFromFile(Context context,ArrayList<SignInfo> arraylistHistorySign){
+    public static void  readSignInfoFromFile(Context context,ArrayList<SignInfo> arraylistHistorySign){
         // System.out.println(this.getFilesDir().getAbsolutePath() + File.separator+"xingji");
+        //arraylistHistorySign = new ArrayList<SignInfo>();
+        int count = arraylistHistorySign.size();
+        for(int i=0;i<count;i++) {
+            arraylistHistorySign.remove(0);
+            Log.d("signinfo",String.valueOf(i));
+        }
+
         System.out.println(Environment.getExternalStorageDirectory());
         File xingjiDir = new File(context.getFilesDir().getAbsolutePath() + File.separator+"xingji");
         if(!xingjiDir.exists()){
@@ -77,7 +85,6 @@ public class SignInfo {
                     arraylistHistorySign.add(new SignInfo
                             (new LatLng(lattmp,lngtmp),datetmp,new SignLocation(provincetmp,citytmp,streettmp),eventtmp));
                 }
-                return arraylistHistorySign;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -85,14 +92,13 @@ public class SignInfo {
             }
             //arraylistHistorySign.add(new SignInfo(new LatLng(34.0,109),"2016-6-9 15:52:55",new SignLocation("江苏省","南京市","北京东路")));
         }
-        return  null;
     }
 
 
     /*
     * 写入签到数据到文件
     * */
-    public static ArrayList<SignInfo> writeSignInfoToFile(String path ,ArrayList<SignInfo> signinfo){
+    public static void writeSignInfoToFile(String path ,ArrayList<SignInfo> signinfo){
         File file = new File(path);
 
         if(file.exists()) {
@@ -130,7 +136,7 @@ public class SignInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return signinfo;
+
     }
 
 }

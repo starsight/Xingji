@@ -53,7 +53,6 @@ public class SignFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign, null);
         //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-
         SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
 
         initView(view);
@@ -68,7 +67,9 @@ public class SignFragment extends Fragment {
         /*baiduMap init*/
         mv_BaiduView =(MapView)view.findViewById(R.id.bmapView);
         iv_myLocation = (ImageView)view.findViewById(R.id.mylocation);
-        iv_barSign = MainActivity.iv_barSign;
+//        iv_barSign = MainActivity.iv_barSign;
+        iv_barSign = (ImageView) getActivity().findViewById(R.id.barSign);
+        iv_barSign.setVisibility(View.VISIBLE);
         iv_barSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,8 +243,8 @@ public class SignFragment extends Fragment {
         super.onDestroy();
         Log.d(LOG_D,"destory~~");
         //int count = arraylistHistorySign.size();
-        //for(int i=0;i<arraylistHistorySign.size();)
-        //    arraylistHistorySign.remove(0);
+//        for(int i=0;i<arraylistHistorySign.size();)
+//            arraylistHistorySign.remove(0);
         //while(!arraylistHistorySign.isEmpty())
            // arraylistHistorySign.remove(0);
         //arraylistHistorySign.removeAll();
