@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.wenjiehe.xingji.R;
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity
     private FragmentTransaction ft;
     public SignFragment sf;
 
-    public ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
+    public static ImageView iv_barSign;
+
+    public static ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        iv_barSign = (ImageView)findViewById(R.id.barSign);
         //activity = this;
     }
 

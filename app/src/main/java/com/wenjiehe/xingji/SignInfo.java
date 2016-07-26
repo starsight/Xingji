@@ -7,9 +7,11 @@ import android.os.Environment;
 import com.baidu.mapapi.model.LatLng;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +38,7 @@ public class SignInfo {
         this.event = event;
     }
 
-    public static ArrayList<SignInfo>  readSignInfo(Context context,ArrayList<SignInfo> arraylistHistorySign){
+    public static ArrayList<SignInfo>  readSignInfoFromFile(Context context,ArrayList<SignInfo> arraylistHistorySign){
         // System.out.println(this.getFilesDir().getAbsolutePath() + File.separator+"xingji");
         System.out.println(Environment.getExternalStorageDirectory());
         File xingjiDir = new File(context.getFilesDir().getAbsolutePath() + File.separator+"xingji");
@@ -74,9 +76,7 @@ public class SignInfo {
                     eventtmp = strtmp[1];
                     arraylistHistorySign.add(new SignInfo
                             (new LatLng(lattmp,lngtmp),datetmp,new SignLocation(provincetmp,citytmp,streettmp),eventtmp));
-
                 }
-
                 return arraylistHistorySign;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -86,6 +86,51 @@ public class SignInfo {
             //arraylistHistorySign.add(new SignInfo(new LatLng(34.0,109),"2016-6-9 15:52:55",new SignLocation("江苏省","南京市","北京东路")));
         }
         return  null;
+    }
+
+
+    /*
+    * 写入签到数据到文件
+    * */
+    public static ArrayList<SignInfo> writeSignInfoToFile(String path ,ArrayList<SignInfo> signinfo){
+        File file = new File(path);
+
+        if(file.exists()) {
+            file.delete();
+        }
+        FileWriter fw = null;
+        BufferedWriter bw;
+        try {
+            fw = new FileWriter(file,false);
+            bw = new BufferedWriter(fw);
+            for(SignInfo signinfobuffer : signinfo){
+                StringBuilder sb = new StringBuilder();
+                sb.append("latitude=");
+                sb.append(String.valueOf(signinfobuffer.latlng.latitude));
+                sb.append(";longitude=");
+                sb.append(String.valueOf(signinfobuffer.latlng.longitude));
+                sb.append(";date=");
+                sb.append(signinfobuffer.date);
+                sb.append(";province=");
+                sb.append(signinfobuffer.location.province);
+                sb.append(";city=");
+                sb.append(signinfobuffer.location.city);
+                sb.append(";street=");
+                sb.append(signinfobuffer.location.street);
+                sb.append(";event=");
+                sb.append(signinfobuffer.event);
+                sb.append("\n");
+                //Log.d(LOG_D,sb.toString());
+                bw.append(sb);
+            }
+            bw.close();
+            fw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return signinfo;
     }
 
 }
