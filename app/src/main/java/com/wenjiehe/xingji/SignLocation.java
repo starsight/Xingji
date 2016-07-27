@@ -10,11 +10,12 @@ public class SignLocation {
         public String street;
         public String city;
         public String province;
+        public String locDescribe;
 
-        public SignLocation(String province,String city,String street){
+        public SignLocation(String province,String city,String street,String locDescribe){
             this.city=city;
             this.province = province;
             this.street = street;
-
+            this.locDescribe = locDescribe;
     }
 }
