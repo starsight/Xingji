@@ -10,10 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -101,7 +105,31 @@ public class SignFragment extends Fragment {
                     // 在地图上添加Marker，并显示
                     baiduMap.addOverlay(options);
                 }
+                SignInfo signInfoTmp = MainActivity.arraylistHistorySign.get(MainActivity.arraylistHistorySign.size()-1);
+                final AVObject userSign = new AVObject("signInfo");
+                userSign.put("username", MainActivity.userName);
+                MainActivity.signNum +=1;
+                userSign.put("signnum", MainActivity.signNum);
+                userSign.put("latitude", signInfoTmp.latlng.latitude);
+                userSign.put("longitude", signInfoTmp.latlng.longitude);
+                userSign.put("date", signInfoTmp.date);
+                userSign.put("province", signInfoTmp.location.province);
+                userSign.put("city", signInfoTmp.location.city);
+                userSign.put("street", signInfoTmp.location.street);
+                userSign.put("event", signInfoTmp.event);
 
+                userSign.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), city+street+" 签到成功~", Toast.LENGTH_SHORT).show();
+                            // 存储成功
+                            //Log.d(TAG, todo.getObjectId());// 保存成功之后，objectId 会自动从服务端加载到本地
+                        } else {
+                            // 失败的话，请检查网络环境以及 SDK 配置是否正确
+                        }
+                    }
+                });
                 /*if(MeFragment.username!=null) {
                     Thread thread = new Thread(SignFragment.this);
                     thread.start();
@@ -132,6 +160,8 @@ public class SignFragment extends Fragment {
         option.setLocationNotify(true);
         option.setIsNeedAddress(true);
         option.setOpenGps(true);
+        option.setIsNeedLocationPoiList(true);
+        option.setIsNeedLocationDescribe(true);
 
         mLocationClient.setLocOption(option);
     }
@@ -168,6 +198,7 @@ public class SignFragment extends Fragment {
             if(isSigned(signInfo.latlng))
                 iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
         }
+
     }
 
     public boolean isSigned(LatLng latlng){
@@ -201,6 +232,14 @@ public class SignFragment extends Fragment {
             street=location.getStreet();
             city=location.getCity();
             province =location.getProvince();
+            Log.d("signfragment",location.getProvince());
+            Log.d("signfragment",location.getLocationDescribe());
+            if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
+                for (int i = 0; i < location.getPoiList().size(); i++) {
+                    Poi poi = (Poi) location.getPoiList().get(i);
+                    Log.d("signfragment",poi.getName() + ";");
+                }
+            }
 
             mylatitude=location.getLatitude();
             mylongitude=location.getLongitude();

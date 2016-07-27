@@ -64,6 +64,9 @@ public class ChooseLoginRegActivity extends BaseActivity {
 
         if (getUserId() != null) {
             Intent mainIntent = new Intent(activity, MainActivity.class);
+            mainIntent.putExtra("username",getUserName());
+            mainIntent.putExtra("signnum",getSignNum());
+
             startActivity(mainIntent);
             activity.finish();
         }
@@ -165,6 +168,8 @@ public class ChooseLoginRegActivity extends BaseActivity {
                                 progressDialogDismiss();
                                 Intent mainIntent = new Intent(activity,
                                         MainActivity.class);
+                                mainIntent.putExtra("username",getUserName());
+                                mainIntent.putExtra("signnum",getSignNum());
                                 startActivity(mainIntent);
                                 activity.finish();
                             } else {

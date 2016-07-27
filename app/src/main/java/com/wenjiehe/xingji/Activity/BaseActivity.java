@@ -17,7 +17,9 @@ import android.os.Bundle;
 public class BaseActivity extends Activity {
 
     public BaseActivity activity;
-    private String userId;
+    private String userId,userName;
+
+    private int signNum =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,21 @@ public class BaseActivity extends Activity {
         AVUser currentUser = AVUser.getCurrentUser();
         if (currentUser != null) {
             userId = currentUser.getObjectId();
+            userName = currentUser.getUsername();
+            //signNum = (Integer)currentUser.get("signnum");
         }
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public int getSignNum() {
+        return signNum;
     }
 
     protected void showError(String errorMessage) {

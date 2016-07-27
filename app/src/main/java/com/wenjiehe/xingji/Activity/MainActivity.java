@@ -1,5 +1,6 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentTransaction;
@@ -8,8 +9,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.wenjiehe.xingji.R;
@@ -26,7 +30,12 @@ public class MainActivity extends AppCompatActivity
     private FragmentTransaction ft;
     public SignFragment sf;
 
+    public static String userName;
+    public static int signNum;
    // public static ImageView iv_barSign;
+
+    public ImageView iv_headeruserPhoto;
+    public TextView tv_headerUserName,tv_headerSignNUm;
 
     public static ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
 
@@ -45,9 +54,19 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        iv_headeruserPhoto = (ImageView)headerView.findViewById(R.id.iv_headeruserPhoto);
+        tv_headerUserName = (TextView) headerView.findViewById(R.id.tv_header_username);
+        tv_headerSignNUm = (TextView)headerView.findViewById(R.id.tv_header_signnum);
 
-
-
+        Intent intent = getIntent();
+        //获取数据
+        userName = intent.getStringExtra("username");
+        signNum = intent.getIntExtra("signnum",0);
+//        Log.d("xingji-choose",userName);
+ //       Log.d("xingji-choose",String.valueOf(signNum));
+        tv_headerUserName.setText(userName);
+        tv_headerSignNUm.setText(String.valueOf(signNum));
         //iv_barSign = (ImageView)findViewById(R.id.barSign);
         //activity = this;
     }
