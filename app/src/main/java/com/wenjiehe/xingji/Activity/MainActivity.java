@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity
    // public static ImageView iv_barSign;
 
     public ImageView iv_headeruserPhoto;
-    public TextView tv_headerUserName,tv_headerSignNUm;
+    public  TextView  tv_headerUserName;
+    public static TextView tv_headerSignNum;
 
     public static ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         iv_headeruserPhoto = (ImageView)headerView.findViewById(R.id.iv_headeruserPhoto);
         tv_headerUserName = (TextView) headerView.findViewById(R.id.tv_header_username);
-        tv_headerSignNUm = (TextView)headerView.findViewById(R.id.tv_header_signnum);
+        tv_headerSignNum = (TextView)headerView.findViewById(R.id.tv_header_signnum);
 
         Intent intent = getIntent();
         //获取数据
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 //        Log.d("xingji-choose",userName);
  //       Log.d("xingji-choose",String.valueOf(signNum));
         tv_headerUserName.setText(userName);
-        tv_headerSignNUm.setText(String.valueOf(signNum));
+        tv_headerSignNum.setText(String.valueOf(signNum));
         //iv_barSign = (ImageView)findViewById(R.id.barSign);
         //activity = this;
     }
@@ -102,5 +103,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static void setTv_headerSignNum() {
+        tv_headerSignNum.setText(signNum);
     }
 }

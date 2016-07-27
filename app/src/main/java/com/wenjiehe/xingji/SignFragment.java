@@ -110,6 +110,7 @@ public class SignFragment extends Fragment {
                 final AVObject userSign = new AVObject("signInfo");
                 userSign.put("username", MainActivity.userName);
                 MainActivity.signNum +=1;
+                MainActivity.setTv_headerSignNum();
                 userSign.put("signnum", MainActivity.signNum);
                 userSign.put("latitude", signInfoTmp.latlng.latitude);
                 userSign.put("longitude", signInfoTmp.latlng.longitude);
