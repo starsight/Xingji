@@ -168,8 +168,12 @@ public class ChooseLoginRegActivity extends BaseActivity {
                                 progressDialogDismiss();
                                 Intent mainIntent = new Intent(activity,
                                         MainActivity.class);
-                                mainIntent.putExtra("username",getUserName());
-                                mainIntent.putExtra("signnum",getSignNum());
+                                AVUser currentUser = AVUser.getCurrentUser();
+                                if (currentUser != null) {
+                                    mainIntent.putExtra("username",currentUser.getUsername());
+                                    mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
+                                }
+
                                 startActivity(mainIntent);
                                 activity.finish();
                             } else {

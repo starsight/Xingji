@@ -19,7 +19,7 @@ public class BaseActivity extends Activity {
     public BaseActivity activity;
     private String userId,userName;
 
-    private int signNum =0;
+    private int signNum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,8 @@ public class BaseActivity extends Activity {
         if (currentUser != null) {
             userId = currentUser.getObjectId();
             userName = currentUser.getUsername();
-            //signNum = (Integer)currentUser.get("signnum");
+            if(currentUser.get("signnum")!=null)
+                signNum = (Integer)currentUser.get("signnum");
         }
     }
 
