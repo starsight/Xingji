@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -49,7 +50,7 @@ public class SignFragment extends Fragment {
     private double mylatitude = 0.0;
     private double mylongitude = 0.0;
     private double precision = 0.001;
-    private String street,city, province;
+    private String street,city, province,locDescribe;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class SignFragment extends Fragment {
                 String date = sDateFormat.format(new java.util.Date());
                 //System.out.println(date);
                 MainActivity.arraylistHistorySign.add(new SignInfo(point,date,
-                        new SignLocation(province,city,street)));//加入到所有签到的序列中
+                        new SignLocation(province,city,street,locDescribe)));//加入到所有签到的序列中
                 SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
                         File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
 
@@ -117,12 +118,21 @@ public class SignFragment extends Fragment {
                 userSign.put("city", signInfoTmp.location.city);
                 userSign.put("street", signInfoTmp.location.street);
                 userSign.put("event", signInfoTmp.event);
+                userSign.put("locdescribe", signInfoTmp.location.locDescribe);
 
                 userSign.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
-                            Toast.makeText(getActivity(), city+street+" 签到成功~", Toast.LENGTH_SHORT).show();
+                            AVUser.getCurrentUser().put("signnum", MainActivity.signNum);
+                            AVUser.getCurrentUser().saveInBackground(new SaveCallback(){
+                                @Override
+                                public void done(AVException e) {
+                                    Toast.makeText(getActivity(), city+street+" 签到成功~", Toast.LENGTH_SHORT).show();
+                                }
+
+                            });
+
                             // 存储成功
                             //Log.d(TAG, todo.getObjectId());// 保存成功之后，objectId 会自动从服务端加载到本地
                         } else {
@@ -232,7 +242,8 @@ public class SignFragment extends Fragment {
             street=location.getStreet();
             city=location.getCity();
             province =location.getProvince();
-            Log.d("signfragment",location.getProvince());
+            locDescribe =location.getLocationDescribe();
+       //     Log.d("signfragment",location.getBuildingName());
             Log.d("signfragment",location.getLocationDescribe());
             if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
                 for (int i = 0; i < location.getPoiList().size(); i++) {
@@ -287,6 +298,7 @@ public class SignFragment extends Fragment {
         //while(!arraylistHistorySign.isEmpty())
            // arraylistHistorySign.remove(0);
         //arraylistHistorySign.removeAll();
+        //iv_barSign.setVisibility(View.GONE);
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mv_BaiduView.onDestroy();
     }
@@ -294,6 +306,7 @@ public class SignFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(LOG_D,"resume~~");
+        //iv_barSign.setVisibility(View.VISIBLE);
         //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
         mv_BaiduView.onResume();
     }
@@ -301,6 +314,7 @@ public class SignFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d(LOG_D,"pause~~");
+        //iv_barSign.setVisibility(View.GONE);
         //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mv_BaiduView.onPause();
     }
