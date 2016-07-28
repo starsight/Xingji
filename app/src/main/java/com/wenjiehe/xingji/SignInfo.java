@@ -26,16 +26,20 @@ public class SignInfo {
     public SignLocation location;
     public String date;
     public String event = "到此一游~";
-    public SignInfo(LatLng latlng, String date,SignLocation location){
+    public String objectId = "0";
+
+    public SignInfo(LatLng latlng, String date,SignLocation location,String objectId){
         this.latlng = latlng;
         this.date = date;
         this.location = location;
+        this.objectId = objectId;
     }
 
-    public SignInfo(LatLng latlng, String date,SignLocation location,String event){
+    public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId){
         this.latlng = latlng;
         this.date = date;
         this.location = location;
+        this.objectId = objectId;
         this.event = event;
     }
 
@@ -61,7 +65,7 @@ public class SignInfo {
             try {
                 fr = new FileReader(file);
                 br = new BufferedReader (fr);
-                String s,datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp;
+                String s,datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp,objectIdtmp;
                 Double lattmp,lngtmp;
                 while((s=br.readLine())!=null){
                     String[] str = s.split(";");
@@ -84,8 +88,12 @@ public class SignInfo {
                     eventtmp = strtmp[1];
                     strtmp = str[7].split("=");//locDescribe
                     locDescribetmp = strtmp[1];
+                    strtmp = str[8].split("=");//objectId
+                    objectIdtmp = strtmp[1];
                     arraylistHistorySign.add(new SignInfo
-                            (new LatLng(lattmp,lngtmp),datetmp,new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),eventtmp));
+                            (new LatLng(lattmp,lngtmp),datetmp,
+                                    new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),
+                                    eventtmp,objectIdtmp));
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -129,6 +137,8 @@ public class SignInfo {
                 sb.append(signinfobuffer.event);
                 sb.append(";locDescribe=");
                 sb.append(signinfobuffer.location.locDescribe);
+                sb.append(";objectId=");
+                sb.append(signinfobuffer.objectId);
                 sb.append("\n");
                 //Log.d(LOG_D,sb.toString());
                 bw.append(sb);

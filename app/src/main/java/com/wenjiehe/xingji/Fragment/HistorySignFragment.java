@@ -13,6 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.DeleteCallback;
+import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.SDKInitializer;
 import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.R;
@@ -76,10 +83,38 @@ public class HistorySignFragment extends Fragment {
                     for (int i = 0; i < count; i++) {
                        // Log.d(LOG_D, String.valueOf(MainActivity.arraylistHistorySign.size()));
                         if (MainActivity.arraylistHistorySign.get(i).date.equals(removedate)) {
+                            String objectIdTmp = MainActivity.arraylistHistorySign.get(i).objectId;
                             MainActivity.arraylistHistorySign.remove(i);
                             cards.remove(i);
-                            SignInfo.writeSignInfoToFile(
-                                    getActivity().getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
+                            AVQuery<AVObject> avQuery = new AVQuery<>("signInfo");
+                            avQuery.getInBackground(objectIdTmp, new GetCallback<AVObject>() {
+                                @Override
+                                public void done(AVObject avObject, AVException e) {
+                                    avObject.deleteInBackground(new DeleteCallback() {
+                                        @Override
+                                        public void done(AVException e) {
+                                            AVUser currentUser = AVUser.getCurrentUser();
+                                            if (currentUser != null) {//签到次数统计同步
+                                                MainActivity.signNum -=1;
+                                                MainActivity.setTv_headerSignNum();
+                                                currentUser.put("signnum", MainActivity.signNum);
+                                                currentUser.saveInBackground(new SaveCallback() {
+                                                    @Override
+                                                    public void done(AVException e) {
+                                                        SignInfo.writeSignInfoToFile(
+                                                                getActivity().getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign",
+                                                                MainActivity.arraylistHistorySign);
+                                                        mCardArrayAdapter.notifyDataSetChanged();
+                                                        Toast.makeText(getActivity(), "签到删除成功", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+
+                                        }
+                                    });
+                                }
+                            });
+
                             break;
                         }
                     }

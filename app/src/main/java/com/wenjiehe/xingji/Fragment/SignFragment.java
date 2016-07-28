@@ -53,7 +53,8 @@ public class SignFragment extends Fragment {
     private double mylatitude = 0.0;
     private double mylongitude = 0.0;
     private double precision = 0.001;
-    private String street,city, province,locDescribe;
+    private String street,city, province,date,locDescribe;
+    private LatLng point;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class SignFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 定义Maker坐标点
-                LatLng point = new LatLng(mylatitude, mylongitude);
+
                 if(!MainActivity.arraylistHistorySign.isEmpty()){
                     for(SignInfo signifo :MainActivity.arraylistHistorySign)
                         if(Math.abs(signifo.latlng.latitude-mylatitude)<precision&&Math.abs(signifo.latlng.longitude-mylongitude)<precision){
@@ -90,31 +91,11 @@ public class SignFragment extends Fragment {
                             return ;
                         }
                 }
-                iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
 
-                SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String date = sDateFormat.format(new java.util.Date());
-                //System.out.println(date);
-                MainActivity.arraylistHistorySign.add(new SignInfo(point,date,
-                        new SignLocation(province,city,street,locDescribe)));//加入到所有签到的序列中
-                SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
-                        File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
-
-                baiduMap.clear();
-                MarkerOptions options;
-                for(SignInfo signInfotmp: MainActivity.arraylistHistorySign) {
-                    // 构建MarkerOption，用于在地图上添加Marker
-                    options = new MarkerOptions().position(signInfotmp.latlng)
-                            .icon(bd_Sign);
-                    // 在地图上添加Marker，并显示
-                    baiduMap.addOverlay(options);
-                }
-                SignInfo signInfoTmp = MainActivity.arraylistHistorySign.get(MainActivity.arraylistHistorySign.size()-1);
+                SignInfo signInfoTmp = new SignInfo(point,date,
+                        new SignLocation(province,city,street,locDescribe),"0");
                 final AVObject userSign = new AVObject("signInfo");
                 userSign.put("username", MainActivity.userName);
-                MainActivity.signNum +=1;
-                MainActivity.setTv_headerSignNum();
-                userSign.put("signnum", MainActivity.signNum);
                 userSign.put("latitude", signInfoTmp.latlng.latitude);
                 userSign.put("longitude", signInfoTmp.latlng.longitude);
                 userSign.put("date", signInfoTmp.date);
@@ -128,6 +109,8 @@ public class SignFragment extends Fragment {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
+                            MainActivity.signNum+=1;
+                            MainActivity.setTv_headerSignNum();
                             AVUser.getCurrentUser().put("signnum", MainActivity.signNum);
                             AVUser.getCurrentUser().saveInBackground(new SaveCallback(){
                                 @Override
@@ -137,6 +120,26 @@ public class SignFragment extends Fragment {
 
                             });
 
+
+                            iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
+
+
+                            //System.out.println(date);
+                            //point = new LatLng(mylatitude, mylongitude);
+                            MainActivity.arraylistHistorySign.add(new SignInfo(point,date,
+                                    new SignLocation(province,city,street,locDescribe),userSign.getObjectId()));//加入到所有签到的序列中
+                            SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
+                                    File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
+
+                            baiduMap.clear();
+                            MarkerOptions options;
+                            for(SignInfo signInfotmp: MainActivity.arraylistHistorySign) {
+                                // 构建MarkerOption，用于在地图上添加Marker
+                                options = new MarkerOptions().position(signInfotmp.latlng)
+                                        .icon(bd_Sign);
+                                // 在地图上添加Marker，并显示
+                                baiduMap.addOverlay(options);
+                            }
                             // 存储成功
                             //Log.d(TAG, todo.getObjectId());// 保存成功之后，objectId 会自动从服务端加载到本地
                         } else {
@@ -242,11 +245,13 @@ public class SignFragment extends Fragment {
                     .latitude(location.getLatitude())
                     .longitude(location.getLongitude())
                     .build();
-
+/*获取签到信息*/
             street=location.getStreet();
             city=location.getCity();
             province =location.getProvince();
             locDescribe =location.getLocationDescribe();
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            date = sDateFormat.format(new java.util.Date());
        //     Log.d("signfragment",location.getBuildingName());
             Log.d("signfragment",location.getLocationDescribe());
             if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
@@ -258,6 +263,7 @@ public class SignFragment extends Fragment {
 
             mylatitude=location.getLatitude();
             mylongitude=location.getLongitude();
+            point = new LatLng(mylatitude, mylongitude);
             System.out.println("mylatitude=" + mylatitude + ",mylongitude=" + mylongitude);
             if(mylatitude==0.0)
                 Log.d(LOG_D,"get location banned");
