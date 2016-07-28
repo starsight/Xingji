@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji;
+package com.wenjiehe.xingji.Fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -30,6 +30,9 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
+import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.SignInfo;
+import com.wenjiehe.xingji.SignLocation;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

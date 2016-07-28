@@ -340,6 +340,11 @@ public class ChooseLoginRegActivity extends BaseActivity {
                 if (e == null) {
                     //showRegisterSuccess();
                     Intent mainIntent = new Intent(activity, MainActivity.class);
+                    AVUser currentUser = AVUser.getCurrentUser();
+                    if (currentUser != null) {
+                        mainIntent.putExtra("username",currentUser.getUsername());
+                        mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
+                    }
                     startActivity(mainIntent);
                     activity.finish();
                 } else {

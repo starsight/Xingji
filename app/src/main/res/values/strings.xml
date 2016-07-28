@@ -60,4 +60,7 @@
     <string name="doing_list_wait_loading">正在加载</string>
     <string name="doing_list_error_loading">加载错误，请检查网络</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

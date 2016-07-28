@@ -9,15 +9,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.mapapi.SDKInitializer;
+import com.wenjiehe.xingji.Fragment.HistorySignFragment;
 import com.wenjiehe.xingji.R;
-import com.wenjiehe.xingji.SignFragment;
+import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
 
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     //private MainActivity activity;
     private FragmentTransaction ft;
     public SignFragment sf;
+    public HistorySignFragment hsf;
 
     public static String userName;
     public static int signNum;
@@ -68,8 +68,12 @@ public class MainActivity extends AppCompatActivity
  //       Log.d("xingji-choose",String.valueOf(signNum));
         tv_headerUserName.setText(userName);
         tv_headerSignNum.setText(String.valueOf(signNum));
-        //iv_barSign = (ImageView)findViewById(R.id.barSign);
-        //activity = this;
+
+        ft = this.getFragmentManager().beginTransaction();
+        hsf = new HistorySignFragment();
+        ft.replace(R.id.content_main, hsf);
+        ft.commit();
+
     }
 
     @Override
@@ -94,7 +98,10 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_main, sf);
             ft.commit();
         } else if (id == R.id.slide_item_history) {
-
+            ft = this.getFragmentManager().beginTransaction();
+            hsf = new HistorySignFragment();
+            ft.replace(R.id.content_main, hsf);
+            ft.commit();
         } else if (id == R.id.slide_item_settings) {
 
         } else if (id == R.id.slide_item_exit) {
@@ -106,6 +113,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void setTv_headerSignNum() {
-        tv_headerSignNum.setText(signNum);
+        tv_headerSignNum.setText(String.valueOf(signNum));
     }
 }
