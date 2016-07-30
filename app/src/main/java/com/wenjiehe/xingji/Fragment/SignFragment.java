@@ -54,7 +54,7 @@ public class SignFragment extends Fragment {
     private double mylongitude = 0.0;
     private double precision = 0.001;
     private String street,city, province,date,locDescribe;
-    private LatLng point;
+    private LatLng point= new LatLng(mylatitude, mylongitude);
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,6 +83,10 @@ public class SignFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 定义Maker坐标点
+                if(locDescribe==null) {
+                    Toast.makeText(getActivity(), "网络不畅……", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 if(!MainActivity.arraylistHistorySign.isEmpty()){
                     for(SignInfo signifo :MainActivity.arraylistHistorySign)

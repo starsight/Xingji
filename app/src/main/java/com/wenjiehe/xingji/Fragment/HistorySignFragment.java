@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -18,13 +19,16 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.DeleteCallback;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.RefreshLayout;
 import com.wenjiehe.xingji.SignInfo;
+import com.wenjiehe.xingji.SignLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +36,12 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -48,18 +57,23 @@ public class HistorySignFragment extends Fragment {
     public CardArrayAdapter mCardArrayAdapter;
     public CardListView listView;
     private String removedate;
+    private int historySignNum = 0;
+    private int beforeWeekNum = 1;
+    private int setPerGet = 21;
 
     String TAG="historysignfragment";
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_sign, null);
+        listView = (CardListView) view.findViewById(R.id.carddemo_list_gplaycard);
 
         SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
-        showSignRecord(view);
+        getHistorySignRecord();
+        showSignRecord();
         return view;
     }
 
-    public void showSignRecord(View view){
+    public void showSignRecord(){
         if(!cards.isEmpty()){
             int count=cards.size();
             //Log.d("--wenjie",String.valueOf(count));
@@ -131,7 +145,7 @@ public class HistorySignFragment extends Fragment {
 
         mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
         mCardArrayAdapter.notifyDataSetChanged();
-        listView = (CardListView) view.findViewById(R.id.carddemo_list_gplaycard);
+
     }
 
     @Override
@@ -141,5 +155,128 @@ public class HistorySignFragment extends Fragment {
             listView.setAdapter(mCardArrayAdapter);
         }
     }
+
+    public ArrayList<Date> getBeforeSevenDate(int beforewWeek){// 获取n周内的签到信息
+        ArrayList<Date> beforeDate = new ArrayList<>();
+        Calendar c =  Calendar.getInstance();
+        Calendar cc =  Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, -(beforewWeek*7)+1);
+        cc.add(Calendar.DAY_OF_MONTH, 7-(beforewWeek*7)+1);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String cmDateTime = formatter.format(c.getTime());
+        String ccmDateTime = formatter.format(cc.getTime());
+        //Log.d(TAG,cmDateTime);
+        //Log.d(TAG,ccmDateTime);
+        try {
+            beforeDate.add(formatter.parse(ccmDateTime));//near
+            beforeDate.add(formatter.parse(cmDateTime));//away
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return beforeDate;
+    }
+    public void getHistorySignRecord() {
+        Date nearDate,awayDate;
+        AVQuery<AVObject> query = new AVQuery<>("signInfo");
+        if(MainActivity.signNum<setPerGet)
+            setPerGet = MainActivity.signNum;
+
+            ArrayList<Date> dateTmp= getBeforeSevenDate(beforeWeekNum);
+            nearDate = dateTmp.get(0);
+            awayDate = dateTmp.get(1);
+            beforeWeekNum++;
+            //Log.d(TAG,String.valueOf(nearDate));
+            //Log.d(TAG,String.valueOf(awayDate));
+            query.whereEqualTo("username", MainActivity.userName);
+            query.whereGreaterThan("createdAt", awayDate);//小日期
+            query.whereLessThanOrEqualTo("createdAt", nearDate);//大日期
+
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    //historySignNum = list.size();
+                    //Log.d(TAG,String.valueOf(list.size()));
+                    String datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp,objectIdtmp;
+                    double lattmp,lngtmp;
+                    for (AVObject avObject : list) {
+                        objectIdtmp = avObject.getObjectId();
+                        //Log.d(TAG,objectIdtmp);
+                        int count = MainActivity.arraylistHistorySign.size();
+                        if(MainActivity.arraylistHistorySign.isEmpty()){
+                            lattmp = avObject.getDouble("latitude");
+                            lngtmp = avObject.getDouble("longitude");
+                            datetmp = avObject.getString("date");
+                            provincetmp = avObject.getString("province");
+                            citytmp = avObject.getString("city");
+                            streettmp = avObject.getString("street");
+                            eventtmp = avObject.getString("event");
+                            locDescribetmp = avObject.getString("locdescribe");
+                            historySignNum++;
+                            //Log.d(TAG,String.valueOf(historySignNum));
+                            SignInfo signinfotmp = new SignInfo(new LatLng(lattmp,lngtmp),datetmp,
+                                    new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),eventtmp,objectIdtmp);
+                            MainActivity.arraylistHistorySign.add(signinfotmp);
+                            SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
+                                    File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
+                            break;
+                        }
+                        else {
+                            for (int i = 0; i < count; i++) {
+                                if (!MainActivity.arraylistHistorySign.get(i).objectId.equals(objectIdtmp)) {
+                                    lattmp = avObject.getDouble("latitude");
+                                    lngtmp = avObject.getDouble("longitude");
+                                    datetmp = avObject.getString("date");
+                                    provincetmp = avObject.getString("province");
+                                    citytmp = avObject.getString("city");
+                                    streettmp = avObject.getString("street");
+                                    eventtmp = avObject.getString("event");
+                                    locDescribetmp = avObject.getString("locdescribe");
+                                    historySignNum++;
+                                    //Log.d(TAG, String.valueOf(historySignNum));
+                                    SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
+                                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp);
+                                    MainActivity.arraylistHistorySign.add(signinfotmp);
+                                    SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
+                                            File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
+                                    break;
+                                }
+                            }
+                        }
+                        //String title = avObject.getString("title");
+                    }
+
+                    Message message=new Message();
+                    message.what=1;
+                    mHandler.sendMessage(message);
+                }
+            });
+
+
+    }
+
+    public Handler mHandler=new Handler()
+    {
+        public void handleMessage(Message msg)
+        {
+            switch(msg.what)
+            {
+                case 1:
+                    if(historySignNum<setPerGet) {
+                        getHistorySignRecord();
+                    }
+                    else
+                        showSignRecord();
+                    break;
+                case 2:
+
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
 }
