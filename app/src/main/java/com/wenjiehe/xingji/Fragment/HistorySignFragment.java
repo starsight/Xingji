@@ -1,8 +1,6 @@
 package com.wenjiehe.xingji.Fragment;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,7 +20,6 @@ import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.SaveCallback;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.R;
@@ -30,12 +27,7 @@ import com.wenjiehe.xingji.RefreshLayout;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.IOException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,7 +48,7 @@ public class HistorySignFragment extends Fragment {
     private ArrayList<Card> cards = new ArrayList<Card>();
     public CardArrayAdapter mCardArrayAdapter;
     public CardListView listView;
-    private String removedate;
+    private String removeobjectId;
     private int historySignNum = 0;
     private int beforeWeekNum = 1;
     private int setPerGet = 21;
@@ -66,7 +58,8 @@ public class HistorySignFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_sign, null);
         listView = (CardListView) view.findViewById(R.id.carddemo_list_gplaycard);
-
+        //historySignNum = MainActivity.arraylistHistorySign.size();
+        Log.d(TAG+"historySignNum",String.valueOf(MainActivity.arraylistHistorySign.size()));
         SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
         getHistorySignRecord();
         showSignRecord();
@@ -79,7 +72,7 @@ public class HistorySignFragment extends Fragment {
             //Log.d("--wenjie",String.valueOf(count));
             for(int i=0;i<count;i++) {
                 cards.remove(0);
-                System.out.println(String.valueOf(i));
+                Log.d("--wenjie",String.valueOf(i));
             }
         }
 
@@ -88,15 +81,15 @@ public class HistorySignFragment extends Fragment {
             Card card = new Card(getActivity());
             CardHeader header = new CardHeader(getActivity());
             header.setTitle(signinfo.location.province + signinfo.location.city + signinfo.location.street);
-            card.setId(signinfo.date);
+            card.setId(signinfo.objectId);
             header.setPopupMenu(R.menu.record_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
                 @Override
                 public void onMenuItemClick(BaseCard card, MenuItem item) {
-                    removedate = card.getId();
+                    removeobjectId = card.getId();
                     int count = MainActivity.arraylistHistorySign.size();
                     for (int i = 0; i < count; i++) {
                        // Log.d(LOG_D, String.valueOf(MainActivity.arraylistHistorySign.size()));
-                        if (MainActivity.arraylistHistorySign.get(i).date.equals(removedate)) {
+                        if (MainActivity.arraylistHistorySign.get(i).objectId.equals(removeobjectId)) {
                             String objectIdTmp = MainActivity.arraylistHistorySign.get(i).objectId;
                             MainActivity.arraylistHistorySign.remove(i);
                             cards.remove(i);
@@ -139,8 +132,6 @@ public class HistorySignFragment extends Fragment {
             //Add Header to card
             card.addCardHeader(header);
             cards.add(card);
-
-
         }
 
         mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
@@ -157,6 +148,8 @@ public class HistorySignFragment extends Fragment {
     }
 
     public ArrayList<Date> getBeforeSevenDate(int beforewWeek){// 获取n周内的签到信息
+        if(beforewWeek>5)
+            return null;
         ArrayList<Date> beforeDate = new ArrayList<>();
         Calendar c =  Calendar.getInstance();
         Calendar cc =  Calendar.getInstance();
@@ -184,11 +177,13 @@ public class HistorySignFragment extends Fragment {
             setPerGet = MainActivity.signNum;
 
             ArrayList<Date> dateTmp= getBeforeSevenDate(beforeWeekNum);
+        if(dateTmp==null)
+            return ;
             nearDate = dateTmp.get(0);
             awayDate = dateTmp.get(1);
             beforeWeekNum++;
-            //Log.d(TAG,String.valueOf(nearDate));
-            //Log.d(TAG,String.valueOf(awayDate));
+            Log.d(TAG,String.valueOf(nearDate));
+            Log.d(TAG,String.valueOf(awayDate));
             query.whereEqualTo("username", MainActivity.userName);
             query.whereGreaterThan("createdAt", awayDate);//小日期
             query.whereLessThanOrEqualTo("createdAt", nearDate);//大日期
@@ -197,12 +192,16 @@ public class HistorySignFragment extends Fragment {
                 @Override
                 public void done(List<AVObject> list, AVException e) {
                     //historySignNum = list.size();
-                    //Log.d(TAG,String.valueOf(list.size()));
+                    Log.d(TAG,"list.size");
+                    Log.d(TAG,String.valueOf(list.size()));
                     String datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp,objectIdtmp;
                     double lattmp,lngtmp;
+                    if(list==null)
+                        return ;
                     for (AVObject avObject : list) {
                         objectIdtmp = avObject.getObjectId();
-                        //Log.d(TAG,objectIdtmp);
+                        Log.d(TAG,"avObject.getObjectId");
+                        Log.d(TAG,objectIdtmp);
                         int count = MainActivity.arraylistHistorySign.size();
                         if(MainActivity.arraylistHistorySign.isEmpty()){
                             lattmp = avObject.getDouble("latitude");
@@ -214,34 +213,43 @@ public class HistorySignFragment extends Fragment {
                             eventtmp = avObject.getString("event");
                             locDescribetmp = avObject.getString("locdescribe");
                             historySignNum++;
-                            //Log.d(TAG,String.valueOf(historySignNum));
+                            Log.d(TAG,"arraylistHistorySign.isEmpty");
                             SignInfo signinfotmp = new SignInfo(new LatLng(lattmp,lngtmp),datetmp,
                                     new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),eventtmp,objectIdtmp);
                             MainActivity.arraylistHistorySign.add(signinfotmp);
                             SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
                                     File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
-                            break;
                         }
                         else {
-                            for (int i = 0; i < count; i++) {
-                                if (!MainActivity.arraylistHistorySign.get(i).objectId.equals(objectIdtmp)) {
-                                    lattmp = avObject.getDouble("latitude");
-                                    lngtmp = avObject.getDouble("longitude");
-                                    datetmp = avObject.getString("date");
-                                    provincetmp = avObject.getString("province");
-                                    citytmp = avObject.getString("city");
-                                    streettmp = avObject.getString("street");
-                                    eventtmp = avObject.getString("event");
-                                    locDescribetmp = avObject.getString("locdescribe");
-                                    historySignNum++;
-                                    //Log.d(TAG, String.valueOf(historySignNum));
-                                    SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp);
-                                    MainActivity.arraylistHistorySign.add(signinfotmp);
-                                    SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
-                                            File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
-                                    break;
+                            for (int i = 0; i < count; ) {
+                                Log.d(TAG,"objectid");
+                                Log.d(TAG,MainActivity.arraylistHistorySign.get(i).objectId);
+                                Log.d(TAG,objectIdtmp);
+                                if(i==(count-1)) {
+                                    if (!MainActivity.arraylistHistorySign.get(i).objectId.equals(objectIdtmp)) {
+                                        lattmp = avObject.getDouble("latitude");
+                                        lngtmp = avObject.getDouble("longitude");
+                                        datetmp = avObject.getString("date");
+                                        provincetmp = avObject.getString("province");
+                                        citytmp = avObject.getString("city");
+                                        streettmp = avObject.getString("street");
+                                        eventtmp = avObject.getString("event");
+                                        locDescribetmp = avObject.getString("locdescribe");
+                                        historySignNum++;
+                                        Log.d(TAG, String.valueOf(historySignNum));
+                                        SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
+                                                new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp);
+                                        MainActivity.arraylistHistorySign.add(signinfotmp);
+                                        SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
+                                                File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
+                                        break;
+                                    }
                                 }
+                                if (MainActivity.arraylistHistorySign.get(i).objectId.equals(objectIdtmp)) {
+                                     break;
+                                }
+                                else
+                                    i++;
                             }
                         }
                         //String title = avObject.getString("title");
@@ -266,8 +274,11 @@ public class HistorySignFragment extends Fragment {
                     if(historySignNum<setPerGet) {
                         getHistorySignRecord();
                     }
-                    else
+                    else{
                         showSignRecord();
+                        Log.d(TAG,"handlering refresh");
+                    }
+
                     break;
                 case 2:
 
