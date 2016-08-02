@@ -39,4 +39,5 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'
     //circle header
     compile 'de.hdodenhof:circleimageview:2.1.0'
+
 }

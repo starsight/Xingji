@@ -5,21 +5,33 @@ package com.wenjiehe.xingji.Activity;
  */
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
+
+import com.avos.avoscloud.RefreshCallback;
 import com.wenjiehe.xingji.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 
 public class BaseActivity extends Activity {
 
     public BaseActivity activity;
-    private String userId,userName;
+    private String userId, userName;
 
     private int signNum = 0;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +40,16 @@ public class BaseActivity extends Activity {
                 "Hncn0N117OUU0Cxc46FvOrUb-9Nh9j0Va",
                 "HE1bjVngkRCnP03lK3lB6LSK");
 
-        AVAnalytics.trackAppOpened(getIntent());
+        //AVAnalytics.trackAppOpened(getIntent());
         activity = this;
         userId = null;
         AVUser currentUser = AVUser.getCurrentUser();
         if (currentUser != null) {
             userId = currentUser.getObjectId();
             userName = currentUser.getUsername();
-            if(currentUser.get("signnum")!=null)
-                signNum = (Integer)currentUser.get("signnum");
+            if (currentUser.get("signnum") != null)
+                signNum = (Integer) currentUser.get("signnum");
+
         }
     }
 
@@ -73,12 +86,14 @@ public class BaseActivity extends Activity {
 
     protected void onPause() {
         super.onPause();
-        AVAnalytics.onPause(this);
+        //AVAnalytics.onPause(this);
     }
 
     protected void onResume() {
         super.onResume();
-        AVAnalytics.onResume(this);
+        //AVAnalytics.onResume(this);
     }
+
+
 }
 

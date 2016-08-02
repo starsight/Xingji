@@ -19,6 +19,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
@@ -59,11 +60,44 @@ public class HistorySignFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_sign, null);
         listView = (CardListView) view.findViewById(R.id.carddemo_list_gplaycard);
         //historySignNum = MainActivity.arraylistHistorySign.size();
-        Log.d(TAG+"historySignNum",String.valueOf(MainActivity.arraylistHistorySign.size()));
-        SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
-        getHistorySignRecord();
-        showSignRecord();
+        //Log.d(TAG+"historySignNum",String.valueOf(MainActivity.arraylistHistorySign.size()));
+
+        syncHistorySignInfo();
         return view;
+    }
+
+    private void syncHistorySignInfo() {
+        AVUser currentUser = AVUser.getCurrentUser();
+
+        File xingjiDir = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator+"xingji");
+        if(!xingjiDir.exists()){
+            xingjiDir.mkdir();
+            return ;
+        }
+        //File file = new File(getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
+        File f = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
+        Date date = new Date(f.lastModified());
+
+        Log.d("MainActivity--",date.toString());
+        Log.d("MainActivity--",String.valueOf(date.getTime()));
+
+        Log.d("MainActivity",currentUser.getUpdatedAt().toString());
+        Log.d("MainActivity",String.valueOf(currentUser.getUpdatedAt().getTime()));
+
+        if(date.getTime()-currentUser.getUpdatedAt().getTime()<-4000){
+            Log.d("MainActivity","enter-update-historysign");
+            f.delete();
+            getHistorySignRecord();
+        }
+        else{
+            SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
+            //historySignNum = MainActivity.arraylistHistorySign.size();
+            showSignRecord();
+            if (listView!=null){
+                listView.setAdapter(mCardArrayAdapter);
+            }
+        }
+
     }
 
     public void showSignRecord(){
@@ -142,9 +176,6 @@ public class HistorySignFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (listView!=null){
-            listView.setAdapter(mCardArrayAdapter);
-        }
     }
 
     public ArrayList<Date> getBeforeSevenDate(int beforewWeek){// 获取n周内的签到信息
@@ -272,10 +303,16 @@ public class HistorySignFragment extends Fragment {
             {
                 case 1:
                     if(historySignNum<setPerGet) {
+                        Log.d(TAG+"setPerNum",String.valueOf(setPerGet));
+                        Log.d(TAG+"historySignNum",String.valueOf(historySignNum));
                         getHistorySignRecord();
                     }
                     else{
+                        SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
                         showSignRecord();
+                        if (listView!=null){
+                            listView.setAdapter(mCardArrayAdapter);
+                        }
                         Log.d(TAG,"handlering refresh");
                     }
 

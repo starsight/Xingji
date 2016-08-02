@@ -127,7 +127,6 @@ public class SignFragment extends Fragment {
 
                             iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
 
-
                             //System.out.println(date);
                             //point = new LatLng(mylatitude, mylongitude);
                             MainActivity.arraylistHistorySign.add(new SignInfo(point,date,

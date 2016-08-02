@@ -39,7 +39,9 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="7NXABr11o7hVbKdrUffT1ylXyyzqEyON" />
+            android:value="7NXABr11o7hVbKdrUffT1ylXyyzqEyON" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+
     </application>
 
 </manifest>

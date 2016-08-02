@@ -2,6 +2,8 @@ package com.wenjiehe.xingji.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -9,17 +11,25 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.RefreshCallback;
+import com.avos.avoscloud.okhttp.internal.framed.FrameReader;
 import com.wenjiehe.xingji.Fragment.HistorySignFragment;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity
@@ -69,12 +79,27 @@ public class MainActivity extends AppCompatActivity
         tv_headerUserName.setText(userName);
         tv_headerSignNum.setText(String.valueOf(signNum));
 
-        ft = this.getFragmentManager().beginTransaction();
-        hsf = new HistorySignFragment();
-        ft.replace(R.id.content_main, hsf);
-        ft.commit();
+        syncUserInfo();
 
     }
+
+    private void syncUserInfo() {
+        final AVUser currentUser = AVUser.getCurrentUser();
+        currentUser.refreshInBackground(new RefreshCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                if (currentUser.get("signnum") != null)
+                    signNum = (Integer) currentUser.get("signnum");
+                tv_headerSignNum.setText(String.valueOf(signNum));
+
+                ft = getFragmentManager().beginTransaction();
+                hsf = new HistorySignFragment();
+                ft.replace(R.id.content_main, hsf);
+                ft.commit();
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {
