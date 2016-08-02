@@ -17,6 +17,7 @@
         <it.gmariotti.cardslib.library.view.CardListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fastScrollEnabled="false"
             android:id="@+id/carddemo_list_gplaycard"
             card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout" />
 

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -61,42 +63,88 @@ public class HistorySignFragment extends Fragment {
         listView = (CardListView) view.findViewById(R.id.carddemo_list_gplaycard);
         //historySignNum = MainActivity.arraylistHistorySign.size();
         //Log.d(TAG+"historySignNum",String.valueOf(MainActivity.arraylistHistorySign.size()));
+        listView.setVerticalScrollBarEnabled(false);
+
+        swipeRefreshLayout = (RefreshLayout) view.findViewById(R.id.swipeLayout);
+
+        //设置刷新时动画的颜色，可以设置4个
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        swipeRefreshLayout.setOnLoadListener(new RefreshLayout.OnLoadListener() {
+            @Override
+            public void onLoad() {
+                historySignNum = 0;
+                syncHistorySignInfo();
+                mCardArrayAdapter.notifyDataSetChanged();
+                listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                listView.setStackFromBottom(true);
+
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                historySignNum = 0;
+                beforeWeekNum=1;
+                syncHistorySignInfo();
+                listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                listView.setStackFromBottom(false);
+            }
+        });
 
         syncHistorySignInfo();
         return view;
     }
 
     private void syncHistorySignInfo() {
-        AVUser currentUser = AVUser.getCurrentUser();
 
-        File xingjiDir = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator+"xingji");
-        if(!xingjiDir.exists()){
-            xingjiDir.mkdir();
-            return ;
-        }
-        //File file = new File(getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
-        File f = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
-        Date date = new Date(f.lastModified());
+        final AVUser currentUser = AVUser.getCurrentUser();
+        currentUser.refreshInBackground(new RefreshCallback<AVObject>() {
+            @Override
+            public void done(AVObject avObject, AVException e) {
+                if (currentUser.get("signnum") != null)
+                    MainActivity.signNum = (Integer) currentUser.get("signnum");
+                MainActivity.tv_headerSignNum.setText(String.valueOf(MainActivity.signNum));
 
-        Log.d("MainActivity--",date.toString());
-        Log.d("MainActivity--",String.valueOf(date.getTime()));
+                File xingjiDir = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator+"xingji");
+                if(!xingjiDir.exists()){
+                    xingjiDir.mkdir();
+                    return ;
+                }
+                //File file = new File(getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
+                File f = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
+                Date date = new Date(f.lastModified());
 
-        Log.d("MainActivity",currentUser.getUpdatedAt().toString());
-        Log.d("MainActivity",String.valueOf(currentUser.getUpdatedAt().getTime()));
+                Log.d("MainActivity--",date.toString());
+                Log.d("MainActivity--",String.valueOf(date.getTime()));
 
-        if(date.getTime()-currentUser.getUpdatedAt().getTime()<-4000){
-            Log.d("MainActivity","enter-update-historysign");
-            f.delete();
-            getHistorySignRecord();
-        }
-        else{
-            SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
-            //historySignNum = MainActivity.arraylistHistorySign.size();
-            showSignRecord();
-            if (listView!=null){
-                listView.setAdapter(mCardArrayAdapter);
+                Log.d("MainActivity",currentUser.getUpdatedAt().toString());
+                Log.d("MainActivity",String.valueOf(currentUser.getUpdatedAt().getTime()));
+
+                if(date.getTime()-currentUser.getUpdatedAt().getTime()<-4000){
+                    Log.d("MainActivity","enter-update-historysign");
+                    f.delete();
+                    if(!MainActivity.arraylistHistorySign.isEmpty()){
+                        int count = MainActivity.arraylistHistorySign.size();
+                        for(int i=0;i<count;i++) {
+                            MainActivity.arraylistHistorySign.remove(0);
+                        }
+                    }
+                    getHistorySignRecord();
+                }
+                else{
+                    SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
+                    //historySignNum = MainActivity.arraylistHistorySign.size();
+                    showSignRecord();
+                    if (listView!=null){
+                        listView.setAdapter(mCardArrayAdapter);
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setLoading(false);
+                }
             }
-        }
+        });
 
     }
 
@@ -179,8 +227,8 @@ public class HistorySignFragment extends Fragment {
     }
 
     public ArrayList<Date> getBeforeSevenDate(int beforewWeek){// 获取n周内的签到信息
-        if(beforewWeek>5)
-            return null;
+        //if(beforewWeek>5)
+            //return null;
         ArrayList<Date> beforeDate = new ArrayList<>();
         Calendar c =  Calendar.getInstance();
         Calendar cc =  Calendar.getInstance();
@@ -313,6 +361,12 @@ public class HistorySignFragment extends Fragment {
                         if (listView!=null){
                             listView.setAdapter(mCardArrayAdapter);
                         }
+
+                        swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setLoading(false);
+                        mCardArrayAdapter.notifyDataSetChanged();
+                        //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                        //listView.setStackFromBottom(true);
                         Log.d(TAG,"handlering refresh");
                     }
 

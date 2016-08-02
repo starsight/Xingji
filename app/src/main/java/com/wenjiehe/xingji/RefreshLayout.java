@@ -5,6 +5,7 @@ package com.wenjiehe.xingji;
  */
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,6 +22,8 @@ import android.widget.ListView;
  * @author mrsimple
  */
 public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnScrollListener {
+
+    boolean isLoadNeedClose = false;
 
     /**
      * 滑动到最下面时的上拉操作
@@ -176,11 +179,15 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
     public void setLoading(boolean loading) {
         isLoading = loading;
         if (isLoading) {
+            //Log.d("refreshlayout","add-FooterView");
             mListView.addFooterView(mListViewFooter);
+            cdt.start();
         } else {
-            mListView.removeFooterView(mListViewFooter);
-            mYDown = 0;
-            mLastY = 0;
+            if(mListViewFooter==null||mListView==null)
+                return;
+            isLoadNeedClose = true;
+            Log.d("refreshlayout","remove-FooterView");
+
         }
     }
 
@@ -213,4 +220,27 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
     public interface OnLoadListener {
         void onLoad();
     }
+
+    CountDownTimer cdt = new CountDownTimer(6000,1000) {
+        int count = 0 ;
+        @Override
+        public void onTick(long millisUntilFinished) {
+            Log.d("refresh","tick");
+            if(count<3){
+                count++;
+                return;
+            }
+            if(isLoadNeedClose){
+                mListView.removeFooterView(mListViewFooter);
+                mYDown = 0;
+                mLastY = 0;
+            }
+            isLoadNeedClose = false;
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+    };
 }

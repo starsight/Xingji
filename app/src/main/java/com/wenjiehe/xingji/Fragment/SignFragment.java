@@ -305,6 +305,8 @@ public class SignFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(LOG_D,"destory~~");
+        iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar_error));
+        iv_barSign.setVisibility(View.GONE);
         //int count = arraylistHistorySign.size();
 //        for(int i=0;i<arraylistHistorySign.size();)
 //            arraylistHistorySign.remove(0);
