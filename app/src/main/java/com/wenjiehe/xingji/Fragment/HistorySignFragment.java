@@ -2,6 +2,7 @@ package com.wenjiehe.xingji.Fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -55,6 +55,7 @@ public class HistorySignFragment extends Fragment {
     private int historySignNum = 0;
     private int beforeWeekNum = 1;
     private int setPerGet = 21;
+    private boolean isAdapter = false;
 
     String TAG="historysignfragment";
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +65,8 @@ public class HistorySignFragment extends Fragment {
         //historySignNum = MainActivity.arraylistHistorySign.size();
         //Log.d(TAG+"historySignNum",String.valueOf(MainActivity.arraylistHistorySign.size()));
         listView.setVerticalScrollBarEnabled(false);
+        mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
+        listView.setAdapter(mCardArrayAdapter);
 
         swipeRefreshLayout = (RefreshLayout) view.findViewById(R.id.swipeLayout);
 
@@ -72,24 +75,36 @@ public class HistorySignFragment extends Fragment {
         swipeRefreshLayout.setOnLoadListener(new RefreshLayout.OnLoadListener() {
             @Override
             public void onLoad() {
-                historySignNum = 0;
-                syncHistorySignInfo();
-                mCardArrayAdapter.notifyDataSetChanged();
-                listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                listView.setStackFromBottom(true);
 
+                CountDownTimer cdt = new CountDownTimer(2500,500) {
+                    // int count = 0 ;
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        Log.d("refresh","tick");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        Log.d(TAG+"onLoad","onLoading");
+                        historySignNum = 0;
+                        syncHistorySignInfo();
+                    }
+                }.start();
+
+                //mCardArrayAdapter.notifyDataSetChanged();
+                //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                //listView.setStackFromBottom(true);
             }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
             @Override
             public void onRefresh() {
                 historySignNum = 0;
                 beforeWeekNum=1;
                 syncHistorySignInfo();
-                listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                listView.setStackFromBottom(false);
+                //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                //listView.setStackFromBottom(false);
             }
         });
 
@@ -110,6 +125,7 @@ public class HistorySignFragment extends Fragment {
                 File xingjiDir = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator+"xingji");
                 if(!xingjiDir.exists()){
                     xingjiDir.mkdir();
+                    getHistorySignRecord();
                     return ;
                 }
                 //File file = new File(getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
@@ -130,6 +146,8 @@ public class HistorySignFragment extends Fragment {
                         for(int i=0;i<count;i++) {
                             MainActivity.arraylistHistorySign.remove(0);
                         }
+                        historySignNum = 0;
+                        beforeWeekNum=1;
                     }
                     getHistorySignRecord();
                 }
@@ -137,11 +155,16 @@ public class HistorySignFragment extends Fragment {
                     SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
                     //historySignNum = MainActivity.arraylistHistorySign.size();
                     showSignRecord();
-                    if (listView!=null){
-                        listView.setAdapter(mCardArrayAdapter);
+                    //mCardArrayAdapter.notifyDataSetChanged();
+                    //listView.setSelection(listView.getCount() - 1);
+
+                    if (listView!=null&&isAdapter==false){
+
+                        isAdapter=true;
                     }
                     swipeRefreshLayout.setRefreshing(false);
                     swipeRefreshLayout.setLoading(false);
+                    mCardArrayAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -149,77 +172,116 @@ public class HistorySignFragment extends Fragment {
     }
 
     public void showSignRecord(){
-        if(!cards.isEmpty()){
+        /*if(!cards.isEmpty()){
             int count=cards.size();
             //Log.d("--wenjie",String.valueOf(count));
             for(int i=0;i<count;i++) {
                 cards.remove(0);
                 Log.d("--wenjie",String.valueOf(i));
             }
-        }
+        }*/
+        int signCount = cards.size();
+        int historyCount = MainActivity.arraylistHistorySign.size();
+        ArrayList<Integer> isCardExist = new ArrayList();
+        ArrayList<Integer> isHistorySignExist = new ArrayList();
+        for (int i=0;i<signCount;i++)
+            isCardExist.add(i,0);
+        for (int i=0;i<historyCount;i++)
+            isHistorySignExist.add(i,0);
 
         for(SignInfo signinfo :MainActivity.arraylistHistorySign) {
-            Log.d(TAG,"enter-for-arraylistHistorySign");
-            Card card = new Card(getActivity());
-            CardHeader header = new CardHeader(getActivity());
-            header.setTitle(signinfo.location.province + signinfo.location.city + signinfo.location.street);
-            card.setId(signinfo.objectId);
-            header.setPopupMenu(R.menu.record_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
-                @Override
-                public void onMenuItemClick(BaseCard card, MenuItem item) {
-                    removeobjectId = card.getId();
-                    int count = MainActivity.arraylistHistorySign.size();
-                    for (int i = 0; i < count; i++) {
-                       // Log.d(LOG_D, String.valueOf(MainActivity.arraylistHistorySign.size()));
-                        if (MainActivity.arraylistHistorySign.get(i).objectId.equals(removeobjectId)) {
-                            String objectIdTmp = MainActivity.arraylistHistorySign.get(i).objectId;
-                            MainActivity.arraylistHistorySign.remove(i);
-                            cards.remove(i);
-                            AVQuery<AVObject> avQuery = new AVQuery<>("signInfo");
-                            avQuery.getInBackground(objectIdTmp, new GetCallback<AVObject>() {
-                                @Override
-                                public void done(AVObject avObject, AVException e) {
-                                    avObject.deleteInBackground(new DeleteCallback() {
-                                        @Override
-                                        public void done(AVException e) {
-                                            AVUser currentUser = AVUser.getCurrentUser();
-                                            if (currentUser != null) {//签到次数统计同步
-                                                MainActivity.signNum -=1;
-                                                MainActivity.setTv_headerSignNum();
-                                                currentUser.put("signnum", MainActivity.signNum);
-                                                currentUser.saveInBackground(new SaveCallback() {
-                                                    @Override
-                                                    public void done(AVException e) {
-                                                        SignInfo.writeSignInfoToFile(
-                                                                getActivity().getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign",
-                                                                MainActivity.arraylistHistorySign);
-                                                        mCardArrayAdapter.notifyDataSetChanged();
-                                                        Toast.makeText(getActivity(), "签到删除成功", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                            }
-
-                                        }
-                                    });
-                                }
-                            });
-
-                            break;
-                        }
-                    }
-
+            if(cards.isEmpty()){
+                for(SignInfo signinfo1 :MainActivity.arraylistHistorySign){
+                    isCardExist.add(cards.size(),1);
+                    addToCards(signinfo1);
+                    Log.d(TAG,"cards.isEmpty");
                 }
-            });
-            card.setTitle(signinfo.event);
-            //Add Header to card
-            card.addCardHeader(header);
-            cards.add(card);
+                break;
+            }
+            else {
+                for (int i = 0; i < cards.size(); i++) {
+                    if (cards.get(i).getId().equals(signinfo.objectId)) {
+                        isCardExist.set(i,1);
+                        Log.d(TAG + "showSignRecord", String.valueOf(i));
+                        break;
+                        //isHistorySignExist[i] = 1;
+                    } else if (i == (cards.size() - 1)) {
+                        if (!cards.get(i).getId().equals(signinfo.objectId)) {
+                            Log.d(TAG + "showSignRecord--add", String.valueOf(i));
+                            isCardExist.add(cards.size(),1);
+                            addToCards(signinfo);
+                        } else
+                            isCardExist.set(i,1);
+                    }
+                }
+            }
         }
 
-        mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
-        mCardArrayAdapter.notifyDataSetChanged();
-
+        for (int i = 0; i < cards.size(); i++) {
+            if(isCardExist.get(i)==0)
+                cards.remove(i);
+        }
+        //mCardArrayAdapter.notifyDataSetChanged();
     }
+
+    private void addToCards(SignInfo signinfo) {
+        Log.d(TAG,"enter-for-arraylistHistorySign");
+        Card card = new Card(getActivity());
+        CardHeader header = new CardHeader(getActivity());
+        header.setTitle(signinfo.location.province + signinfo.location.city + signinfo.location.street);
+        card.setId(signinfo.objectId);
+        header.setPopupMenu(R.menu.record_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+            @Override
+            public void onMenuItemClick(BaseCard card, MenuItem item) {
+                removeobjectId = card.getId();
+                int count = MainActivity.arraylistHistorySign.size();
+                for (int i = 0; i < count; i++) {
+                    // Log.d(LOG_D, String.valueOf(MainActivity.arraylistHistorySign.size()));
+                    if (MainActivity.arraylistHistorySign.get(i).objectId.equals(removeobjectId)) {
+                        String objectIdTmp = MainActivity.arraylistHistorySign.get(i).objectId;
+                        MainActivity.arraylistHistorySign.remove(i);
+                        cards.remove(i);
+                        AVQuery<AVObject> avQuery = new AVQuery<>("signInfo");
+                        avQuery.getInBackground(objectIdTmp, new GetCallback<AVObject>() {
+                            @Override
+                            public void done(AVObject avObject, AVException e) {
+                                avObject.deleteInBackground(new DeleteCallback() {
+                                    @Override
+                                    public void done(AVException e) {
+                                        AVUser currentUser = AVUser.getCurrentUser();
+                                        if (currentUser != null) {//签到次数统计同步
+                                            MainActivity.signNum -=1;
+                                            MainActivity.setTv_headerSignNum();
+                                            currentUser.put("signnum", MainActivity.signNum);
+                                            currentUser.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(AVException e) {
+                                                    SignInfo.writeSignInfoToFile(
+                                                            getActivity().getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign",
+                                                            MainActivity.arraylistHistorySign);
+                                                    mCardArrayAdapter.notifyDataSetChanged();
+                                                    Toast.makeText(getActivity(), "签到删除成功", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
+
+                        break;
+                    }
+                }
+
+            }
+        });
+        card.setTitle(signinfo.event);
+        //Add Header to card
+        card.addCardHeader(header);
+        cards.add(card);
+    }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -358,12 +420,14 @@ public class HistorySignFragment extends Fragment {
                     else{
                         SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
                         showSignRecord();
-                        if (listView!=null){
+                        if (listView!=null&&isAdapter==false){
                             listView.setAdapter(mCardArrayAdapter);
+                            isAdapter=true;
                         }
 
                         swipeRefreshLayout.setRefreshing(false);
                         swipeRefreshLayout.setLoading(false);
+                        //listView.setSelection(listView.getCount() - 1);
                         mCardArrayAdapter.notifyDataSetChanged();
                         //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
                         //listView.setStackFromBottom(true);

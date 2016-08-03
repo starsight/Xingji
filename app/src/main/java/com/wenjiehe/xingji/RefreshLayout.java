@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 继承自SwipeRefreshLayout,从而实现滑动到底部时上拉加载更多的功能.
@@ -179,15 +181,17 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
     public void setLoading(boolean loading) {
         isLoading = loading;
         if (isLoading) {
-            //Log.d("refreshlayout","add-FooterView");
+            Log.d("refreshlayout","add-FooterView");
             mListView.addFooterView(mListViewFooter);
-            cdt.start();
+            //cdt.start();
         } else {
             if(mListViewFooter==null||mListView==null)
                 return;
             isLoadNeedClose = true;
             Log.d("refreshlayout","remove-FooterView");
-
+            mListView.removeFooterView(mListViewFooter);
+            mYDown = 0;
+            mLastY = 0;
         }
     }
 
@@ -221,26 +225,35 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
         void onLoad();
     }
 
-    CountDownTimer cdt = new CountDownTimer(6000,1000) {
-        int count = 0 ;
+
+
+    CountDownTimer cdt = new CountDownTimer(2500,500) {
+       // int count = 0 ;
         @Override
         public void onTick(long millisUntilFinished) {
             Log.d("refresh","tick");
-            if(count<3){
-                count++;
-                return;
-            }
-            if(isLoadNeedClose){
-                mListView.removeFooterView(mListViewFooter);
-                mYDown = 0;
-                mLastY = 0;
-            }
-            isLoadNeedClose = false;
         }
 
         @Override
         public void onFinish() {
-
+            //count=0;
+           /* if(isLoadNeedClose==false){
+                Log.d("refreshlayout","remove-FooterView2");
+                progressBarCircularIndeterminate.setVisibility(GONE);
+                progressBarCircularTextError.setVisibility(VISIBLE);
+                //mListView.removeFooterView(mListViewFooter);
+                //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
+                mYDown = 0;
+                mLastY = 0;
+            }
+            else{*/
+            if(isLoadNeedClose==true){
+                Log.d("refreshlayout","remove-FooterView2");
+                mListView.removeFooterView(mListViewFooter);
+                mYDown = 0;
+                mLastY = 0;
+                isLoadNeedClose=false;
+            }
         }
     };
 }

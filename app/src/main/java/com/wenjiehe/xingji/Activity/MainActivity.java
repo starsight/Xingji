@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity
                     signNum = (Integer) currentUser.get("signnum");
                 tv_headerSignNum.setText(String.valueOf(signNum));
 
+                Log.d("xingji-choose",String.valueOf(signNum));
                 ft = getFragmentManager().beginTransaction();
                 hsf = new HistorySignFragment();
                 ft.replace(R.id.content_main, hsf);
