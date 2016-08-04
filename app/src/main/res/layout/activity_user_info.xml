@@ -46,7 +46,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
-                    android:id="@+id/iv_meInfoBg"
+                    android:id="@+id/iv_myInfoBg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -54,6 +54,7 @@
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7"
                     android:fitsSystemWindows="true" />
+
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/meinfo_toolbar"
@@ -70,6 +71,18 @@
             layout="@layout/content_me_info"
             android:id="@+id/can_scroll_view" />
 
+<!--
+        <TextView
+            android:id="@+id/tv_myInfo_signature"
+            android:text="身体和灵魂，总有一个要在路上"
+            android:textSize="15dp"
+            app:layout_anchorGravity="center_vertical"
+            app:layout_anchor="@id/app_bar"
+            android:layout_marginLeft="@dimen/actions_icon_width"
+            android:layout_marginBottom="@dimen/actions_icon_width"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

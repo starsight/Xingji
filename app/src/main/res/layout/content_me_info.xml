@@ -18,5 +18,4 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card="http://schemas.android.com/apk/res-auto" />
 
-
 </android.support.v4.widget.NestedScrollView>

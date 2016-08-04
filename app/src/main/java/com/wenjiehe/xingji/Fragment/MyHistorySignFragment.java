@@ -47,6 +47,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 
 public class MyHistorySignFragment extends Fragment {
 
+    private final int SETPERGET = 7;
     private RefreshLayout swipeRefreshLayout;
     private ArrayList<Card> cards = new ArrayList<Card>();
     public CardArrayAdapter mCardArrayAdapter;
@@ -54,7 +55,8 @@ public class MyHistorySignFragment extends Fragment {
     private String removeobjectId;
     private int historySignNum = 0;
     private int beforeWeekNum = 1;
-    private int setPerGet = 21;
+    private int setPerGet = SETPERGET;
+    private int canLoadNum = 0;
     private boolean isAdapter = false;
 
     String TAG = "historysignfragment";
@@ -103,9 +105,11 @@ public class MyHistorySignFragment extends Fragment {
             public void onRefresh() {
                 historySignNum = 0;
                 beforeWeekNum = 1;
+                setPerGet = SETPERGET;
                 syncHistorySignInfo();
                 //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                //listView.setStackFromBottom(false);
+                //listView.setStackFro
+                // mBottom(false);
             }
         });
 
@@ -150,6 +154,7 @@ public class MyHistorySignFragment extends Fragment {
                         historySignNum = 0;
                         beforeWeekNum = 1;
                     }
+                    canLoadNum = MainActivity.signNum-MainActivity.arraylistHistorySign.size();
                     getHistorySignRecord();
                 } else {
                     SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);
@@ -157,7 +162,10 @@ public class MyHistorySignFragment extends Fragment {
                     showSignRecord();
                     //mCardArrayAdapter.notifyDataSetChanged();
                     //listView.setSelection(listView.getCount() - 1);
-
+                    canLoadNum = MainActivity.signNum-MainActivity.arraylistHistorySign.size();
+                    if(canLoadNum>0){
+                        getHistorySignRecord();
+                    }
                     if (listView != null && isAdapter == false) {
 
                         isAdapter = true;
@@ -314,8 +322,8 @@ public class MyHistorySignFragment extends Fragment {
     public void getHistorySignRecord() {
         Date nearDate, awayDate;
         AVQuery<AVObject> query = new AVQuery<>("signInfo");
-        if (MainActivity.signNum < setPerGet)
-            setPerGet = MainActivity.signNum;
+        if (canLoadNum < setPerGet)
+            setPerGet = canLoadNum;
 
         ArrayList<Date> dateTmp = getBeforeSevenDate(beforeWeekNum);
         if (dateTmp == null)
@@ -410,6 +418,7 @@ public class MyHistorySignFragment extends Fragment {
                     if (historySignNum < setPerGet) {
                         Log.d(TAG + "setPerNum", String.valueOf(setPerGet));
                         Log.d(TAG + "historySignNum", String.valueOf(historySignNum));
+                        canLoadNum-=setPerGet;
                         getHistorySignRecord();
                     } else {
                         SignInfo.readSignInfoFromFile(getActivity(), MainActivity.arraylistHistorySign);

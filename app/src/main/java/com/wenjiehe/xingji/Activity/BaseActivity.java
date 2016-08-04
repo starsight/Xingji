@@ -17,10 +17,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class BaseActivity extends Activity {
 
@@ -51,6 +53,7 @@ public class BaseActivity extends Activity {
                 signNum = (Integer) currentUser.get("signnum");
 
         }
+
     }
 
     public String getUserId() {
