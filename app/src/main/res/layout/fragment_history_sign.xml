@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fastScrollEnabled="false"
-            android:id="@+id/carddemo_list_gplaycard"
+            android:id="@+id/myhistory_listcard"
             card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout" />
 
     </com.wenjiehe.xingji.RefreshLayout>

@@ -23,21 +23,21 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile files('libs/BaiduLBS_Android.jar')
+
+    //Core card library
+    //Optional for built-in cards
+    //Optional for RecyclerView
+    //Optional for staggered grid view support
+    //Optional for drag and drop support
+    //circle header
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
-
-    //Core card library
     compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
-    //Optional for built-in cards
     compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
-    //Optional for RecyclerView
     compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
-    //Optional for staggered grid view support
     compile 'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.1.0'
-    //Optional for drag and drop support
     compile 'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'
-    //circle header
     compile 'de.hdodenhof:circleimageview:2.1.0'
-
+    compile 'com.canyinghao:canrefresh:1.0.4'
 }

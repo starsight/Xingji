@@ -2,8 +2,6 @@ package com.wenjiehe.xingji.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -21,15 +19,12 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.RefreshCallback;
-import com.avos.avoscloud.okhttp.internal.framed.FrameReader;
-import com.wenjiehe.xingji.Fragment.HistorySignFragment;
+import com.wenjiehe.xingji.Fragment.MyHistorySignFragment;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity
@@ -38,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     //private MainActivity activity;
     private FragmentTransaction ft;
     public SignFragment sf;
-    public HistorySignFragment hsf;
+    public MyHistorySignFragment hsf;
 
     public static String userName;
     public static int signNum;
@@ -66,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
-        iv_headeruserPhoto = (ImageView)headerView.findViewById(R.id.iv_headeruserPhoto);
+        iv_headeruserPhoto = (ImageView)headerView.findViewById(R.id.iv_header_userphoto);
         tv_headerUserName = (TextView) headerView.findViewById(R.id.tv_header_username);
         tv_headerSignNum = (TextView)headerView.findViewById(R.id.tv_header_signnum);
 
@@ -74,13 +69,21 @@ public class MainActivity extends AppCompatActivity
         //获取数据
         userName = intent.getStringExtra("username");
         signNum = intent.getIntExtra("signnum",0);
-//        Log.d("xingji-choose",userName);
- //       Log.d("xingji-choose",String.valueOf(signNum));
         tv_headerUserName.setText(userName);
         tv_headerSignNum.setText(String.valueOf(signNum));
 
         syncUserInfo();
 
+        iv_headeruserPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent mainIntent = new Intent(v.getContext(),
+                        UserInfoActivity.class);
+                startActivity(mainIntent);
+                //activity.finish();
+            }
+        });
     }
 
     private void syncUserInfo() {
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
                 Log.d("xingji-choose",String.valueOf(signNum));
                 ft = getFragmentManager().beginTransaction();
-                hsf = new HistorySignFragment();
+                hsf = new MyHistorySignFragment();
                 ft.replace(R.id.content_main, hsf);
                 ft.commit();
             }
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
         } else if (id == R.id.slide_item_history) {
             ft = this.getFragmentManager().beginTransaction();
-            hsf = new HistorySignFragment();
+            hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
             ft.commit();
         } else if (id == R.id.slide_item_settings) {
