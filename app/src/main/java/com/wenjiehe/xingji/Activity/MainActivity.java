@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 Intent mainIntent = new Intent(v.getContext(),
                         UserInfoActivity.class);
                 startActivity(mainIntent);

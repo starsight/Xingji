@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
@@ -94,7 +93,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             @Override
             public void onClick(View v) {
                 Intent mainIntent = new Intent(v.getContext(),
-                        ChangeUserInfoActivity.class);
+                        EditUserInfoActivity.class);
                 startActivity(mainIntent);
             }
         });
@@ -438,7 +437,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                 syncHistorySignInfo();
                 refresh.refreshComplete();
             }
-        }, 1500);
+        }, 2500);
     }
 
     @Override

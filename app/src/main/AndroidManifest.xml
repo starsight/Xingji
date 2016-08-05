@@ -50,7 +50,7 @@
             android:label="@string/title_activity_me_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.ChangeUserInfoActivity"
+            android:name=".Activity.EditUserInfoActivity"
             android:label="@string/title_activity_me_info"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
