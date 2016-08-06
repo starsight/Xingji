@@ -1,15 +1,12 @@
 package com.wenjiehe.xingji.Activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +17,6 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
-import com.wenjiehe.xingji.Fragment.MyHistorySignFragment;
 import com.wenjiehe.xingji.R;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -29,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -54,7 +49,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_user_info);
+        setContentView(R.layout.activity_edit_user_info);
 
         //透明状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -149,7 +144,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                                         if(which==0)
                                             camera();
                                         else
-                                        gallery();
+                                            gallery();
                                         dialog.dismiss();
                                     }
                                 }
@@ -301,15 +296,14 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 //mFace.setImageBitmap(bitmap);
                 saveBitmap(bitmap);
                 upLoadHeadPhoto();
+                MainActivity.isUpadteUserPhoto = true;
+                MainActivity.upadteUserPhotoBitmap = bitmap;
                 boolean delete = tempFile.delete();
                 System.out.println("delete = " + delete);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -341,8 +335,8 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
 
     public void saveBitmap(Bitmap bm) {
         //Log.e(TAG, "保存图片");
-        //File f = new File(Environment.getExternalStorageDirectory() +"/headpicture.jpg");
-        File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
+        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
+        //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         Date date = new Date(f.lastModified());
         Log.d("xing--",date.toString());
         //Log.d("xing--",getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture3");
@@ -373,7 +367,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         AVFile file = null;
         try {
             file = AVFile.withAbsoluteLocalPath("headpicture.jpg",
-                    this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
+                    Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -449,4 +449,13 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MainActivity.isUpadteUserPhoto==true)
+            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+        //MainActivity.isUpadteUserPhoto = true;
+        //MainActivity.upadteUserPhotoBitmap = bitmap;
+    }
 }
