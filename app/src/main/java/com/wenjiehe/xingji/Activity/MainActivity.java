@@ -23,10 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.wenjiehe.xingji.Fragment.MyHistorySignFragment;
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     public static ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
     public static boolean isUpadteUserPhoto = false;//头像更新
-    public static Bitmap upadteUserPhotoBitmap;//更新的头像
+    public static Bitmap upadteUserPhotoBitmap = null;//更新的头像
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,29 +137,54 @@ public class MainActivity extends AppCompatActivity
 
                     }
                 });*/
-                if (!currentUser.getString("headphotoid").equals("0")) {
+                Date date = avObject.getDate("headphotodate");
+                long userphototime = Util.getFileDateInfo
+                        (Environment.getExternalStorageDirectory()+"/xingji/","headpicture.jpg");
+                long onlinephototime = date.getTime();
+                //Log.d("MainActivity-2-",String.valueOf(userphototime));
+                //Log.d("MainActivity-2-",String.valueOf(date));
+                //Log.d("MainActivity-2-",String.valueOf(userphototime));
+                //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
+                if((onlinephototime-userphototime)<10000){
+                    MainActivity.upadteUserPhotoBitmap =Util.file2bitmap
+                            (Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
+                    iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+                }
+                    //Log.d("MainActivity","不需要更新");
+                else{//获取头像
+                    AVObject todo = AVObject.createWithoutData("headpicture",currentUser.getString("headphotoid"));
+                    todo.fetchInBackground(new GetCallback<AVObject>() {
+                        @Override
+                        public void done(AVObject avObject, AVException e) {
+                            AVFile file = avObject.getAVFile("headpicture");
+                            file.getDataInBackground(new GetDataCallback() {
+                                @Override
+                                public void done(byte[] bytes, AVException e) {
+                                    // bytes 就是文件的数据流
+                                    MainActivity.upadteUserPhotoBitmap = Util.bytes2Bimap(bytes);
+                                    iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+                                    Util.saveBitmap(MainActivity.upadteUserPhotoBitmap);
+                                }
+                            }, new ProgressCallback() {
+                                @Override
+                                public void done(Integer integer) {
+                                    // 下载进度数据，integer 介于 0 和 100。
+                                }
+                            });
+                            //String title = avObject.getString("title");// 读取 title
+                            //String content = avObject.getString("content");// 读取 content
+                        }
+                    });
+                }
+                /*if (!currentUser.getString("headphotoid").equals("0")) {
                     AVQuery<AVObject> avQuery = new AVQuery<>("headpicture");
                     avQuery.getInBackground(currentUser.getString("headphotoid"), new GetCallback<AVObject>() {
                         @Override
                         public void done(AVObject avObject, AVException e) {
-                            Date date = avObject.getUpdatedAt();
 
-                            long userphototime = Util.getFileDateInfo
-                                    (Environment.getExternalStorageDirectory()+"/xingji/","headpicture.jpg");
-                            long onlinephototime = date.getTime();
-                            //Log.d("MainActivity-2-",String.valueOf(userphototime));
-                            //Log.d("MainActivity-2-",String.valueOf(date));
-                            //Log.d("MainActivity-2-",String.valueOf(userphototime));
-                            //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
-                            if((onlinephototime-userphototime)<10000)
-                                return;
-                                //Log.d("MainActivity","不需要更新");
-                            else{
-
-                            }
                         }
                     });
-                }
+                }*/
                 Log.d("xingji-choose",String.valueOf(signNum));
                 ft = getFragmentManager().beginTransaction();
                 hsf = new MyHistorySignFragment();

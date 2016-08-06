@@ -18,6 +18,8 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.Util;
+
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
@@ -95,11 +97,13 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-
         tv_edit_sex.setText(currentUser.getString("sex"));
         tv_edit_age.setText(String.valueOf(currentUser.getInt("age")));
         tv_edit_tel.setText(currentUser.getMobilePhoneNumber());
         tv_edit_introduce.setText(currentUser.getString("introduce"));
+
+        if(MainActivity.upadteUserPhotoBitmap!=null)
+            iv_edit_userphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
     }
 
     private void syncUpateUserInfo() {
@@ -294,7 +298,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 bitmap = data.getParcelableExtra("data");
                 iv_edit_userphoto.setImageBitmap(bitmap);
                 //mFace.setImageBitmap(bitmap);
-                saveBitmap(bitmap);
+                Util.saveBitmap(bitmap);
                 upLoadHeadPhoto();
                 MainActivity.isUpadteUserPhoto = true;
                 MainActivity.upadteUserPhotoBitmap = bitmap;
@@ -333,31 +337,6 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         startActivityForResult(intent, PHOTO_REQUEST_CUT);
     }
 
-    public void saveBitmap(Bitmap bm) {
-        //Log.e(TAG, "保存图片");
-        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
-        //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
-        Date date = new Date(f.lastModified());
-        Log.d("xing--",date.toString());
-        //Log.d("xing--",getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture3");
-        if (f.exists()) {
-            f.delete();
-        }
-        try {
-            FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.JPEG, 65, out);
-            out.flush();
-            out.close();
-            //Log.i(TAG, "已经保存");
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-    }
 
     /*
      * 上传图片
@@ -379,6 +358,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void done(AVException e) {
                     final String headphotoidnew = object.getObjectId();
+                    AVUser.getCurrentUser().put("headphotodate",object.getUpdatedAt());
                     AVUser.getCurrentUser().put("headphotoid",headphotoidnew);
                     AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
@@ -389,12 +369,20 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 }
             });
         }else{
-            AVObject todo = AVObject.createWithoutData("headpicture",headphotoid);
+            final AVObject todo = AVObject.createWithoutData("headpicture",headphotoid);
             todo.put("headpicture",file);
             todo.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
-                    Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                    AVUser.getCurrentUser().put("headphotodate",todo.getUpdatedAt());
+                    AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    //Log.d(TAG,String.valueOf(todo.getUpdatedAt()));
+                    //Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
                 }
             });
         }

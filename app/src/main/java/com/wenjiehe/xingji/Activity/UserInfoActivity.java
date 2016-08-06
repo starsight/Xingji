@@ -104,6 +104,9 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
 
     private void syncHistorySignInfo() {
 
+        if(MainActivity.upadteUserPhotoBitmap!=null)
+            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+
         final AVUser currentUser = AVUser.getCurrentUser();
         currentUser.refreshInBackground(new RefreshCallback<AVObject>() {
             @Override

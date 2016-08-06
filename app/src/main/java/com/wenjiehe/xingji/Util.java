@@ -1,8 +1,14 @@
 package com.wenjiehe.xingji;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -21,4 +27,40 @@ public class Util {
         return date.getTime();
     }
 
+    public static Bitmap bytes2Bimap(byte[] b) {
+              if (b.length != 0) {
+                         return BitmapFactory.decodeByteArray(b, 0, b.length);
+                     } else {
+                         return null;
+                     }
+             }
+
+    public static void  saveBitmap(Bitmap bm) {
+        //Log.e(TAG, "保存图片");
+        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
+        //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
+        Date date = new Date(f.lastModified());
+        Log.d("xing--",date.toString());
+        //Log.d("xing--",getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture3");
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 65, out);
+            out.flush();
+            out.close();
+            //Log.i(TAG, "已经保存");
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public static Bitmap file2bitmap(String filePath) {
+        return  BitmapFactory.decodeFile(filePath);
+    }
 }
