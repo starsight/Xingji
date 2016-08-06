@@ -131,9 +131,6 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-
-
-
     }
 
     @Override

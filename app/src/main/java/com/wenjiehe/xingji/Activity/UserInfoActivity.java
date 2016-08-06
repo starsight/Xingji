@@ -440,7 +440,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                 syncHistorySignInfo();
                 refresh.refreshComplete();
             }
-        }, 2500);
+        }, 3000);
     }
 
     @Override
