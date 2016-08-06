@@ -120,12 +120,15 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                AVUser.getCurrentUser().refreshInBackground(new RefreshCallback<AVObject>() {
+                //Log.d(TAG+"bef",AVUser.getCurrentUser().getString("introduce"));
+                /*AVUser.getCurrentUser().refreshInBackground(new RefreshCallback<AVObject>() {
                     @Override
                     public void done(AVObject avObject, AVException e) {
-                        Toast.makeText(EditUserInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+
+                        Log.d(TAG+"aft",AVUser.getCurrentUser().getString("introduce"));
                     }
-                });
+                });*/
+                Toast.makeText(EditUserInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -338,8 +341,8 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
 
     public void saveBitmap(Bitmap bm) {
         //Log.e(TAG, "保存图片");
-        File f = new File(Environment.getExternalStorageDirectory() +"/headpicture.jpg");
-        //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
+        //File f = new File(Environment.getExternalStorageDirectory() +"/headpicture.jpg");
+        File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         Date date = new Date(f.lastModified());
         Log.d("xing--",date.toString());
         //Log.d("xing--",getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture3");
@@ -366,14 +369,40 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
      * 上传图片
      */
     public void upLoadHeadPhoto() {
+        String headphotoid = AVUser.getCurrentUser().getString("headphotoid");
+        AVFile file = null;
         try {
-            AVFile file = AVFile.withAbsoluteLocalPath("headpicture.jpg", Environment.getExternalStorageDirectory() + "/headpicture.jpg");
-            AVObject object = new AVObject("headpicture");
-            object.put("headpicture",file);
-            object.put("username",MainActivity.userName);
-            object.saveInBackground();
+            file = AVFile.withAbsoluteLocalPath("headpicture.jpg",
+                    this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+        if(headphotoid.equals("0")){//第一次更新
+            final AVObject object = new AVObject("headpicture");
+            object.put("headpicture",file);
+            object.put("username",MainActivity.userName);
+            object.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    final String headphotoidnew = object.getObjectId();
+                    AVUser.getCurrentUser().put("headphotoid",headphotoidnew);
+                    AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }else{
+            AVObject todo = AVObject.createWithoutData("headpicture",headphotoid);
+            todo.put("headpicture",file);
+            todo.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
