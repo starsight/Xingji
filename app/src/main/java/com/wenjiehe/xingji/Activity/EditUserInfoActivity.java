@@ -127,7 +127,16 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                         Log.d(TAG+"aft",AVUser.getCurrentUser().getString("introduce"));
                     }
                 });*/
-                Toast.makeText(EditUserInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+                if(e==null)
+                    Toast.makeText(EditUserInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+                else {
+                    switch (e.getCode()) {
+                        default:
+                            Toast.makeText(EditUserInfoActivity.this,EditUserInfoActivity.this
+                                    .getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
             }
         });
 
@@ -360,7 +369,17 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                     AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
-                            Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                            if(e==null)
+                                Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                            else {
+                                switch (e.getCode()) {
+                                    default:
+                                        Toast.makeText(EditUserInfoActivity.this,EditUserInfoActivity.this
+                                                .getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
+                            //Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -375,7 +394,17 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                     AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
-                            Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                            if(e==null)
+                                Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
+                            else {
+                                switch (e.getCode()) {
+                                    default:
+                                        Toast.makeText(EditUserInfoActivity.this,EditUserInfoActivity.this
+                                                .getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
+                            //Toast.makeText(EditUserInfoActivity.this, "头像更新成功", Toast.LENGTH_SHORT).show();
                         }
                     });
                     //Log.d(TAG,String.valueOf(todo.getUpdatedAt()));

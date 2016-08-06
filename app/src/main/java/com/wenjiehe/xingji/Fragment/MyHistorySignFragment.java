@@ -341,12 +341,12 @@ public class MyHistorySignFragment extends Fragment {
             @Override
             public void done(List<AVObject> list, AVException e) {
                 //historySignNum = list.size();
-                Log.d(TAG, "list.size");
-                Log.d(TAG, String.valueOf(list.size()));
                 String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp;
                 double lattmp, lngtmp;
                 if (list == null)
                     return;
+                Log.d(TAG, "list.size");
+                Log.d(TAG, String.valueOf(list.size()));
                 for (AVObject avObject : list) {
                     objectIdtmp = avObject.getObjectId();
                     Log.d(TAG, "avObject.getObjectId");

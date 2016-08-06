@@ -151,7 +151,7 @@
                 android:textColor="#000000"
                 android:layout_marginLeft="20dip"
                 android:textSize="20sp"
-                android:text="性别:"/>
+                android:text="性别"/>
             <TextView
                 android:id="@+id/tv_edit_sex"
                 android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
                 android:textColor="#000000"
                 android:layout_marginLeft="20dip"
                 android:textSize="20sp"
-                android:text="年龄:"/>
+                android:text="年龄"/>
             <TextView
                 android:id="@+id/tv_edit_age"
                 android:layout_weight="1"
@@ -225,7 +225,7 @@
                 android:textColor="#000000"
                 android:layout_marginLeft="20dip"
                 android:textSize="20sp"
-                android:text="电话:"/>
+                android:text="电话"/>
 
             <TextView
                 android:id="@+id/tv_edit_tel"
