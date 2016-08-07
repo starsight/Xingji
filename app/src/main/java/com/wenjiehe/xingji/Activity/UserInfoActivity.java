@@ -24,7 +24,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
-import com.wenjiehe.xingji.MyInfoCardListView;
+import com.wenjiehe.xingji.view.MyInfoCardListView;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;

@@ -43,7 +43,16 @@ public class SignInfo {
         this.event = event;
     }
 
-    public static void  readSignInfoFromFile(Context context,ArrayList<SignInfo> arraylistHistorySign){
+    public String getLocation() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(location.province);
+        sb.append(location.city);
+        sb.append(location.street);
+        //sb.append(location.province);
+        return sb.toString();
+    }
+
+    public static void  readSignInfoFromFile(Context context, ArrayList<SignInfo> arraylistHistorySign){
         // System.out.println(this.getFilesDir().getAbsolutePath() + File.separator+"xingji");
         //arraylistHistorySign = new ArrayList<SignInfo>();
         int count = arraylistHistorySign.size();
