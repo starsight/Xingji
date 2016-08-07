@@ -9,7 +9,7 @@
     tools:context=".Activity.UserInfoActivity"
     tools:showIn="@layout/activity_user_info">
 
-    <com.wenjiehe.xingji.MyInfoCardListView android:layout_width="match_parent"
+    <com.wenjiehe.xingji.view.MyInfoCardListView android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/tools"
         android:fastScrollEnabled="false"
