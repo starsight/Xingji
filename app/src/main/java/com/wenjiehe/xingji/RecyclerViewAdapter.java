@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +24,7 @@ import java.util.List;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.NewsViewHolder>{
 
+    final String TAG = "RecyclerViewAdapter";
     private List<SignInfo> signInfo;
     private Context context;
 
@@ -108,4 +112,49 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return signInfo.size();
     }
+
+    public void addItem(SignInfo si , int position) {
+        Log.d(TAG,"add"+String.valueOf(position));
+        signInfo.add(position, si);
+        notifyItemInserted(position); //Attention!
+    }
+    public void removeItem(int position) {
+        Log.d(TAG,"delete"+String.valueOf(position));
+        signInfo.remove(position);
+        notifyItemRemoved(position);
+    }
+/*
+    public void updateRecyclerView(){
+        Log.d(TAG,TAG);
+        ArrayList<Integer> isInfoExist = new ArrayList();
+        for (int i = 0; i < signInfo.size(); i++)
+            isInfoExist.add(i, 0);
+        String str;
+        List<SignInfo> signInfoTmp = MainActivity.arraylistHistorySign;
+        for (SignInfo si : signInfoTmp
+             ) {
+             str = si.getObjectId();
+            for (int i = 0; i < signInfo.size(); i++){
+                if(signInfo.get(i).getObjectId().equals(str)){
+                    isInfoExist.set(i,1);
+                    break;
+                }else if (i == (signInfo.size() - 1)) {
+                    if (!signInfo.get(i).getObjectId().equals(str)) {
+                        isInfoExist.add(signInfo.size(), 1);
+                        addItem(si,getItemCount());
+                    } else
+                        isInfoExist.set(i, 1);
+                }
+
+            }
+
+        }
+        for (int i = 0; i < isInfoExist.size(); i++) {
+            if (isInfoExist.get(i) == 0) {
+                Log.d(TAG, "delete" + String.valueOf(i));
+                removeItem(i);
+            }
+        }
+        //addItem(signinfo,getItemCount());
+    }*/
 }

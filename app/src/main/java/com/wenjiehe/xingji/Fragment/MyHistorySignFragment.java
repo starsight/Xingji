@@ -47,7 +47,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 
 public class MyHistorySignFragment extends Fragment {
 
-    private final int SETPERGET = 7;
+    private final int SETPERGET = 10;
     private RefreshLayout swipeRefreshLayout;
     private ArrayList<Card> cards = new ArrayList<Card>();
     public CardArrayAdapter mCardArrayAdapter;

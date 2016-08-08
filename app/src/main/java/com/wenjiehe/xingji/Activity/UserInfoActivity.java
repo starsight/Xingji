@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.inner.MapBound;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
@@ -48,9 +50,9 @@ import it.gmariotti.cardslib.library.internal.base.BaseCard;
 
 public class UserInfoActivity extends AppCompatActivity implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 
-    private final int SETPERGET = 7;
-    private ArrayList<Card> cards = new ArrayList<Card>();
-    public CardArrayAdapter mCardArrayAdapter;
+    private final int SETPERGET = 10;
+    //private ArrayList<Card> cards = new ArrayList<Card>();
+    //public CardArrayAdapter mCardArrayAdapter;
     //public MyInfoCardListView listView;//test
     private String removeobjectId;
     private int historySignNum = 0;
@@ -92,7 +94,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
 //test
         //listView = (MyInfoCardListView) findViewById(R.id.carddemo_list_gplaycard2);
         //listView.setVerticalScrollBarEnabled(false);
-        mCardArrayAdapter = new CardArrayAdapter(this, cards);
+        //mCardArrayAdapter = new CardArrayAdapter(this, cards);
         //listView.setAdapter(mCardArrayAdapter);
 
         iv_userinfo_headerphoto = (CircleImageView)findViewById(R.id.iv_userinfo_headerphoto);
@@ -108,13 +110,12 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         recyclerView= (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter=new RecyclerViewAdapter(signInfo,UserInfoActivity.this);
+        adapter = new RecyclerViewAdapter(signInfo,UserInfoActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        //syncHistorySignInfo();
-
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        syncHistorySignInfo();
     }
 
     private void syncHistorySignInfo() {
@@ -146,7 +147,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                 Log.d("MainActivity", currentUser.getUpdatedAt().toString());
                 Log.d("MainActivity", String.valueOf(currentUser.getUpdatedAt().getTime()));
 
-                if (date.getTime() - currentUser.getUpdatedAt().getTime() < -4000) {
+                if (date.getTime() - currentUser.getUpdatedAt().getTime() < -4000) {//数据太旧，需要更新
                     Log.d("MainActivity", "enter-update-historysign");
                     f.delete();
                     if (!MainActivity.arraylistHistorySign.isEmpty()) {
@@ -161,22 +162,23 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                     getHistorySignRecord();
                 } else {
                     SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
-                    showSignRecord();
+                    //showSignRecord();
+                    //adapter.updateRecyclerView();
                     canLoadNum = MainActivity.signNum-MainActivity.arraylistHistorySign.size();
                     if(canLoadNum>0){
                         getHistorySignRecord();
                     }
                     refresh.loadMoreComplete();
                     refresh.refreshComplete();
-                    mCardArrayAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+                    //mCardArrayAdapter.notifyDataSetChanged();
                 }
             }
         });
 
     }
-
+/*
     public void showSignRecord() {
-
         int signCount = cards.size();
         int historyCount = MainActivity.arraylistHistorySign.size();
         ArrayList<Integer> isCardExist = new ArrayList();
@@ -190,7 +192,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             if (cards.isEmpty()) {
                 for (SignInfo signinfo1 : MainActivity.arraylistHistorySign) {
                     isCardExist.add(cards.size(), 1);
-                    addToCards(signinfo1);
+                    addToCards(signinfo1);//数据添加
                     Log.d(TAG, "cards.isEmpty");
                 }
                 break;
@@ -219,6 +221,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         }
         //mCardArrayAdapter.notifyDataSetChanged();
     }
+
 
     private void addToCards(SignInfo signinfo) {
         Log.d(TAG, "enter-for-arraylistHistorySign");
@@ -277,7 +280,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         card.addCardHeader(header);
         cards.add(card);
     }
-
+*/
     public ArrayList<Date> getBeforeSevenDate(int beforewWeek) {// 获取n周内的签到信息
         //if(beforewWeek>5)
         //return null;
@@ -354,9 +357,9 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                                 File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
                     } else {
                         for (int i = 0; i < count; ) {
-                            Log.d(TAG, "objectid");
-                            Log.d(TAG, MainActivity.arraylistHistorySign.get(i).objectId);
-                            Log.d(TAG, objectIdtmp);
+                            //Log.d(TAG, "objectid");
+                            //Log.d(TAG, MainActivity.arraylistHistorySign.get(i).objectId);
+                            //Log.d(TAG, objectIdtmp);
                             if (i == (count - 1)) {
                                 if (!MainActivity.arraylistHistorySign.get(i).objectId.equals(objectIdtmp)) {
                                     lattmp = avObject.getDouble("latitude");
@@ -406,17 +409,21 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                         getHistorySignRecord();
                     } else {
                         SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
-                        showSignRecord();
+                        //showSignRecord();
+                        //adapter.updateRecyclerView();
+
                         /*if (listView != null && isAdapter == false) {
                             listView.setAdapter(mCardArrayAdapter);
                             isAdapter = true;
                         }*///test
                         refresh.loadMoreComplete();
                         refresh.refreshComplete();
+                        Log.d(TAG, String.valueOf(MainActivity.arraylistHistorySign.size()));
+                        adapter.notifyDataSetChanged();
                         //swipeRefreshLayout.setRefreshing(false);
                         //swipeRefreshLayout.setLoading(false);
                         //listView.setSelection(listView.getCount() - 1);
-                        mCardArrayAdapter.notifyDataSetChanged();
+                        //mCardArrayAdapter.notifyDataSetChanged();
                         //listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
                         //listView.setStackFromBottom(true);
                         Log.d(TAG, "handlering refresh");
@@ -456,7 +463,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                 syncHistorySignInfo();
                 refresh.refreshComplete();
             }
-        }, 3000);
+        }, 2800);
     }
 
     @Override
