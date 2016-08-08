@@ -109,6 +109,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
     public int getItemCount() {
         return signInfo.size();
     }

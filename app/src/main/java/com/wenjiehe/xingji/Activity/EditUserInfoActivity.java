@@ -386,6 +386,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
             });
         }else{
             final AVObject todo = AVObject.createWithoutData("headpicture",headphotoid);
+            todo.getAVFile("headpicture");
             todo.put("headpicture",file);
             todo.saveInBackground(new SaveCallback() {
                 @Override
