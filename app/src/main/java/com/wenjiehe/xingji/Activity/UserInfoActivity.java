@@ -107,7 +107,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
 
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView= (RecyclerView) findViewById(R.id.can_scroll_view);
         adapter=new RecyclerViewAdapter(signInfo,UserInfoActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
