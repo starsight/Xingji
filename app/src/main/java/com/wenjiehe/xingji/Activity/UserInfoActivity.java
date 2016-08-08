@@ -115,14 +115,12 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        syncHistorySignInfo();
-    }
-
-    private void syncHistorySignInfo() {
 
         if(MainActivity.upadteUserPhotoBitmap!=null)
             iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+    }
 
+    private void syncHistorySignInfo() {
         final AVUser currentUser = AVUser.getCurrentUser();
         currentUser.refreshInBackground(new RefreshCallback<AVObject>() {
             @Override
