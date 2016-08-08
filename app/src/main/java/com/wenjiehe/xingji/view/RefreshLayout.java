@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji;
+package com.wenjiehe.xingji.view;
 
 /**
  * Created by wenjie on 16/07/08.
@@ -17,6 +17,8 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wenjiehe.xingji.R;
 
 /**
  * 继承自SwipeRefreshLayout,从而实现滑动到底部时上拉加载更多的功能.

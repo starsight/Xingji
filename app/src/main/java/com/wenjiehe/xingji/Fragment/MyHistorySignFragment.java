@@ -26,7 +26,7 @@ import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.R;
-import com.wenjiehe.xingji.RefreshLayout;
+import com.wenjiehe.xingji.view.RefreshLayout;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
 
@@ -47,7 +47,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 
 public class MyHistorySignFragment extends Fragment {
 
-    private final int SETPERGET = 7;
+    private final int SETPERGET = 10;
     private RefreshLayout swipeRefreshLayout;
     private ArrayList<Card> cards = new ArrayList<Card>();
     public CardArrayAdapter mCardArrayAdapter;

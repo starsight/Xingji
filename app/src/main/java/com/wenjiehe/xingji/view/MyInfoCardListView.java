@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji;
+package com.wenjiehe.xingji.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
