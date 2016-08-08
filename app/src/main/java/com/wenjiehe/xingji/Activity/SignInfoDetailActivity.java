@@ -15,25 +15,25 @@ import com.wenjiehe.xingji.SignInfo;
 
 public class SignInfoDetailActivity extends AppCompatActivity {
 
-    private ImageView iv_detail_signinfophoto;
-    private TextView tv_detail_signinfotitle;
-    private TextView tv_detail_signinfodesc;
+    //private ImageView iv_detail_signinfophoto;
+    private TextView tv_detail_signinfolocation;
+    private TextView tv_detail_signinfoevent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_info_detail);
 
-        iv_detail_signinfophoto= (ImageView) findViewById(R.id.iv_detail_signinfophoto);
-        tv_detail_signinfotitle= (TextView) findViewById(R.id.tv_detail_signinfotitle);
-        tv_detail_signinfodesc= (TextView) findViewById(R.id.tv_detail_signinfodesc);
+        //iv_detail_signinfophoto= (ImageView) findViewById(R.id.iv_detail_signinfophoto);
+        tv_detail_signinfolocation= (TextView) findViewById(R.id.tv_detail_signinfolocation);
+        tv_detail_signinfoevent= (TextView) findViewById(R.id.tv_detail_signinfoevent);
 
         Intent intent=getIntent();
 
-        SignInfo item= (SignInfo) intent.getSerializableExtra("SignInfo");
-        iv_detail_signinfophoto.setImageResource(item.getPhotoId());
-        tv_detail_signinfotitle.setText(item.getTitle());
-        tv_detail_signinfodesc.setText(item.getEvent());
+        SignInfo item= (SignInfo) intent.getParcelableExtra("SignInfo");
+        //iv_detail_signinfophoto.setImageResource(item.getPhotoId());
+        tv_detail_signinfolocation.setText(item.getLocation());
+        tv_detail_signinfoevent.setText(item.getEvent());
     }
 
 }

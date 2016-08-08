@@ -3,6 +3,8 @@ package com.wenjiehe.xingji;
 import android.content.Context;
 import android.location.Location;
 import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.baidu.mapapi.model.LatLng;
@@ -14,19 +16,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by wenjie on 16/06/13.
  */
-public class SignInfo {
+public class SignInfo implements Parcelable {
 
     public LatLng latlng;
     public SignLocation location;
     public String date;
     public String event = "到此一游~";
     public String objectId = "0";
+
 
     public SignInfo(LatLng latlng, String date,SignLocation location,String objectId){
         this.latlng = latlng;
@@ -41,6 +45,34 @@ public class SignInfo {
         this.location = location;
         this.objectId = objectId;
         this.event = event;
+    }
+
+    protected SignInfo(Parcel in) {
+        latlng = in.readParcelable(LatLng.class.getClassLoader());
+        location = in.readParcelable(SignLocation.class.getClassLoader());
+        date = in.readString();
+        event = in.readString();
+        objectId = in.readString();
+    }
+
+    public static final Creator<SignInfo> CREATOR = new Creator<SignInfo>() {
+        @Override
+        public SignInfo createFromParcel(Parcel in) {
+            return new SignInfo(in);
+        }
+
+        @Override
+        public SignInfo[] newArray(int size) {
+            return new SignInfo[size];
+        }
+    };
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getEvent() {
+        return event;
     }
 
     public String getLocation() {
@@ -162,4 +194,17 @@ public class SignInfo {
 
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(latlng, flags);
+        dest.writeParcelable(location, flags);
+        dest.writeString(date);
+        dest.writeString(event);
+        dest.writeString(objectId);
+    }
 }

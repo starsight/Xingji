@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activity.UserInfoActivity"
     tools:showIn="@layout/activity_user_info">
-
+<!--
     <com.wenjiehe.xingji.view.MyInfoCardListView android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/tools"
@@ -17,5 +17,14 @@
         card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card="http://schemas.android.com/apk/res-auto" />
+    -->
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="false">
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.v4.widget.NestedScrollView>

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
+import com.wenjiehe.xingji.RecyclerViewAdapter;
 import com.wenjiehe.xingji.view.MyInfoCardListView;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -48,7 +51,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
     private final int SETPERGET = 7;
     private ArrayList<Card> cards = new ArrayList<Card>();
     public CardArrayAdapter mCardArrayAdapter;
-    public MyInfoCardListView listView;
+    //public MyInfoCardListView listView;//test
     private String removeobjectId;
     private int historySignNum = 0;
     private int beforeWeekNum = 1;
@@ -66,6 +69,10 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
     RotateRefreshView canRefreshFooter;
     ShapeLoadingRefreshView canRefreshHeader;
 
+    private RecyclerView recyclerView;
+    private List<SignInfo> signInfo = MainActivity.arraylistHistorySign;
+    private RecyclerViewAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,11 +89,11 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         refresh.setRefreshBackgroundResource(R.color.colorPrimary);
         refresh.setLoadMoreBackgroundResource(R.color.window_background);
         canRefreshHeader.setColors(getResources().getColor(R.color.color_button), getResources().getColor(R.color.color_text), getResources().getColor(R.color.color_red));
-
-        listView = (MyInfoCardListView) findViewById(R.id.carddemo_list_gplaycard2);
-        listView.setVerticalScrollBarEnabled(false);
+//test
+        //listView = (MyInfoCardListView) findViewById(R.id.carddemo_list_gplaycard2);
+        //listView.setVerticalScrollBarEnabled(false);
         mCardArrayAdapter = new CardArrayAdapter(this, cards);
-        listView.setAdapter(mCardArrayAdapter);
+        //listView.setAdapter(mCardArrayAdapter);
 
         iv_userinfo_headerphoto = (CircleImageView)findViewById(R.id.iv_userinfo_headerphoto);
         iv_userinfo_headerphoto.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +105,15 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             }
         });
 
-        syncHistorySignInfo();
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        recyclerView= (RecyclerView) findViewById(R.id.recyclerView);
+        adapter=new RecyclerViewAdapter(signInfo,UserInfoActivity.this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        //syncHistorySignInfo();
 
     }
 
@@ -392,10 +407,10 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                     } else {
                         SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
                         showSignRecord();
-                        if (listView != null && isAdapter == false) {
+                        /*if (listView != null && isAdapter == false) {
                             listView.setAdapter(mCardArrayAdapter);
                             isAdapter = true;
-                        }
+                        }*///test
                         refresh.loadMoreComplete();
                         refresh.refreshComplete();
                         //swipeRefreshLayout.setRefreshing(false);

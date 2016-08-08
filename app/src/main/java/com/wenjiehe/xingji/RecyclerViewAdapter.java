@@ -57,7 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     @Override
     public RecyclerViewAdapter.NewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v= LayoutInflater.from(context).inflate(R.layout.news_item,viewGroup,false);
+        View v= LayoutInflater.from(context).inflate(R.layout.recyclerview_sign_item_info,viewGroup,false);
         NewsViewHolder nvh=new NewsViewHolder(v);
         return nvh;
     }
@@ -66,16 +66,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.NewsViewHolder personViewHolder, int i) {
         final int j=i;
 
-        personViewHolder.news_photo.setImageResource(newses.get(i).getPhotoId());
-        personViewHolder.news_title.setText(newses.get(i).getTitle());
-        personViewHolder.news_desc.setText(newses.get(i).getDesc());
+        //personViewHolder.news_photo.setImageResource(signInfo.get(i).getPhotoId());
+        personViewHolder.news_title.setText(signInfo.get(i).getLocation());
+        personViewHolder.news_desc.setText(signInfo.get(i).getEvent());
 
         //为btn_share btn_readMore cardView设置点击事件
         personViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context,NewsActivity.class);
-                intent.putExtra("News",newses.get(j));
+                Intent intent=new Intent(context,SignInfoDetailActivity.class);
+                intent.putExtra("SignInfo",signInfo.get(j));
                 context.startActivity(intent);
             }
         });
@@ -86,9 +86,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Intent intent=new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-                intent.putExtra(Intent.EXTRA_TEXT, newses.get(j).getDesc());
+                intent.putExtra(Intent.EXTRA_TEXT, signInfo.get(j).getEvent());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(Intent.createChooser(intent, newses.get(j).getTitle()));
+                context.startActivity(Intent.createChooser(intent, signInfo.get(j).getLocation()));
             }
         });
 
@@ -96,7 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(context,SignInfoDetailActivity.class);
-                intent.putExtra("SignInfo",newses.get(j));
+                intent.putExtra("SignInfo",signInfo.get(j));
                 context.startActivity(intent);
             }
         });
@@ -106,6 +106,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return newses.size();
+        return signInfo.size();
     }
 }

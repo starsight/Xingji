@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
-                android:id="@+id/news_header"
+                android:id="@+id/layout_detail_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -26,11 +26,12 @@
                 <ImageView
                     android:id="@+id/iv_detail_signinfophoto"
                     android:scaleType="centerCrop"
+                    android:src="@mipmap/header_bg"
                     android:layout_alignParentTop="true"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"/>
                 <TextView
-                    android:id="@+id/tv_detail_signinfotitle"
+                    android:id="@+id/tv_detail_signinfolocation"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/iv_detail_signinfophoto"
                     android:textSize="20sp"
@@ -40,9 +41,9 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_detail_signinfodesc"
+                android:id="@+id/tv_detail_signinfoevent"
                 android:lineSpacingExtra="5dp"
-                android:layout_below="@+id/news_header"
+                android:layout_below="@+id/layout_detail_header"
                 android:layout_margin="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
