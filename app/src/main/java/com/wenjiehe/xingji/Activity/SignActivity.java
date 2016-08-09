@@ -90,7 +90,7 @@ public class SignActivity extends AppCompatActivity {
         street  = intent.getStringExtra("street");
         event  = intent.getStringExtra("event");
         locDescribe  = intent.getStringExtra("locdescribe");
-
+        Log.d("event0",intent.getStringExtra("event"));
         //point = new LatLng(latitude, longitude);
         tv_activity_sign_location.setText(locDescribe);
 
@@ -105,8 +105,9 @@ public class SignActivity extends AppCompatActivity {
         tv_activity_sign_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tv_activity_sign_send.setVisibility(View.GONE);
                 if(isSigning==true){
-                    Toast.makeText(SignActivity.this, "正在签到······", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignActivity.this, "正在签到···", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 isSigning = true;
@@ -117,7 +118,7 @@ public class SignActivity extends AppCompatActivity {
 
                 if(String.valueOf(et_activity_sign.getText())!=null)
                     event  = String.valueOf(et_activity_sign.getText());
-                Log.d("event",event);
+                Log.d("event1",event);
                 /*SignInfo signInfoTmp = new SignInfo(new LatLng(latitude, longitude),date,
                         new SignLocation(province,city,street,locDescribe),"0");*/
                 final AVObject userSign = new AVObject("signInfo");
@@ -163,7 +164,7 @@ public class SignActivity extends AppCompatActivity {
                                     }
                                     else
                                     MainActivity.arraylistHistorySign.add(new SignInfo(new LatLng(latitude, longitude),date,
-                                        new SignLocation(province,city,street,locDescribe),userSign.getObjectId()));//加入到所有签到的序列中
+                                        new SignLocation(province,city,street,locDescribe),event,userSign.getObjectId()));//加入到所有签到的序列中
                                     SignInfo.writeSignInfoToFile(getFilesDir().getAbsolutePath() +
                                             File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
 

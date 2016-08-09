@@ -326,7 +326,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             public void done(List<AVObject> list, AVException e) {
                 //historySignNum = list.size();
 
-                String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp;
+                String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp,photoIdTmp="0";
                 double lattmp, lngtmp;
                 if (list == null)
                     return;
@@ -346,10 +346,13 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                         streettmp = avObject.getString("street");
                         eventtmp = avObject.getString("event");
                         locDescribetmp = avObject.getString("locdescribe");
+                        if(avObject.getAVFile("signphoto")!=null)
+                        photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
                         historySignNum++;
                         Log.d(TAG, "arraylistHistorySign.isEmpty");
+                        Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
                         SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                                new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp);
+                                new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
                         MainActivity.arraylistHistorySign.add(signinfotmp);
                         SignInfo.writeSignInfoToFile(getFilesDir().getAbsolutePath() +
                                 File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
@@ -368,10 +371,13 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                                     streettmp = avObject.getString("street");
                                     eventtmp = avObject.getString("event");
                                     locDescribetmp = avObject.getString("locdescribe");
+                                    if(avObject.getAVFile("signphoto")!=null)
+                                        photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
                                     historySignNum++;
                                     Log.d(TAG, String.valueOf(historySignNum));
+                                    Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
                                     SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp);
+                                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
                                     MainActivity.arraylistHistorySign.add(signinfotmp);
                                     SignInfo.writeSignInfoToFile(getFilesDir().getAbsolutePath() +
                                             File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);

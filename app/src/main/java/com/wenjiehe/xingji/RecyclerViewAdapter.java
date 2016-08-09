@@ -84,12 +84,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 context.startActivity(intent);
             }
         });
-        Log.d(TAG,signInfo.get(j).getPhotoId());
+       // Log.d(TAG,signInfo.get(j).getPhotoId());
         if (!signInfo.get(j).getPhotoId().equals("0")) {
             personViewHolder.news_photo.setVisibility(View.VISIBLE);
             personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory()+
                     "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/"+signInfo.get(j).getPhotoId()));
         }
+        else//纯文本
+            personViewHolder.news_title.setTextColor(Color.parseColor("#434343"));
+
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

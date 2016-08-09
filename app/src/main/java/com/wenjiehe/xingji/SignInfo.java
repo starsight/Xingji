@@ -145,7 +145,6 @@ public class SignInfo implements Parcelable {
                     objectIdtmp = strtmp[1];
                     strtmp = str[9].split("=");//photoId
                     photoIdtmp = strtmp[1];
-                    Log.d("photo",photoIdtmp);
                     arraylistHistorySign.add(new SignInfo
                             (new LatLng(lattmp,lngtmp),datetmp,
                                     new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),
@@ -198,7 +197,7 @@ public class SignInfo implements Parcelable {
                 sb.append(";photoId=");
                 sb.append(signinfobuffer.photoId);
                 sb.append("\n");
-                //Log.d(LOG_D,sb.toString());
+                Log.d("photo",signinfobuffer.photoId);
                 bw.append(sb);
             }
             bw.close();
