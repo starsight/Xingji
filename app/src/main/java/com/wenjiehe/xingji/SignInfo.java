@@ -1,7 +1,6 @@
 package com.wenjiehe.xingji;
 
 import android.content.Context;
-import android.location.Location;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,9 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by wenjie on 16/06/13.
@@ -28,9 +25,9 @@ public class SignInfo implements Parcelable {
     public LatLng latlng;
     public SignLocation location;
     public String date;
-    public String event = "到此一游~";
+    public String event = "到此一游";
     public String objectId = "0";
-
+    public String photoId = "0";
 
     public SignInfo(LatLng latlng, String date,SignLocation location,String objectId){
         this.latlng = latlng;
@@ -47,8 +44,18 @@ public class SignInfo implements Parcelable {
         this.event = event;
     }
 
-    public String getObjectId() {
-        return objectId;
+    public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId,String photoId){
+        this.latlng = latlng;
+        this.date = date;
+        this.location = location;
+        this.objectId = objectId;
+        this.event = event;
+        this.photoId = photoId;
+    }
+
+
+    public String getPhotoId() {
+        return photoId;
     }
 
     protected SignInfo(Parcel in) {
@@ -57,6 +64,7 @@ public class SignInfo implements Parcelable {
         date = in.readString();
         event = in.readString();
         objectId = in.readString();
+        photoId = in.readString();
     }
 
     public static final Creator<SignInfo> CREATOR = new Creator<SignInfo>() {
@@ -110,7 +118,7 @@ public class SignInfo implements Parcelable {
             try {
                 fr = new FileReader(file);
                 br = new BufferedReader (fr);
-                String s,datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp,objectIdtmp;
+                String s,datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp,objectIdtmp,photoIdtmp;
                 Double lattmp,lngtmp;
                 while((s=br.readLine())!=null){
                     String[] str = s.split(";");
@@ -135,10 +143,13 @@ public class SignInfo implements Parcelable {
                     locDescribetmp = strtmp[1];
                     strtmp = str[8].split("=");//objectId
                     objectIdtmp = strtmp[1];
+                    strtmp = str[9].split("=");//photoId
+                    photoIdtmp = strtmp[1];
+                    Log.d("photo",photoIdtmp);
                     arraylistHistorySign.add(new SignInfo
                             (new LatLng(lattmp,lngtmp),datetmp,
                                     new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),
-                                    eventtmp,objectIdtmp));
+                                    eventtmp,objectIdtmp,photoIdtmp));
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -184,6 +195,8 @@ public class SignInfo implements Parcelable {
                 sb.append(signinfobuffer.location.locDescribe);
                 sb.append(";objectId=");
                 sb.append(signinfobuffer.objectId);
+                sb.append(";photoId=");
+                sb.append(signinfobuffer.photoId);
                 sb.append("\n");
                 //Log.d(LOG_D,sb.toString());
                 bw.append(sb);
@@ -210,5 +223,6 @@ public class SignInfo implements Parcelable {
         dest.writeString(date);
         dest.writeString(event);
         dest.writeString(objectId);
+        dest.writeString(photoId);
     }
 }

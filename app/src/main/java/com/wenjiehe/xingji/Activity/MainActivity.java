@@ -115,8 +115,12 @@ public class MainActivity extends AppCompatActivity
 
         //创建xingji目录
         File destDir = new File(Environment.getExternalStorageDirectory()+"/xingji");
+        File destDir2 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername());
         if (!destDir.exists()) {
             destDir.mkdirs();
+        }
+        if (!destDir2.exists()) {
+            destDir2.mkdirs();
         }
     }
 

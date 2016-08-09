@@ -1,7 +1,14 @@
 package com.wenjiehe.xingji.Fragment;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,11 +37,16 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
+import com.wenjiehe.xingji.Activity.SignActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
+import com.wenjiehe.xingji.Util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -55,6 +67,9 @@ public class SignFragment extends Fragment {
     private double precision = 0.001;
     private String street,city, province,date,locDescribe;
     private LatLng point= new LatLng(mylatitude, mylongitude);
+
+    private final static int RESQUESTCODE = 1;
+    private final static int RESULTCODE_TO_INTENTRESULT = 2;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,12 +97,11 @@ public class SignFragment extends Fragment {
         iv_barSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 定义Maker坐标点
+                /*特殊签到情况处理*/
                 if(locDescribe==null) {
                     Toast.makeText(getActivity(), "网络不畅……", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 if(!MainActivity.arraylistHistorySign.isEmpty()){
                     for(SignInfo signifo :MainActivity.arraylistHistorySign)
                         if(Math.abs(signifo.latlng.latitude-mylatitude)<precision&&Math.abs(signifo.latlng.longitude-mylongitude)<precision){
@@ -95,65 +109,55 @@ public class SignFragment extends Fragment {
                             return ;
                         }
                 }
+                /*正常流程*/
+                new  AlertDialog.Builder(getActivity())
+                        //.setTitle("签到类型" )
+                        .setItems(new  String[] {"纯文字", "图片" },
+                                new  DialogInterface.OnClickListener() {
+                                    public   void  onClick(DialogInterface dialog,  int  which) {
+                                        if(which==0){
+                                            SignInfo signInfoTmp = new SignInfo(point,date,
+                                                    new SignLocation(province,city,street,locDescribe),"0");
+                                            Intent intent = new Intent(getActivity(), SignActivity.class);
+                                            intent.putExtra("username", MainActivity.userName);
+                                            intent.putExtra("latitude", point.latitude);
+                                            intent.putExtra("longitude", point.longitude);
+                                            intent.putExtra("date", signInfoTmp.date);
+                                            intent.putExtra("province", signInfoTmp.location.province);
+                                            intent.putExtra("city", signInfoTmp.location.city);
+                                            intent.putExtra("street", signInfoTmp.location.street);
+                                            intent.putExtra("event", signInfoTmp.event);
+                                            intent.putExtra("locdescribe", signInfoTmp.location.locDescribe);
+                                            intent.putExtra("type", 1);
 
-                SignInfo signInfoTmp = new SignInfo(point,date,
-                        new SignLocation(province,city,street,locDescribe),"0");
-                final AVObject userSign = new AVObject("signInfo");
-                userSign.put("username", MainActivity.userName);
-                userSign.put("latitude", signInfoTmp.latlng.latitude);
-                userSign.put("longitude", signInfoTmp.latlng.longitude);
-                userSign.put("date", signInfoTmp.date);
-                userSign.put("province", signInfoTmp.location.province);
-                userSign.put("city", signInfoTmp.location.city);
-                userSign.put("street", signInfoTmp.location.street);
-                userSign.put("event", signInfoTmp.event);
-                userSign.put("locdescribe", signInfoTmp.location.locDescribe);
+                                            startActivityForResult(intent, RESQUESTCODE);
+                                        }
+                                        else{
+                                            SignInfo signInfoTmp = new SignInfo(point,date,
+                                                    new SignLocation(province,city,street,locDescribe),"0");
+                                            Intent intent = new Intent(getActivity(), SignActivity.class);
+                                            intent.putExtra("username", MainActivity.userName);
+                                            intent.putExtra("latitude", point.latitude);
+                                            intent.putExtra("longitude", point.longitude);
+                                            intent.putExtra("date", signInfoTmp.date);
+                                            intent.putExtra("province", signInfoTmp.location.province);
+                                            intent.putExtra("city", signInfoTmp.location.city);
+                                            intent.putExtra("street", signInfoTmp.location.street);
+                                            intent.putExtra("event", signInfoTmp.event);
+                                            intent.putExtra("locdescribe", signInfoTmp.location.locDescribe);
+                                            intent.putExtra("type", 2);
 
-                userSign.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (e == null) {
-                            MainActivity.signNum+=1;
-                            MainActivity.setTv_headerSignNum();
-                            AVUser.getCurrentUser().put("signnum", MainActivity.signNum);
-                            AVUser.getCurrentUser().saveInBackground(new SaveCallback(){
-                                @Override
-                                public void done(AVException e) {
-                                    Toast.makeText(getActivity(), city+street+" 签到成功~", Toast.LENGTH_SHORT).show();
+                                            startActivityForResult(intent, RESQUESTCODE);
+                                            //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                            //startActivityForResult(intent, RESQUESTCAMERA);
+                                        }
+                                        dialog.dismiss();
+                                    }
                                 }
+                        )
+                        .show();
 
-                            });
 
-
-                            iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
-
-                            //System.out.println(date);
-                            //point = new LatLng(mylatitude, mylongitude);
-                            MainActivity.arraylistHistorySign.add(new SignInfo(point,date,
-                                    new SignLocation(province,city,street,locDescribe),userSign.getObjectId()));//加入到所有签到的序列中
-                            SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
-                                    File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
-
-                            baiduMap.clear();
-                            MarkerOptions options;
-                            for(SignInfo signInfotmp: MainActivity.arraylistHistorySign) {
-                                // 构建MarkerOption，用于在地图上添加Marker
-                                options = new MarkerOptions().position(signInfotmp.latlng)
-                                        .icon(bd_Sign);
-                                // 在地图上添加Marker，并显示
-                                baiduMap.addOverlay(options);
-                            }
-                            // 存储成功
-                            //Log.d(TAG, todo.getObjectId());// 保存成功之后，objectId 会自动从服务端加载到本地
-                        } else {
-                            // 失败的话，请检查网络环境以及 SDK 配置是否正确
-                        }
-                    }
-                });
-                /*if(MeFragment.username!=null) {
-                    Thread thread = new Thread(SignFragment.this);
-                    thread.start();
-                }*/
             }
         });
 
@@ -167,6 +171,87 @@ public class SignFragment extends Fragment {
         baiduMap = mv_BaiduView.getMap();
         mv_BaiduView.removeViewAt(1);
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULTCODE_TO_INTENTRESULT) {
+            if (requestCode == RESQUESTCODE) {
+                //int returnResult = data.getIntExtra("result", 0);
+                //result.setText(String.valueOf(returnResult));
+                iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
+                baiduMap.clear();
+                MarkerOptions options;
+                for(SignInfo signInfotmp: MainActivity.arraylistHistorySign) {
+                    // 构建MarkerOption，用于在地图上添加Marker
+                    options = new MarkerOptions().position(signInfotmp.latlng)
+                            .icon(bd_Sign);
+                    // 在地图上添加Marker，并显示
+                    baiduMap.addOverlay(options);
+                }
+            }
+
+        }
+    }
+
+    /**
+     * 上传签到信息*/
+
+    private void upLoadSign(){
+        SignInfo signInfoTmp = new SignInfo(point,date,
+                new SignLocation(province,city,street,locDescribe),"0");
+        final AVObject userSign = new AVObject("signInfo");
+        userSign.put("username", MainActivity.userName);
+        userSign.put("latitude", signInfoTmp.latlng.latitude);
+        userSign.put("longitude", signInfoTmp.latlng.longitude);
+        userSign.put("date", signInfoTmp.date);
+        userSign.put("province", signInfoTmp.location.province);
+        userSign.put("city", signInfoTmp.location.city);
+        userSign.put("street", signInfoTmp.location.street);
+        userSign.put("event", signInfoTmp.event);
+        userSign.put("locdescribe", signInfoTmp.location.locDescribe);
+
+        userSign.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    MainActivity.signNum+=1;
+                    MainActivity.setTv_headerSignNum();
+                    AVUser.getCurrentUser().put("signnum", MainActivity.signNum);
+                    AVUser.getCurrentUser().saveInBackground(new SaveCallback(){
+                        @Override
+                        public void done(AVException e) {
+                            Toast.makeText(getActivity(), city+street+" 签到成功~", Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
+
+                    iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
+
+                    //System.out.println(date);
+                    //point = new LatLng(mylatitude, mylongitude);
+                    MainActivity.arraylistHistorySign.add(new SignInfo(point,date,
+                            new SignLocation(province,city,street,locDescribe),userSign.getObjectId()));//加入到所有签到的序列中
+                    SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
+                            File.separator +"xingji/.historySign",MainActivity.arraylistHistorySign);
+
+                    baiduMap.clear();
+                    MarkerOptions options;
+                    for(SignInfo signInfotmp: MainActivity.arraylistHistorySign) {
+                        // 构建MarkerOption，用于在地图上添加Marker
+                        options = new MarkerOptions().position(signInfotmp.latlng)
+                                .icon(bd_Sign);
+                        // 在地图上添加Marker，并显示
+                        baiduMap.addOverlay(options);
+                    }
+                    // 存储成功
+                    //Log.d(TAG, todo.getObjectId());// 保存成功之后，objectId 会自动从服务端加载到本地
+                } else {
+                    // 失败的话，请检查网络环境以及 SDK 配置是否正确
+                }
+            }
+        });
     }
 
     private void initLocation() {

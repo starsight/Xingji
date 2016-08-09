@@ -266,7 +266,6 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-
     }
 
     /*
@@ -275,7 +274,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
     public void camera() {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         // 判断存储卡是否可以用，可用进行存储
-        if (hasSdcard()) {
+        if (Util.hasSdcard()) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT,
                     Uri.fromFile(new File(Environment
                             .getExternalStorageDirectory(), PHOTO_FILE_NAME)));
@@ -295,7 +294,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
             }
 
         } else if (requestCode == PHOTO_REQUEST_CAMERA) {
-            if (hasSdcard()) {
+            if (Util.hasSdcard()) {
                 tempFile = new File(Environment.getExternalStorageDirectory(),
                         PHOTO_FILE_NAME);
                 crop(Uri.fromFile(tempFile));
@@ -434,8 +433,5 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private boolean hasSdcard() {
-        return Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED);
-    }
+
 }

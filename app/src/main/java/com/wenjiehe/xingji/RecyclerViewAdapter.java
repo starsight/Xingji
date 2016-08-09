@@ -3,6 +3,7 @@ package com.wenjiehe.xingji;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVUser;
 import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 
@@ -57,7 +59,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         }
 
-
     }
     @Override
     public RecyclerViewAdapter.NewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -83,7 +84,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 context.startActivity(intent);
             }
         });
-
+        Log.d(TAG,signInfo.get(j).getPhotoId());
+        if (!signInfo.get(j).getPhotoId().equals("0")) {
+            personViewHolder.news_photo.setVisibility(View.VISIBLE);
+            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory()+
+                    "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/"+signInfo.get(j).getPhotoId()));
+        }
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,8 +110,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 context.startActivity(intent);
             }
         });
-
-
     }
 
     @Override

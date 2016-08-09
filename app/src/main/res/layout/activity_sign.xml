@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whitesmoke"
+    tools:context="com.wenjiehe.xingji.Activity.SignActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/activity_sign_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="立即签到"
+                android:textSize="16sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:id="@+id/tv_activity_sign_send"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_sign_toolbar"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_activity_sign_photo"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone"
+            android:scaleType="centerCrop"/>
+
+        <EditText
+            android:id="@+id/et_activity_sign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="@dimen/card_material_largeimage_height"
+            android:gravity="top"
+            android:background="#00000000"
+            android:hint="到此一游" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/actions_padding_left"
+            android:layout_marginLeft="@dimen/actions_padding_left"
+            android:id="@+id/tv_activity_sign_location"/>
+
+    </LinearLayout>
+</RelativeLayout>
