@@ -11,10 +11,14 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CloudQueryCallback;
+import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.wenjiehe.xingji.R;
@@ -308,8 +312,10 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 upLoadHeadPhoto();
                 MainActivity.isUpadteUserPhoto = true;
                 MainActivity.upadteUserPhotoBitmap = bitmap;
-                boolean delete = tempFile.delete();
-                System.out.println("delete = " + delete);
+                if(tempFile!=null) {
+                    boolean delete = tempFile.delete();
+                    System.out.println("delete = " + delete);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -366,6 +372,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                     final String headphotoidnew = object.getObjectId();
                     AVUser.getCurrentUser().put("headphotodate",object.getUpdatedAt());
                     AVUser.getCurrentUser().put("headphotoid",headphotoidnew);
+                    AVUser.getCurrentUser().put("headphotofileid",object.getAVFile("headpicture").getObjectId());
                     AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
@@ -385,13 +392,25 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 }
             });
         }else{
+
+            if(!AVUser.getCurrentUser().getString("headphotofileid").equals("0"))
+            // 执行 CQL 语句实现删除一个 File对象
+            AVQuery.doCloudQueryInBackground("delete from _File where objectId='"+
+                    AVUser.getCurrentUser().getString("headphotofileid")+"'", new CloudQueryCallback<AVCloudQueryResult>() {
+                @Override
+                public void done(AVCloudQueryResult avCloudQueryResult, AVException e) {
+
+                }
+            });
+            Log.d(TAG+"id","0000");
             final AVObject todo = AVObject.createWithoutData("headpicture",headphotoid);
-            todo.getAVFile("headpicture");
             todo.put("headpicture",file);
             todo.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(AVException e) {
+                    Log.d(TAG+"id",todo.getAVFile("headpicture").getObjectId());
                     AVUser.getCurrentUser().put("headphotodate",todo.getUpdatedAt());
+                    AVUser.getCurrentUser().put("headphotofileid",todo.getAVFile("headpicture").getObjectId());//头像的objectid，方便删除文件
                     AVUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
