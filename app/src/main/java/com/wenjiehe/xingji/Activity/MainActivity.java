@@ -161,29 +161,32 @@ public class MainActivity extends AppCompatActivity
                     }
                     //Log.d("MainActivity","不需要更新");
                     else {//获取头像
-                        AVObject todo = AVObject.createWithoutData("headpicture", currentUser.getString("headphotoid"));
-                        todo.fetchInBackground(new GetCallback<AVObject>() {
-                            @Override
-                            public void done(AVObject avObject, AVException e) {
-                                AVFile file = avObject.getAVFile("headpicture");
-                                file.getDataInBackground(new GetDataCallback() {
-                                    @Override
-                                    public void done(byte[] bytes, AVException e) {
-                                        // bytes 就是文件的数据流
-                                        MainActivity.upadteUserPhotoBitmap = Util.bytes2Bimap(bytes);
-                                        iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
-                                        Util.saveBitmap(MainActivity.upadteUserPhotoBitmap);
-                                    }
-                                }, new ProgressCallback() {
-                                    @Override
-                                    public void done(Integer integer) {
-                                        // 下载进度数据，integer 介于 0 和 100。
-                                    }
-                                });
-                                //String title = avObject.getString("title");// 读取 title
-                                //String content = avObject.getString("content");// 读取 content
-                            }
-                        });
+                        if(!currentUser.getString("headphotoid").equals("0")) {
+
+                            AVObject todo = AVObject.createWithoutData("headpicture", currentUser.getString("headphotoid"));
+                            todo.fetchInBackground(new GetCallback<AVObject>() {
+                                @Override
+                                public void done(AVObject avObject, AVException e) {
+                                    AVFile file = avObject.getAVFile("headpicture");
+                                    file.getDataInBackground(new GetDataCallback() {
+                                        @Override
+                                        public void done(byte[] bytes, AVException e) {
+                                            // bytes 就是文件的数据流
+                                            MainActivity.upadteUserPhotoBitmap = Util.bytes2Bimap(bytes);
+                                            iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+                                            Util.saveBitmap(MainActivity.upadteUserPhotoBitmap);
+                                        }
+                                    }, new ProgressCallback() {
+                                        @Override
+                                        public void done(Integer integer) {
+                                            // 下载进度数据，integer 介于 0 和 100。
+                                        }
+                                    });
+                                    //String title = avObject.getString("title");// 读取 title
+                                    //String content = avObject.getString("content");// 读取 content
+                                }
+                            });
+                        }
                     }
                 /*if (!currentUser.getString("headphotoid").equals("0")) {
                     AVQuery<AVObject> avQuery = new AVQuery<>("headpicture");
