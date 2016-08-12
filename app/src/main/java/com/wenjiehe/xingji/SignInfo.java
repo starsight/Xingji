@@ -98,7 +98,6 @@ public class SignInfo implements Parcelable {
 
     public static void  readSignInfoFromFile(Context context, ArrayList<SignInfo> arraylistHistorySign){
         // System.out.println(this.getFilesDir().getAbsolutePath() + File.separator+"xingji");
-         System.out.println(Environment.getExternalStorageDirectory()+"/xingji/.historySign");
         //arraylistHistorySign = new ArrayList<SignInfo>();
         int count = arraylistHistorySign.size();
         for(int i=0;i<count;i++) {
@@ -106,12 +105,12 @@ public class SignInfo implements Parcelable {
             Log.d("signinfo",String.valueOf(i));
         }
 
-        //System.out.println(Environment.getExternalStorageDirectory());
-        File xingjiDir = new File(Environment.getExternalStorageDirectory()+"/xingji/");
+        System.out.println(Environment.getExternalStorageDirectory());
+        File xingjiDir = new File(context.getFilesDir().getAbsolutePath() + File.separator+"xingji");
         if(!xingjiDir.exists()){
             xingjiDir.mkdir();
         }
-        File file = new File(Environment.getExternalStorageDirectory()+"/xingji/.historySign");
+        File file = new File(context.getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
 
         if(file.exists()){
             FileReader fr = null ;
@@ -165,7 +164,6 @@ public class SignInfo implements Parcelable {
     * 写入签到数据到文件
     * */
     public static void writeSignInfoToFile(String path ,ArrayList<SignInfo> signinfo){
-        path=Environment.getExternalStorageDirectory()+"/xingji/.historySign";
         File file = new File(path);
 
         if(file.exists()) {
