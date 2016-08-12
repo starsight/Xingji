@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -90,7 +91,7 @@ public class SignActivity extends AppCompatActivity {
         street  = intent.getStringExtra("street");
         event  = intent.getStringExtra("event");
         locDescribe  = intent.getStringExtra("locdescribe");
-        Log.d("event0",intent.getStringExtra("event"));
+        //Log.d("event0",intent.getStringExtra("event"));
         //point = new LatLng(latitude, longitude);
         tv_activity_sign_location.setText(locDescribe);
 
@@ -116,9 +117,9 @@ public class SignActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(String.valueOf(et_activity_sign.getText())!=null)
+                if(String.valueOf(et_activity_sign.getText())!=null&&!String.valueOf(et_activity_sign.getText()).equals(""))
                     event  = String.valueOf(et_activity_sign.getText());
-                Log.d("event1",event);
+                Log.d("event3",event);
                 /*SignInfo signInfoTmp = new SignInfo(new LatLng(latitude, longitude),date,
                         new SignLocation(province,city,street,locDescribe),"0");*/
                 final AVObject userSign = new AVObject("signInfo");
@@ -263,5 +264,17 @@ public class SignActivity extends AppCompatActivity {
                 //((ImageView) findViewById(R.id.imageView)).setImageBitmap(bitmap);// 将图片显示在ImageView里
             }
         }*/
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // TODO Auto-generated method stub
+        if(item.getItemId() == android.R.id.home)
+        {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

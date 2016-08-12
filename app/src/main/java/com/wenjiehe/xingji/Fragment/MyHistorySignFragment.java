@@ -15,17 +15,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.model.LatLng;
 import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.Util;
 import com.wenjiehe.xingji.view.RefreshLayout;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
@@ -361,14 +365,27 @@ public class MyHistorySignFragment extends Fragment {
                         streettmp = avObject.getString("street");
                         eventtmp = avObject.getString("event");
                         locDescribetmp = avObject.getString("locdescribe");
-                        if(avObject.getAVFile("signphoto")!=null) {
+                        if (avObject.getAVFile("signphoto") != null) {
                             photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
-                            Log.d("photot", avObject.getAVFile("signphoto").getObjectId());
+                            final AVFile file = avObject.getAVFile("signphoto");
+                            file.getDataInBackground(new GetDataCallback() {
+                                @Override
+                                public void done(byte[] bytes, AVException e) {
+                                    // bytes 就是文件的数据流
+                                    Util.saveBitmap(Util.bytes2Bimap(bytes),file.getObjectId());
+                                }
+                            }, new ProgressCallback() {
+                                @Override
+                                public void done(Integer integer) {
+                                    // 下载进度数据，integer 介于 0 和 100。
+                                }
+                            });
                         }
-                        else
+                        else {
                             photoIdTmp = "0";//清"0"
+                        }
                         historySignNum++;
-                        Log.d(TAG, "arraylistHistorySign.isEmpty");
+                        //Log.d(TAG, "arraylistHistorySign.isEmpty");
                         SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
                                 new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
                         MainActivity.arraylistHistorySign.add(signinfotmp);
@@ -389,9 +406,21 @@ public class MyHistorySignFragment extends Fragment {
                                     streettmp = avObject.getString("street");
                                     eventtmp = avObject.getString("event");
                                     locDescribetmp = avObject.getString("locdescribe");
-                                    if(avObject.getAVFile("signphoto")!=null) {
+                                    if (avObject.getAVFile("signphoto") != null) {
                                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
-                                        Log.d("photot", avObject.getAVFile("signphoto").getObjectId());
+                                        final AVFile file = avObject.getAVFile("signphoto");
+                                        file.getDataInBackground(new GetDataCallback() {
+                                            @Override
+                                            public void done(byte[] bytes, AVException e) {
+                                                // bytes 就是文件的数据流
+                                                Util.saveBitmap(Util.bytes2Bimap(bytes),file.getObjectId());
+                                            }
+                                        }, new ProgressCallback() {
+                                            @Override
+                                            public void done(Integer integer) {
+                                                // 下载进度数据，integer 介于 0 和 100。
+                                            }
+                                        });
                                     }
                                     else {
                                         photoIdTmp = "0";//清"0"
