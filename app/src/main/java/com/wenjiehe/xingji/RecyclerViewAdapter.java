@@ -13,10 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wenjiehe.xingji.Activity.MainActivity;
-import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 
-import java.util.ArrayList;
+
+import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import java.util.List;
 
 /**
@@ -44,7 +43,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Button share;
         Button readMore;
 
-        public NewsViewHolder(final View itemView) {
+
+        public NewsViewHolder(final View itemView,int type) {
+
             super(itemView);
             cardView= (CardView) itemView.findViewById(R.id.card_view);
             news_photo= (ImageView) itemView.findViewById(R.id.news_photo);
@@ -55,6 +56,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //设置TextView背景为半透明
             news_title.setBackgroundColor(Color.argb(20, 0, 0, 0));
 
+
+            if(type==1)
+                news_photo.setVisibility(View.VISIBLE);
+            else
+                news_title.setTextColor(Color.parseColor("#434343"));
+
         }
 
 
@@ -62,7 +69,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public RecyclerViewAdapter.NewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v= LayoutInflater.from(context).inflate(R.layout.recyclerview_sign_item_info,viewGroup,false);
-        NewsViewHolder nvh=new NewsViewHolder(v);
+
+        NewsViewHolder nvh=new NewsViewHolder(v,i);
         return nvh;
     }
 
@@ -74,6 +82,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         personViewHolder.news_title.setText(signInfo.get(i).getLocation());
         personViewHolder.news_desc.setText(signInfo.get(i).getEvent());
 
+
         //为btn_share btn_readMore cardView设置点击事件
         personViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +92,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 context.startActivity(intent);
             }
         });
+
+       /*Log.d(TAG,signInfo.get(i).getPhotoId());
+        if (!signInfo.get(i).getPhotoId().equals("0")) {
+            personViewHolder.news_photo.setVisibility(View.VISIBLE);
+            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory()+
+                    "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/"+signInfo.get(j).getPhotoId()));
+        }
+        else//纯文本
+            personViewHolder.news_title.setTextColor(Color.parseColor("#434343"));*/
+
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +123,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 context.startActivity(intent);
             }
         });
-
-
     }
 
     @Override
@@ -116,6 +133,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return signInfo.size();
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        if (!signInfo.get(position).getPhotoId().equals("0")) {
+            return 1;//有图
+        } else {
+            return 0;//无图
+        }
     }
 
     public void addItem(SignInfo si , int position) {

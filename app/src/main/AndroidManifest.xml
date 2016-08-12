@@ -57,7 +57,11 @@
         <activity
             android:name=".Activity.SignInfoDetailActivity"
             android:label="@string/title_activity_sign_info_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.SignActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
