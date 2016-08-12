@@ -219,6 +219,8 @@ public class SignActivity extends AppCompatActivity {
                 .needCamera(true)
                 // 最大选择图片数量
                 .maxNum(1)
+                // 使用沉浸式状态栏
+                .statusBarColor(Color.parseColor("#6495ED"))
                 .build();
 
         // 跳转到图片选择器
