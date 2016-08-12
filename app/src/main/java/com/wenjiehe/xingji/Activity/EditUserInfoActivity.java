@@ -403,6 +403,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
             });
             Log.d(TAG+"id","0000");
             final AVObject todo = AVObject.createWithoutData("headpicture",headphotoid);
+            todo.getAVFile("headpicture");
             todo.put("headpicture",file);
             todo.saveInBackground(new SaveCallback() {
                 @Override

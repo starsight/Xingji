@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -28,6 +29,7 @@ public class SignInfo implements Parcelable {
     public String event = "到此一游";
     public String objectId = "0";
     public String photoId = "0";
+
 
     public SignInfo(LatLng latlng, String date,SignLocation location,String objectId){
         this.latlng = latlng;
@@ -44,6 +46,7 @@ public class SignInfo implements Parcelable {
         this.event = event;
     }
 
+
     public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId,String photoId){
         this.latlng = latlng;
         this.date = date;
@@ -56,6 +59,7 @@ public class SignInfo implements Parcelable {
 
     public String getPhotoId() {
         return photoId;
+
     }
 
     protected SignInfo(Parcel in) {
