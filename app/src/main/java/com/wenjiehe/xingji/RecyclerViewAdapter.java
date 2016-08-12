@@ -57,8 +57,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //设置TextView背景为半透明
             news_title.setBackgroundColor(Color.argb(20, 0, 0, 0));
 
-            if(type==1)
+            if(type==1) {
                 news_photo.setVisibility(View.VISIBLE);
+                            }
             else
                 news_title.setTextColor(Color.parseColor("#434343"));
 
@@ -79,7 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //personViewHolder.news_photo.setImageResource(signInfo.get(i).getPhotoId());
         personViewHolder.news_title.setText(signInfo.get(i).getLocation());
-        personViewHolder.news_desc.setText(signInfo.get(i).getPhotoId());
+        personViewHolder.news_desc.setText(signInfo.get(i).getEvent());
 
         //为btn_share btn_readMore cardView设置点击事件
         personViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +99,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         else//纯文本
             personViewHolder.news_title.setTextColor(Color.parseColor("#434343"));*/
+
+        if(personViewHolder.news_photo.getVisibility()==View.VISIBLE)
+            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory()+
+                    "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/"+signInfo.get(j).getPhotoId()));
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override

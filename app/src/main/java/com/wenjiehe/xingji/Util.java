@@ -74,6 +74,11 @@ public class Util {
                 Environment.MEDIA_MOUNTED);
     }
 
+    public static boolean hasFile(String path) {
+        File f = new File(path);
+        return f.exists();
+    }
+
     public static void copyFile(String oldPath, String newPath) {
         try {
             int bytesum = 0;
