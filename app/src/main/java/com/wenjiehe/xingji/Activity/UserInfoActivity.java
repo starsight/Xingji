@@ -15,12 +15,15 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.model.LatLng;
@@ -29,6 +32,7 @@ import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
 import com.wenjiehe.xingji.RecyclerViewAdapter;
+import com.wenjiehe.xingji.Util;
 import com.wenjiehe.xingji.view.MyInfoCardListView;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -97,7 +101,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         //mCardArrayAdapter = new CardArrayAdapter(this, cards);
         //listView.setAdapter(mCardArrayAdapter);
 
-        iv_userinfo_headerphoto = (CircleImageView)findViewById(R.id.iv_userinfo_headerphoto);
+        iv_userinfo_headerphoto = (CircleImageView) findViewById(R.id.iv_userinfo_headerphoto);
         iv_userinfo_headerphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,15 +112,15 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         });
 
 
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        recyclerView= (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter = new RecyclerViewAdapter(signInfo,UserInfoActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
+        adapter = new RecyclerViewAdapter(signInfo, UserInfoActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        if(MainActivity.upadteUserPhotoBitmap!=null)
+        if (MainActivity.upadteUserPhotoBitmap != null)
             iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
     }
 
@@ -156,14 +160,14 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                         historySignNum = 0;
                         beforeWeekNum = 1;
                     }
-                    canLoadNum = MainActivity.signNum-MainActivity.arraylistHistorySign.size();
+                    canLoadNum = MainActivity.signNum - MainActivity.arraylistHistorySign.size();
                     getHistorySignRecord();
                 } else {
                     SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
                     //showSignRecord();
                     //adapter.updateRecyclerView();
-                    canLoadNum = MainActivity.signNum-MainActivity.arraylistHistorySign.size();
-                    if(canLoadNum>0){
+                    canLoadNum = MainActivity.signNum - MainActivity.arraylistHistorySign.size();
+                    if (canLoadNum > 0) {
                         getHistorySignRecord();
                     }
                     refresh.loadMoreComplete();
@@ -175,110 +179,111 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
         });
 
     }
-/*
-    public void showSignRecord() {
-        int signCount = cards.size();
-        int historyCount = MainActivity.arraylistHistorySign.size();
-        ArrayList<Integer> isCardExist = new ArrayList();
-        ArrayList<Integer> isHistorySignExist = new ArrayList();
-        for (int i = 0; i < signCount; i++)
-            isCardExist.add(i, 0);
-        for (int i = 0; i < historyCount; i++)
-            isHistorySignExist.add(i, 0);
 
-        for (SignInfo signinfo : MainActivity.arraylistHistorySign) {
-            if (cards.isEmpty()) {
-                for (SignInfo signinfo1 : MainActivity.arraylistHistorySign) {
-                    isCardExist.add(cards.size(), 1);
-                    addToCards(signinfo1);//数据添加
-                    Log.d(TAG, "cards.isEmpty");
-                }
-                break;
-            } else {
-                for (int i = 0; i < cards.size(); i++) {
-                    if (cards.get(i).getId().equals(signinfo.objectId)) {
-                        isCardExist.set(i, 1);
-                        Log.d(TAG + "showSignRecord", String.valueOf(i));
-                        break;
-                        //isHistorySignExist[i] = 1;
-                    } else if (i == (cards.size() - 1)) {
-                        if (!cards.get(i).getId().equals(signinfo.objectId)) {
-                            Log.d(TAG + "showSignRecord--add", String.valueOf(i));
-                            isCardExist.add(cards.size(), 1);
-                            addToCards(signinfo);
-                        } else
+    /*
+        public void showSignRecord() {
+            int signCount = cards.size();
+            int historyCount = MainActivity.arraylistHistorySign.size();
+            ArrayList<Integer> isCardExist = new ArrayList();
+            ArrayList<Integer> isHistorySignExist = new ArrayList();
+            for (int i = 0; i < signCount; i++)
+                isCardExist.add(i, 0);
+            for (int i = 0; i < historyCount; i++)
+                isHistorySignExist.add(i, 0);
+
+            for (SignInfo signinfo : MainActivity.arraylistHistorySign) {
+                if (cards.isEmpty()) {
+                    for (SignInfo signinfo1 : MainActivity.arraylistHistorySign) {
+                        isCardExist.add(cards.size(), 1);
+                        addToCards(signinfo1);//数据添加
+                        Log.d(TAG, "cards.isEmpty");
+                    }
+                    break;
+                } else {
+                    for (int i = 0; i < cards.size(); i++) {
+                        if (cards.get(i).getId().equals(signinfo.objectId)) {
                             isCardExist.set(i, 1);
+                            Log.d(TAG + "showSignRecord", String.valueOf(i));
+                            break;
+                            //isHistorySignExist[i] = 1;
+                        } else if (i == (cards.size() - 1)) {
+                            if (!cards.get(i).getId().equals(signinfo.objectId)) {
+                                Log.d(TAG + "showSignRecord--add", String.valueOf(i));
+                                isCardExist.add(cards.size(), 1);
+                                addToCards(signinfo);
+                            } else
+                                isCardExist.set(i, 1);
+                        }
                     }
                 }
             }
+
+            for (int i = 0; i < cards.size(); i++) {
+                if (isCardExist.get(i) == 0)
+                    cards.remove(i);
+            }
+            //mCardArrayAdapter.notifyDataSetChanged();
         }
 
-        for (int i = 0; i < cards.size(); i++) {
-            if (isCardExist.get(i) == 0)
-                cards.remove(i);
-        }
-        //mCardArrayAdapter.notifyDataSetChanged();
-    }
 
+        private void addToCards(SignInfo signinfo) {
+            Log.d(TAG, "enter-for-arraylistHistorySign");
+            Card card = new Card(this);
+            CardHeader header = new CardHeader(this);
+            header.setTitle(signinfo.location.province + signinfo.location.city + signinfo.location.street);
+            card.setId(signinfo.objectId);
+            header.setPopupMenu(R.menu.record_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+                @Override
+                public void onMenuItemClick(BaseCard card, MenuItem item) {
+                    removeobjectId = card.getId();
+                    int count = MainActivity.arraylistHistorySign.size();
+                    for (int i = 0; i < count; i++) {
+                        // Log.d(LOG_D, String.valueOf(MainActivity.arraylistHistorySign.size()));
+                        if (MainActivity.arraylistHistorySign.get(i).objectId.equals(removeobjectId)) {
+                            String objectIdTmp = MainActivity.arraylistHistorySign.get(i).objectId;
+                            MainActivity.arraylistHistorySign.remove(i);
+                            cards.remove(i);
+                            AVQuery<AVObject> avQuery = new AVQuery<>("signInfo");
+                            avQuery.getInBackground(objectIdTmp, new GetCallback<AVObject>() {
+                                @Override
+                                public void done(AVObject avObject, AVException e) {
+                                    avObject.deleteInBackground(new DeleteCallback() {
+                                        @Override
+                                        public void done(AVException e) {
+                                            AVUser currentUser = AVUser.getCurrentUser();
+                                            if (currentUser != null) {//签到次数统计同步
+                                                MainActivity.signNum -= 1;
+                                                MainActivity.setTv_headerSignNum();
+                                                currentUser.put("signnum", MainActivity.signNum);
+                                                currentUser.saveInBackground(new SaveCallback() {
+                                                    @Override
+                                                    public void done(AVException e) {
+                                                        SignInfo.writeSignInfoToFile(
+                                                                getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign",
+                                                                MainActivity.arraylistHistorySign);
+                                                        mCardArrayAdapter.notifyDataSetChanged();
+                                                        Toast.makeText(UserInfoActivity.this, "签到删除成功", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
 
-    private void addToCards(SignInfo signinfo) {
-        Log.d(TAG, "enter-for-arraylistHistorySign");
-        Card card = new Card(this);
-        CardHeader header = new CardHeader(this);
-        header.setTitle(signinfo.location.province + signinfo.location.city + signinfo.location.street);
-        card.setId(signinfo.objectId);
-        header.setPopupMenu(R.menu.record_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
-            @Override
-            public void onMenuItemClick(BaseCard card, MenuItem item) {
-                removeobjectId = card.getId();
-                int count = MainActivity.arraylistHistorySign.size();
-                for (int i = 0; i < count; i++) {
-                    // Log.d(LOG_D, String.valueOf(MainActivity.arraylistHistorySign.size()));
-                    if (MainActivity.arraylistHistorySign.get(i).objectId.equals(removeobjectId)) {
-                        String objectIdTmp = MainActivity.arraylistHistorySign.get(i).objectId;
-                        MainActivity.arraylistHistorySign.remove(i);
-                        cards.remove(i);
-                        AVQuery<AVObject> avQuery = new AVQuery<>("signInfo");
-                        avQuery.getInBackground(objectIdTmp, new GetCallback<AVObject>() {
-                            @Override
-                            public void done(AVObject avObject, AVException e) {
-                                avObject.deleteInBackground(new DeleteCallback() {
-                                    @Override
-                                    public void done(AVException e) {
-                                        AVUser currentUser = AVUser.getCurrentUser();
-                                        if (currentUser != null) {//签到次数统计同步
-                                            MainActivity.signNum -= 1;
-                                            MainActivity.setTv_headerSignNum();
-                                            currentUser.put("signnum", MainActivity.signNum);
-                                            currentUser.saveInBackground(new SaveCallback() {
-                                                @Override
-                                                public void done(AVException e) {
-                                                    SignInfo.writeSignInfoToFile(
-                                                            getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign",
-                                                            MainActivity.arraylistHistorySign);
-                                                    mCardArrayAdapter.notifyDataSetChanged();
-                                                    Toast.makeText(UserInfoActivity.this, "签到删除成功", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
                                         }
+                                    });
+                                }
+                            });
 
-                                    }
-                                });
-                            }
-                        });
-
-                        break;
+                            break;
+                        }
                     }
-                }
 
-            }
-        });
-        card.setTitle(signinfo.event);
-        //Add Header to card
-        card.addCardHeader(header);
-        cards.add(card);
-    }
-*/
+                }
+            });
+            card.setTitle(signinfo.event);
+            //Add Header to card
+            card.addCardHeader(header);
+            cards.add(card);
+        }
+    */
     public ArrayList<Date> getBeforeSevenDate(int beforewWeek) {// 获取n周内的签到信息
         //if(beforewWeek>5)
         //return null;
@@ -326,7 +331,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             public void done(List<AVObject> list, AVException e) {
                 //historySignNum = list.size();
 
-                String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp,photoIdTmp="0";
+                String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp, photoIdTmp = "0";
                 double lattmp, lngtmp;
                 if (list == null)
                     return;
@@ -346,15 +351,29 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                         streettmp = avObject.getString("street");
                         eventtmp = avObject.getString("event");
                         locDescribetmp = avObject.getString("locdescribe");
-                        if(avObject.getAVFile("signphoto")!=null)
-                        photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
+                        if (avObject.getAVFile("signphoto") != null) {
+                            photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
+                            final AVFile file = avObject.getAVFile("signphoto");
+                            file.getDataInBackground(new GetDataCallback() {
+                                @Override
+                                public void done(byte[] bytes, AVException e) {
+                                    // bytes 就是文件的数据流
+                                    Util.saveBitmap(Util.bytes2Bimap(bytes),file.getObjectId());
+                                }
+                            }, new ProgressCallback() {
+                                @Override
+                                public void done(Integer integer) {
+                                    // 下载进度数据，integer 介于 0 和 100。
+                                }
+                            });
+                        }
                         else
-                            photoIdTmp="0";
+                            photoIdTmp = "0";
                         historySignNum++;
                         //Log.d(TAG, "arraylistHistorySign.isEmpty");
                         //Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
                         SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                                new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
+                                new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp);
                         MainActivity.arraylistHistorySign.add(signinfotmp);
                         SignInfo.writeSignInfoToFile(getFilesDir().getAbsolutePath() +
                                 File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
@@ -373,15 +392,29 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                                     streettmp = avObject.getString("street");
                                     eventtmp = avObject.getString("event");
                                     locDescribetmp = avObject.getString("locdescribe");
-                                    if(avObject.getAVFile("signphoto")!=null)
+                                    if (avObject.getAVFile("signphoto") != null) {
                                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
+                                        final AVFile file = avObject.getAVFile("signphoto");
+                                        file.getDataInBackground(new GetDataCallback() {
+                                            @Override
+                                            public void done(byte[] bytes, AVException e) {
+                                                // bytes 就是文件的数据流
+                                                Util.saveBitmap(Util.bytes2Bimap(bytes),file.getObjectId());
+                                            }
+                                        }, new ProgressCallback() {
+                                            @Override
+                                            public void done(Integer integer) {
+                                                // 下载进度数据，integer 介于 0 和 100。
+                                            }
+                                        });
+                                    }
                                     else
-                                        photoIdTmp="0";
+                                        photoIdTmp = "0";
                                     historySignNum++;
                                     //Log.d(TAG, String.valueOf(historySignNum));
                                     //Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
                                     SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
+                                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp);
                                     MainActivity.arraylistHistorySign.add(signinfotmp);
                                     SignInfo.writeSignInfoToFile(getFilesDir().getAbsolutePath() +
                                             File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
@@ -413,7 +446,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                     if (historySignNum < setPerGet) {
                         Log.d(TAG + "setPerNum", String.valueOf(setPerGet));
                         Log.d(TAG + "historySignNum", String.valueOf(historySignNum));
-                        canLoadNum-=setPerGet;
+                        canLoadNum -= setPerGet;
                         getHistorySignRecord();
                     } else {
                         SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
@@ -455,7 +488,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             public void run() {
                 historySignNum = 0;
                 beforeWeekNum = 1;
-                setPerGet=SETPERGET;
+                setPerGet = SETPERGET;
                 syncHistorySignInfo();
 
             }
@@ -487,7 +520,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
     @Override
     protected void onResume() {
         super.onResume();
-        if(MainActivity.isUpadteUserPhoto==true)
+        if (MainActivity.isUpadteUserPhoto == true)
             iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
         //MainActivity.isUpadteUserPhoto = true;
         //MainActivity.upadteUserPhotoBitmap = bitmap;

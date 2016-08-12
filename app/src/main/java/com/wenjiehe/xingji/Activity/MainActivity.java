@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                 });*/
                 if(avObject ==null){//未联网获取
                     MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                            (Environment.getExternalStorageDirectory() + "/xingji/headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/demo/headpicture.jpg");
                     if (MainActivity.upadteUserPhotoBitmap!=null) {
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
                 else {
                     Date date = avObject.getDate("headphotodate");
                     long userphototime = Util.getFileDateInfo
-                            (Environment.getExternalStorageDirectory() + "/xingji/", "headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/demo/", "headpicture.jpg");
                     long onlinephototime = date.getTime();
                     //Log.d("MainActivity-2-",String.valueOf(userphototime));
                     //Log.d("MainActivity-2-",String.valueOf(date));
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
                     //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
                     if ((onlinephototime - userphototime) < 10000) {
                         MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                                (Environment.getExternalStorageDirectory() + "/xingji/headpicture.jpg");
+                                (Environment.getExternalStorageDirectory() + "/xingji/demo/headpicture.jpg");
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
                     //Log.d("MainActivity","不需要更新");
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
                                             // bytes 就是文件的数据流
                                             MainActivity.upadteUserPhotoBitmap = Util.bytes2Bimap(bytes);
                                             iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
-                                            Util.saveBitmap(MainActivity.upadteUserPhotoBitmap);
+                                            Util.saveBitmap(MainActivity.upadteUserPhotoBitmap,"headpicture.jpg");
                                         }
                                     }, new ProgressCallback() {
                                         @Override
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity
                     });
                 }*/
                 }
-                Log.d("xingji-choose",String.valueOf(signNum));
+                //Log.d("xingji-choose",String.valueOf(signNum));
                 ft = getFragmentManager().beginTransaction();
                 hsf = new MyHistorySignFragment();
                 ft.replace(R.id.content_main, hsf);
@@ -234,10 +234,10 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_main, sf);
             ft.commit();
         } else if (id == R.id.slide_item_history) {
-            ft = this.getFragmentManager().beginTransaction();
+            /*ft = this.getFragmentManager().beginTransaction();
             hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
-            ft.commit();
+            ft.commit();*/
         } else if (id == R.id.slide_item_settings) {
 
         } else if (id == R.id.slide_item_exit) {

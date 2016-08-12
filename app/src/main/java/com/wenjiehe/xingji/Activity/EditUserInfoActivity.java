@@ -307,7 +307,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 bitmap = data.getParcelableExtra("data");
                 iv_edit_userphoto.setImageBitmap(bitmap);
                 //mFace.setImageBitmap(bitmap);
-                Util.saveBitmap(bitmap);
+                Util.saveBitmap(bitmap,"headpicture.jpg");
                 upLoadHeadPhoto();
                 MainActivity.isUpadteUserPhoto = true;
                 MainActivity.upadteUserPhotoBitmap = bitmap;
