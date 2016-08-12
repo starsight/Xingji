@@ -348,9 +348,11 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                         locDescribetmp = avObject.getString("locdescribe");
                         if(avObject.getAVFile("signphoto")!=null)
                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
+                        else
+                            photoIdTmp="0";
                         historySignNum++;
-                        Log.d(TAG, "arraylistHistorySign.isEmpty");
-                        Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
+                        //Log.d(TAG, "arraylistHistorySign.isEmpty");
+                        //Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
                         SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
                                 new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
                         MainActivity.arraylistHistorySign.add(signinfotmp);
@@ -373,9 +375,11 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                                     locDescribetmp = avObject.getString("locdescribe");
                                     if(avObject.getAVFile("signphoto")!=null)
                                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
+                                    else
+                                        photoIdTmp="0";
                                     historySignNum++;
-                                    Log.d(TAG, String.valueOf(historySignNum));
-                                    Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
+                                    //Log.d(TAG, String.valueOf(historySignNum));
+                                    //Log.d(TAG, avObject.getAVFile("signphoto").getObjectId());
                                     SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
                                             new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp,photoIdTmp);
                                     MainActivity.arraylistHistorySign.add(signinfotmp);

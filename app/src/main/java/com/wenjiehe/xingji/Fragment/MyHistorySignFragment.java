@@ -365,6 +365,8 @@ public class MyHistorySignFragment extends Fragment {
                             photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
                             Log.d("photot", avObject.getAVFile("signphoto").getObjectId());
                         }
+                        else
+                            photoIdTmp = "0";//清"0"
                         historySignNum++;
                         Log.d(TAG, "arraylistHistorySign.isEmpty");
                         SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
@@ -375,8 +377,8 @@ public class MyHistorySignFragment extends Fragment {
                     } else {
                         for (int i = 0; i < count; ) {
                             Log.d(TAG, "objectid");
-                            Log.d(TAG, MainActivity.arraylistHistorySign.get(i).objectId);
-                            Log.d(TAG, objectIdtmp);
+                            //Log.d(TAG, MainActivity.arraylistHistorySign.get(i).objectId);
+                            //Log.d(TAG, objectIdtmp);
                             if (i == (count - 1)) {
                                 if (!MainActivity.arraylistHistorySign.get(i).objectId.equals(objectIdtmp)) {
                                     lattmp = avObject.getDouble("latitude");
@@ -391,6 +393,10 @@ public class MyHistorySignFragment extends Fragment {
                                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
                                         Log.d("photot", avObject.getAVFile("signphoto").getObjectId());
                                     }
+                                    else {
+                                        photoIdTmp = "0";//清"0"
+                                        Log.d("photot", "没有照片");
+                                    }
                                     historySignNum++;
                                     Log.d(TAG, String.valueOf(historySignNum));
                                     SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
@@ -398,6 +404,7 @@ public class MyHistorySignFragment extends Fragment {
                                     MainActivity.arraylistHistorySign.add(signinfotmp);
                                     SignInfo.writeSignInfoToFile(getActivity().getFilesDir().getAbsolutePath() +
                                             File.separator + "xingji/.historySign", MainActivity.arraylistHistorySign);
+
                                     break;
                                 }
                             }
