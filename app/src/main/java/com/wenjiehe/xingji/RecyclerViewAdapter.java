@@ -109,7 +109,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Intent intent=new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-                intent.putExtra(Intent.EXTRA_TEXT, signInfo.get(j).getEvent());
+                intent.putExtra(Intent.EXTRA_TEXT, "在"+signInfo.get(j).getLocation()+"签到\n"+signInfo.get(j).getEvent());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(Intent.createChooser(intent, signInfo.get(j).getLocation()));
             }
