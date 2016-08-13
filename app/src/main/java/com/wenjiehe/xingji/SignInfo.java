@@ -201,7 +201,7 @@ public class SignInfo implements Parcelable {
                 sb.append(";photoId=");
                 sb.append(signinfobuffer.photoId);
                 sb.append("\n");
-                Log.d("photo",signinfobuffer.photoId);
+                //Log.d("photo",signinfobuffer.photoId);
                 bw.append(sb);
             }
             bw.close();

@@ -3,6 +3,7 @@ package com.wenjiehe.xingji;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
+import com.avos.avoscloud.AVUser;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import java.util.List;
 
@@ -56,9 +57,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //设置TextView背景为半透明
             news_title.setBackgroundColor(Color.argb(20, 0, 0, 0));
 
-
-            if(type==1)
+            if (type == 1) {
                 news_photo.setVisibility(View.VISIBLE);
+            }
             else
                 news_title.setTextColor(Color.parseColor("#434343"));
 
@@ -101,6 +102,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         else//纯文本
             personViewHolder.news_title.setTextColor(Color.parseColor("#434343"));*/
+
+
+        if(personViewHolder.news_photo.getVisibility()==View.VISIBLE)
+            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory()+
+                    "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/"+signInfo.get(j).getPhotoId()));
 
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {

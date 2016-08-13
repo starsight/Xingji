@@ -37,9 +37,9 @@ public class Util {
                      }
              }
 
-    public static void  saveBitmap(Bitmap bm) {
+    public static void  saveBitmap(Bitmap bm,String name) {
         //Log.e(TAG, "保存图片");
-        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
+        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/demo/"+name);
         //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         Date date = new Date(f.lastModified());
         Log.d("xing--",date.toString());
@@ -49,7 +49,10 @@ public class Util {
         }
         try {
             FileOutputStream out = new FileOutputStream(f);
+            if(name.equals("headpicture.jpg"))
             bm.compress(Bitmap.CompressFormat.JPEG, 65, out);
+            else
+                bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
             //Log.i(TAG, "已经保存");
@@ -69,6 +72,11 @@ public class Util {
     public static boolean hasSdcard() {
         return Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED);
+    }
+
+    public static boolean hasFile(String path) {
+        File f = new File(path);
+        return f.exists();
     }
 
     public static void copyFile(String oldPath, String newPath) {
