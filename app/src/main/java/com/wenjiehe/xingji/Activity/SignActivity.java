@@ -203,15 +203,15 @@ public class SignActivity extends AppCompatActivity {
                 .multiSelect(false)
                 // “确定”按钮背景色
                 //.btnBgColor(Color.parseColor("#6495ED"))
-                .btnBgColor(Color.BLACK)
+                .btnBgColor(Color.parseColor("#6495ED"))
                 // “确定”按钮文字颜色
-                .btnTextColor(Color.BLACK)
+                .btnTextColor(Color.parseColor("#6495ED"))
                 // 标题
                 .title("图片")
                 // 标题文字颜色
                 .titleColor(Color.WHITE)
                 // TitleBar背景色
-                .titleBgColor(Color.BLACK)
+                .titleBgColor(Color.parseColor("#6495ED"))
                 // 裁剪大小。needCrop为true的时候配置
                 //.cropSize(1, 1, 200, 200)
                 .needCrop(false)
