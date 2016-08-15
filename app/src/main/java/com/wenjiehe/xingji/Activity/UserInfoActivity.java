@@ -502,9 +502,9 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             public void run() {
                 historySignNum = 0;
                 syncHistorySignInfo();
-                refresh.refreshComplete();
+                //refresh.refreshComplete();
             }
-        }, 2800);
+        }, 2600);
     }
 
     @Override
