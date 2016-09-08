@@ -39,7 +39,7 @@ public class Util {
 
     public static void  saveBitmap(Bitmap bm,String name) {
         //Log.e(TAG, "保存图片");
-        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/demo/"+name);
+        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/"+name);
         //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         Date date = new Date(f.lastModified());
         Log.d("xing--",date.toString());
