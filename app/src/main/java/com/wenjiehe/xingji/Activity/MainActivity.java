@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                 });*/
                 if(avObject ==null){//未联网获取
                     MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                            (Environment.getExternalStorageDirectory() + "/xingji/demo/headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/headpicture.jpg");
                     if (MainActivity.upadteUserPhotoBitmap!=null) {
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
                 else {
                     Date date = avObject.getDate("headphotodate");
                     long userphototime = Util.getFileDateInfo
-                            (Environment.getExternalStorageDirectory() + "/xingji/demo/", "headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/", "headpicture.jpg");
                     long onlinephototime = date.getTime();
                     //Log.d("MainActivity-2-",String.valueOf(userphototime));
                     //Log.d("MainActivity-2-",String.valueOf(date));
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
                     //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
                     if ((onlinephototime - userphototime) < 10000) {
                         MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                                (Environment.getExternalStorageDirectory() + "/xingji/demo/headpicture.jpg");
+                                (Environment.getExternalStorageDirectory() + "/xingji/headpicture.jpg");
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
                     //Log.d("MainActivity","不需要更新");
