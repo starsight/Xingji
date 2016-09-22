@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -234,14 +235,16 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_main, sf);
             ft.commit();
         } else if (id == R.id.slide_item_history) {
-            /*ft = this.getFragmentManager().beginTransaction();
+            ft = this.getFragmentManager().beginTransaction();
             hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
-            ft.commit();*/
-        } else if (id == R.id.slide_item_settings) {
+            ft.commit();
+        //} else if (id == R.id.slide_item_settings) {
 
         } else if (id == R.id.slide_item_exit) {
-
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            finish();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -258,6 +261,40 @@ public class MainActivity extends AppCompatActivity
         if(MainActivity.isUpadteUserPhoto==true){
             iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
             MainActivity.isUpadteUserPhoto = false;
+        }
+    }
+
+
+    private long exitTime = 0;
+
+    /**
+     * 捕捉返回事件按钮
+     *
+     * 因为此 Activity 继承 TabActivity 用 onKeyDown 无响应，所以改用 dispatchKeyEvent
+     * 一般的 Activity 用 onKeyDown 就可以了
+     */
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                this.exitApp();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    /**
+     * 退出程序
+     */
+    private void exitApp() {
+        // 判断2次点击事件时间
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
         }
     }
 }

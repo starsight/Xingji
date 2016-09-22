@@ -63,7 +63,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
     private int beforeWeekNum = 1;
     private int setPerGet = SETPERGET;
     private int canLoadNum = 0;
-    private int loadSignNumThisTime = 0;
+    //private int loadSignNumThisTime = 0;
     private boolean isAdapter = false;
     private CircleImageView iv_userinfo_headerphoto;
 

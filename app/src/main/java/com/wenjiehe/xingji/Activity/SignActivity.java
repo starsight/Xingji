@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,6 +76,9 @@ public class SignActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_sign_toolbar);
+        setSupportActionBar(toolbar);
+
         et_activity_sign = (EditText) findViewById(R.id.et_activity_sign);
         tv_activity_sign_location = (TextView) findViewById(R.id.tv_activity_sign_location);
         tv_activity_sign_send = (TextView) findViewById(R.id.tv_activity_sign_send);
@@ -102,6 +106,13 @@ public class SignActivity extends AppCompatActivity {
             //startActivityForResult(intent2, RESQUESTCAMERA);
             withphoto();
         }
+
+        iv_activity_sign_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                withphoto();
+            }
+        });
 
         tv_activity_sign_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,9 +215,9 @@ public class SignActivity extends AppCompatActivity {
                 .multiSelect(false)
                 // “确定”按钮背景色
                 //.btnBgColor(Color.parseColor("#6495ED"))
-                .btnBgColor(Color.parseColor("#6495ED"))
+                .btnBgColor(Color.parseColor("#006495ED"))
                 // “确定”按钮文字颜色
-                .btnTextColor(Color.parseColor("#6495ED"))
+                .btnTextColor(Color.parseColor("#006495ED"))
                 // 标题
                 .title("图片")
                 // 标题文字颜色
@@ -267,14 +278,13 @@ public class SignActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // TODO Auto-generated method stub
-        if(item.getItemId() == android.R.id.home)
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

@@ -8,15 +8,16 @@
         <item
             android:id="@+id/slide_item_history"
             android:title="@string/slide_history" />
-        <item
-            android:id="@+id/slide_item_settings"
-            android:title="@string/slide_settings" />
+
         <item
             android:id="@+id/slide_item_exit"
             android:title="@string/slide_exit" />
     </group>
 
     <!--
+<item
+            android:id="@+id/slide_item_settings"
+            android:title="@string/slide_settings" />
 
     <item android:title="Communicate">
         <menu>
