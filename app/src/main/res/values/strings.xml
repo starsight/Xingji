@@ -44,17 +44,6 @@
     <string name="success_register_success">注册成功</string>
 
 
-    <string name="action_logout_alert_message">确定更换账号么？之前保留的账号信息将被删除。</string>
-    <string name="action_about_app_text">..</string>
-    <string name="action_about_app_doing_list_title">我希望在“正在做”中，加入如下的事情:\n我要提意见:</string>
-    <string name="action_about_app_submit_doing">提交</string>
-    <string name="action_about_app_submit_doing_hint">输入意见或希望添加在“正在做”中的内容。</string>
-    <string name="action_about_app_submit_message_success">感谢您的提交。祝您生活愉快。</string>
-    <string name="action_about_app_submit_message_error">非常抱歉，提交出错。</string>
-
-    <string name="person_register_time">注册时间:{0}</string>
-    <string name="person_achievement_list_null">暂无成就</string>
-
     <string name="wait_loading">正在加载</string>
     <string name="error_loading">加载错误，请检查网络</string>
     <string name="error_loading_click_again">加载失败，轻触重试</string>

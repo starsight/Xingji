@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activity.UserInfoActivity"
+    tools:context=".Activity.UserMomentsActivity"
     tools:showIn="@layout/activity_user_info">
 
     <com.wenjiehe.xingji.view.MyInfoCardListView android:layout_width="match_parent"

@@ -8,28 +8,28 @@
         <item
             android:id="@+id/slide_item_history"
             android:title="@string/slide_history" />
-
+        <item
+            android:id="@+id/slide_item_settings"
+            android:title="@string/slide_settings" />
         <item
             android:id="@+id/slide_item_exit"
             android:title="@string/slide_exit" />
     </group>
 
-    <!--
-<item
-            android:id="@+id/slide_item_settings"
-            android:title="@string/slide_settings" />
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
-    -->
+
+    <!--
+       <item android:title="Communicate">
+           <menu>
+               <item
+                   android:id="@+id/nav_share"
+                   android:icon="@drawable/ic_menu_share"
+                   android:title="Share" />
+               <item
+                   android:id="@+id/nav_send"
+                   android:icon="@drawable/ic_menu_send"
+                   android:title="Send" />
+           </menu>
+       </item>
+       -->
 </menu>

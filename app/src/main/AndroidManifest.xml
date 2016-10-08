@@ -47,8 +47,7 @@
         -->
 
         <activity
-            android:name=".Activity.UserInfoActivity"
-            android:label="@string/title_activity_me_info"
+            android:name=".Activity.UserMomentsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.EditUserInfoActivity"
@@ -61,7 +60,8 @@
         <activity
             android:name=".Activity.SignActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".Activity.EditSettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:id="@+id/can_content_view"
         android:fitsSystemWindows="true"
-        tools:context=".Activity.UserInfoActivity">
+        tools:context=".Activity.UserMomentsActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"

@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentTransaction;
-import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,13 +24,11 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
-import com.avos.avoscloud.SaveCallback;
 import com.wenjiehe.xingji.Fragment.MyHistorySignFragment;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
@@ -99,7 +95,7 @@ public class MainActivity extends AppCompatActivity
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 Intent mainIntent = new Intent(v.getContext(),
-                        UserInfoActivity.class);
+                        UserMomentsActivity.class);
                 startActivity(mainIntent);
                 //activity.finish();
             }
@@ -239,8 +235,10 @@ public class MainActivity extends AppCompatActivity
             hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
             ft.commit();
-        //} else if (id == R.id.slide_item_settings) {
-
+        } else if (id == R.id.slide_item_settings) {
+            Intent Intent = new Intent(this,
+                    EditSettingActivity.class);
+            startActivity(Intent);
         } else if (id == R.id.slide_item_exit) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);

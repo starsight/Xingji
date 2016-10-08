@@ -12,28 +12,22 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
-import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
-import com.avos.avoscloud.SaveCallback;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.model.inner.MapBound;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
 import com.wenjiehe.xingji.RecyclerViewAdapter;
 import com.wenjiehe.xingji.Util;
-import com.wenjiehe.xingji.view.MyInfoCardListView;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
@@ -47,12 +41,8 @@ import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.base.BaseCard;
 
-public class UserInfoActivity extends AppCompatActivity implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
+public class UserMomentsActivity extends AppCompatActivity implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 
     private final int SETPERGET = 10;
     //private ArrayList<Card> cards = new ArrayList<Card>();
@@ -67,7 +57,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
     private boolean isAdapter = false;
     private CircleImageView iv_userinfo_headerphoto;
 
-    String TAG = "UserInfoActivity";
+    String TAG = "UserMomentsActivity";
 
     //private FragmentTransaction ft;
     //public MyHistorySignInfoFragment hsif;
@@ -83,8 +73,9 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_info);
+        setContentView(R.layout.activity_user_moments);
         Toolbar toolbar = (Toolbar) findViewById(R.id.meinfo_toolbar);
+        toolbar.setTitle(AVUser.getCurrentUser().getUsername()+"的动态");
         setSupportActionBar(toolbar);
 
         refresh = (CanRefreshLayout) findViewById(R.id.refresh);
@@ -115,7 +106,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter = new RecyclerViewAdapter(signInfo, UserInfoActivity.this);
+        adapter = new RecyclerViewAdapter(signInfo, UserMomentsActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -166,7 +157,7 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
                     Log.d(TAG,String.valueOf(canLoadNum));
                     getHistorySignRecord();
                 } else {
-                    SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
+                    SignInfo.readSignInfoFromFile(UserMomentsActivity.this, MainActivity.arraylistHistorySign);
                     //showSignRecord();
                     //adapter.updateRecyclerView();
                     canLoadNum = MainActivity.signNum - MainActivity.arraylistHistorySign.size();
@@ -347,13 +338,13 @@ public class UserInfoActivity extends AppCompatActivity implements CanRefreshLay
             switch (msg.what) {
                 case 1:
                     if (historySignNum < setPerGet) {
-                        Log.d(TAG + "setPerNum", String.valueOf(setPerGet));
-                        Log.d(TAG + "canLoadNum", String.valueOf(canLoadNum));
-                        Log.d(TAG + "historySignNum", String.valueOf(historySignNum));
+                        //Log.d(TAG + "setPerNum", String.valueOf(setPerGet));
+                        //Log.d(TAG + "canLoadNum", String.valueOf(canLoadNum));
+                        //Log.d(TAG + "historySignNum", String.valueOf(historySignNum));
                         //canLoadNum -= setPerGet;
                         getHistorySignRecord();
                     } else {
-                        SignInfo.readSignInfoFromFile(UserInfoActivity.this, MainActivity.arraylistHistorySign);
+                        SignInfo.readSignInfoFromFile(UserMomentsActivity.this, MainActivity.arraylistHistorySign);
                         //showSignRecord();
                         //adapter.updateRecyclerView();
 
