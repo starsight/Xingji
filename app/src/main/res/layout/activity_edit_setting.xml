@@ -73,6 +73,11 @@
             android:layout_marginRight="@dimen/actions_padding"
             android:text="开启后，行迹将会把你的签到信息推送给签到位置附近的人，你也可以查看签到附近其他人的签到信息。" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/fadegray" />
+
         <RelativeLayout
             android:id="@+id/layout_edit_showsign"
             android:layout_width="fill_parent"
@@ -124,6 +129,38 @@
             android:layout_marginLeft="@dimen/actions_padding_left"
             android:layout_marginTop="@dimen/card_topcolored_subtitle_textsize"
             android:text="其他" />
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_activity_edit_setting_about"
+                android:layout_marginBottom="@dimen/card_thumbnail_image_text_over_textsize"
+                android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip"
+                android:text="关于行迹"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/fadegray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_activity_edit_setting_access"
+            android:layout_marginBottom="@dimen/card_thumbnail_image_text_over_textsize"
+            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dip"
+            android:text="给行迹评分"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
     </LinearLayout>
 </RelativeLayout>
 
