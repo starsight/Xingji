@@ -235,6 +235,11 @@ public class MainActivity extends AppCompatActivity
             hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
             ft.commit();
+        } else if (id == R.id.slide_item_nearby_moments) {
+//            ft = this.getFragmentManager().beginTransaction();
+//            hsf = new MyHistorySignFragment();
+//            ft.replace(R.id.content_main, hsf);
+//            ft.commit();
         } else if (id == R.id.slide_item_settings) {
             Intent Intent = new Intent(this,
                     EditSettingActivity.class);

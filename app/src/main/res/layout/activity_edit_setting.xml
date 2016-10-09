@@ -22,8 +22,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edit_userinfo_toolbar"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/edit_userinfo_toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
 
         <TextView
@@ -37,7 +39,7 @@
             android:id="@+id/layout_edit_privacy"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_thumbnail_image_text_over_textsize"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -71,10 +73,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/actions_padding"
             android:layout_marginRight="@dimen/actions_padding"
-            android:text="开启后，行迹将会把你的签到信息推送给签到位置附近的人，你也可以查看签到附近其他人的签到信息。" />
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:text="开启后，行迹将会把你的签到信息推送给签到位置附近的人，你也可以查看当前位置附近其他人的签到信息。" />
 
         <View
             android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/actions_padding_left"
             android:layout_height="1px"
             android:background="@color/fadegray" />
 
@@ -83,7 +87,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
-            android:layout_marginTop="@dimen/card_thumbnail_image_text_over_textsize"
+            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -120,7 +124,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="2px"
             android:background="@color/fadegray" />
 
         <TextView
@@ -136,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_activity_edit_setting_about"
-                android:layout_marginBottom="@dimen/card_thumbnail_image_text_over_textsize"
+                android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
                 android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip"
@@ -153,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_activity_edit_setting_access"
-            android:layout_marginBottom="@dimen/card_thumbnail_image_text_over_textsize"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dip"

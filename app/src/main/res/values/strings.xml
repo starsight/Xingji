@@ -8,6 +8,7 @@
     <string name="header_signnum_text">签到次数:</string>
     <string name="slide_sign">签到</string>
     <string name="slide_history">历史签到</string>
+    <string name="slide_nearby_moments">附近动态</string>
     <string name="slide_settings">设置</string>
     <string name="slide_exit">退出应用</string>
 
