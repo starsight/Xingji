@@ -92,7 +92,7 @@ public class MyHistorySignFragment extends Fragment {
 
                     @Override
                     public void onFinish() {
-                        Log.d(TAG + "onLoad", "onLoading");
+                        //Log.d(TAG + "onLoad", "onLoading");
                         historySignNum = 0;
                         syncHistorySignInfo();
                     }
@@ -213,12 +213,12 @@ public class MyHistorySignFragment extends Fragment {
                 for (int i = 0; i < cards.size(); i++) {
                     if (cards.get(i).getId().equals(signinfo.objectId)) {
                         isCardExist.set(i, 1);
-                        Log.d(TAG + "showSignRecord", String.valueOf(i));
+                        //Log.d(TAG + "showSignRecord", String.valueOf(i));
                         break;
                         //isHistorySignExist[i] = 1;
                     } else if (i == (cards.size() - 1)) {
                         if (!cards.get(i).getId().equals(signinfo.objectId)) {
-                            Log.d(TAG + "showSignRecord--add", String.valueOf(i));
+                            //Log.d(TAG + "showSignRecord--add", String.valueOf(i));
                             isCardExist.add(cards.size(), 1);
                             addToCards(signinfo);
                         } else
@@ -460,8 +460,8 @@ public class MyHistorySignFragment extends Fragment {
             switch (msg.what) {
                 case 1:
                     if (historySignNum < setPerGet) {
-                        Log.d(TAG + "setPerNum", String.valueOf(setPerGet));
-                        Log.d(TAG + "historySignNum", String.valueOf(historySignNum));
+                        //Log.d(TAG + "setPerNum", String.valueOf(setPerGet));
+                        //Log.d(TAG + "historySignNum", String.valueOf(historySignNum));
                         canLoadNum-=setPerGet;
                         getHistorySignRecord();
                     } else {
