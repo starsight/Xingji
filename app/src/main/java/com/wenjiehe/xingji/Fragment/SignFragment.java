@@ -354,8 +354,8 @@ public class SignFragment extends Fragment {
             mylongitude=location.getLongitude();
             point = new LatLng(mylatitude, mylongitude);
             System.out.println("mylatitude=" + mylatitude + ",mylongitude=" + mylongitude);
-            if(mylatitude==0.0)
-                Log.d(LOG_D,"get location banned");
+            /*if(mylatitude==0.0)
+                Log.d(LOG_D,"get location banned");*/
             baiduMap.setMyLocationData(locData);
 
             //location.getLocType();

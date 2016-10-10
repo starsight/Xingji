@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
+import com.avos.avoscloud.AVUser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,7 +41,8 @@ public class Util {
 
     public static void  saveBitmap(Bitmap bm,String name) {
         //Log.e(TAG, "保存图片");
-        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/"+name);
+
+        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+name);
         //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         Date date = new Date(f.lastModified());
         Log.d("xing--",date.toString());

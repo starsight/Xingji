@@ -60,8 +60,11 @@
             android:name=".Activity.EditSettingActivity"
             android:label="设置"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.MyMomentsActivity"></activity>
-
+        <activity android:name=".Activity.MyMomentsActivity" />
+        <activity
+            android:name=".Activity.NearbyMomentsActivity"
+            android:label="附近动态"
+        android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

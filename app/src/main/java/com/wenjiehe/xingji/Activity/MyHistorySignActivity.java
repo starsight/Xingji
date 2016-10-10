@@ -42,7 +42,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyHistorySignActivity extends AppCompatActivity implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
+public class MyHistorySignActivity extends AppCompatActivity
+        implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 
     private final int SETPERGET = 10;
     //private ArrayList<Card> cards = new ArrayList<Card>();
@@ -250,7 +251,7 @@ public class MyHistorySignActivity extends AppCompatActivity implements CanRefre
                                 @Override
                                 public void done(byte[] bytes, AVException e) {
                                     // bytes 就是文件的数据流
-                                    Util.saveBitmap(Util.bytes2Bimap(bytes),file.getObjectId());
+                                    Util.saveBitmap(Util.bytes2Bimap(bytes),"Signs/"+file.getObjectId());
                                 }
                             }, new ProgressCallback() {
                                 @Override
@@ -291,7 +292,7 @@ public class MyHistorySignActivity extends AppCompatActivity implements CanRefre
                                             @Override
                                             public void done(byte[] bytes, AVException e) {
                                                 // bytes 就是文件的数据流
-                                                Util.saveBitmap(Util.bytes2Bimap(bytes),file.getObjectId());
+                                                Util.saveBitmap(Util.bytes2Bimap(bytes),"Signs/"+file.getObjectId());
                                             }
                                         }, new ProgressCallback() {
                                             @Override

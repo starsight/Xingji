@@ -113,11 +113,19 @@ public class MainActivity extends AppCompatActivity
         //创建xingji目录
         File destDir = new File(Environment.getExternalStorageDirectory()+"/xingji");
         File destDir2 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername());
+        File destDir3 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername()+"/Moments");
+        File destDir4 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername()+"/Signs");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
         if (!destDir2.exists()) {
             destDir2.mkdirs();
+        }
+        if (!destDir3.exists()) {
+            destDir3.mkdirs();
+        }
+        if (!destDir4.exists()) {
+            destDir4.mkdirs();
         }
     }
 
@@ -140,7 +148,7 @@ public class MainActivity extends AppCompatActivity
                 });*/
                 if(avObject ==null){//未联网获取
                     MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                            (Environment.getExternalStorageDirectory() + "/xingji/headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+"headpicture.jpg");
                     if (MainActivity.upadteUserPhotoBitmap!=null) {
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
@@ -149,7 +157,7 @@ public class MainActivity extends AppCompatActivity
                 else {
                     Date date = avObject.getDate("headphotodate");
                     long userphototime = Util.getFileDateInfo
-                            (Environment.getExternalStorageDirectory() + "/xingji/", "headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/"+AVUser.getCurrentUser().getUsername(), "headpicture.jpg");
                     long onlinephototime = date.getTime();
                     //Log.d("MainActivity-2-",String.valueOf(userphototime));
                     //Log.d("MainActivity-2-",String.valueOf(date));
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity
                     //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
                     if ((onlinephototime - userphototime) < 10000) {
                         MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                                (Environment.getExternalStorageDirectory() + "/xingji/headpicture.jpg");
+                                (Environment.getExternalStorageDirectory() + "/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+"headpicture.jpg");
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
                     //Log.d("MainActivity","不需要更新");
@@ -243,6 +251,9 @@ public class MainActivity extends AppCompatActivity
 //            hsf = new MyHistorySignFragment();
 //            ft.replace(R.id.content_main, hsf);
 //            ft.commit();
+            Intent Intent = new Intent(this,
+                    NearbyMomentsActivity.class);
+            startActivity(Intent);
         } else if (id == R.id.slide_item_settings) {
             Intent Intent = new Intent(this,
                     EditSettingActivity.class);
