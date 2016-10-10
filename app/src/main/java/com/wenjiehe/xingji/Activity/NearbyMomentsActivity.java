@@ -1,8 +1,5 @@
 package com.wenjiehe.xingji.Activity;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,45 +8,33 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
-import com.avos.avoscloud.RefreshCallback;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
 import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
-import com.wenjiehe.xingji.Fragment.SignFragment;
+import com.wenjiehe.xingji.NearbyRecyclerViewAdapter;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.RecyclerViewAdapter;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
 import com.wenjiehe.xingji.Util;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static com.wenjiehe.xingji.Activity.MainActivity.arraylistHistorySign;
-import static com.wenjiehe.xingji.R.id.iv_userinfo_headerphoto;
 
 public class NearbyMomentsActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
@@ -62,7 +47,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
     private RecyclerView recyclerView;
     private List<SignInfo> signInfo = arraylistHistorySign;
-    private RecyclerViewAdapter adapter;
+    private NearbyRecyclerViewAdapter adapter;
 
     /*baiduMap 定位*/
     public LocationClient mLocationClient = null;
@@ -99,7 +84,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter = new RecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
+        adapter = new NearbyRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -144,6 +129,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
             public void done(List<AVObject> list, AVException e) {
                 String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp, photoIdTmp = "0";
                 double lattmp, lngtmp;
+                String usernameTmp;
                 if (list == null)
                     return;
 
@@ -156,6 +142,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
                     citytmp = avObject.getString("city");
                     streettmp = avObject.getString("street");
                     eventtmp = avObject.getString("event");
+                    usernameTmp = avObject.getString("username");
                     locDescribetmp = avObject.getString("locdescribe");
                     if (avObject.getAVFile("signphoto") != null) {
                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
@@ -178,7 +165,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
 
                     SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp);
+                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp, usernameTmp);
                     arraylistNearbyMoments.add(signinfotmp);
                     adapter.notifyDataSetChanged();
                     refresh.loadMoreComplete();

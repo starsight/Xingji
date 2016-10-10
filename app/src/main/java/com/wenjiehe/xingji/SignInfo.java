@@ -23,6 +23,7 @@ import java.util.ArrayList;
  */
 public class SignInfo implements Parcelable {
 
+    public String username;
     public LatLng latlng;
     public SignLocation location;
     public String date;
@@ -56,6 +57,15 @@ public class SignInfo implements Parcelable {
         this.photoId = photoId;
     }
 
+    public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId,String photoId,String username){
+        this.latlng = latlng;
+        this.date = date;
+        this.location = location;
+        this.objectId = objectId;
+        this.event = event;
+        this.photoId = photoId;
+        this.username =username;
+    }
 
     public String getPhotoId() {
         return photoId;
@@ -69,6 +79,7 @@ public class SignInfo implements Parcelable {
         event = in.readString();
         objectId = in.readString();
         photoId = in.readString();
+        username = in.readString();
     }
 
     public static final Creator<SignInfo> CREATOR = new Creator<SignInfo>() {
@@ -227,5 +238,6 @@ public class SignInfo implements Parcelable {
         dest.writeString(event);
         dest.writeString(objectId);
         dest.writeString(photoId);
+        dest.writeString(username);
     }
 }

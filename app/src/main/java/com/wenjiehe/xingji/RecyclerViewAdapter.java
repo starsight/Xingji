@@ -28,8 +28,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.NewsViewHolder> {
 
     final String TAG = "RecyclerViewAdapter";
-    private List<SignInfo> signInfo;
-    private Context context;
+    protected List<SignInfo> signInfo;
+    protected Context context;
 
     public RecyclerViewAdapter() {
 
@@ -75,11 +75,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 news_photo.setVisibility(View.VISIBLE);
             else if (type == 0)
                 news_title.setTextColor(Color.parseColor("#434343"));
-            else if (type == 3) {//add for moments
+            else if (type == 2) {//add for moments
+                news_photo.setVisibility(View.VISIBLE);
+
                 tv_news_owns.setVisibility(View.VISIBLE);
                 iv_news_userphoto.setVisibility(View.VISIBLE);
             }
+            else if(type==3){//add for moments
+                news_title.setTextColor(Color.parseColor("#434343"));
 
+                tv_news_owns.setVisibility(View.VISIBLE);
+                iv_news_userphoto.setVisibility(View.VISIBLE);
+            }
 
         }
 
@@ -125,7 +132,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         if (personViewHolder.news_photo.getVisibility() == View.VISIBLE)
             personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
-                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/" + signInfo.get(j).getPhotoId()));
+                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs/" + signInfo.get(j).getPhotoId()));
 
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {

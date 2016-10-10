@@ -82,7 +82,7 @@ public class Util {
         return f.exists();
     }
 
-    public static void copyFile(String oldPath, String newPath) {
+    public static void copyFile(String oldPath, String newPath) {//把本机上的签到图片拷贝到xingji目录下，需优化！
         try {
             int bytesum = 0;
             int byteread = 0;

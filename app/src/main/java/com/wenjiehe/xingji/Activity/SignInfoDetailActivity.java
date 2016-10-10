@@ -58,7 +58,7 @@ public class SignInfoDetailActivity extends AppCompatActivity {
         tv_detail_signinfoevent.setText(item.getEvent());
 
         if (!item.getPhotoId().equals("0")) {
-            Bitmap bm = Util.file2bitmap(Environment.getExternalStorageDirectory() + "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/" + item.getPhotoId());
+            Bitmap bm = Util.file2bitmap(Environment.getExternalStorageDirectory() + "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/Signs/" + item.getPhotoId());
             iv_detail_signinfophoto.setImageBitmap(bm);
             iv_detail_signinfophoto.setVisibility(View.VISIBLE);
         }

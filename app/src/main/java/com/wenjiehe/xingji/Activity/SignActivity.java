@@ -172,7 +172,7 @@ public class SignActivity extends AppCompatActivity {
                                                 new SignLocation(province, city, street, locDescribe),event,
                                                 userSign.getObjectId(), userSign.getAVFile("signphoto").getObjectId()));
                                     Util.copyFile(photoDis,Environment.getExternalStorageDirectory()+
-                                            "/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+userSign.getAVFile("signphoto").getObjectId());
+                                            "/xingji/"+AVUser.getCurrentUser().getUsername()+"/Signs/"+userSign.getAVFile("signphoto").getObjectId());
                                     }
                                     else
                                     MainActivity.arraylistHistorySign.add(new SignInfo(new LatLng(latitude, longitude),date,
