@@ -13,13 +13,37 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         app:cardCornerRadius="3dp"
-        app:cardElevation="8dp">
+        app:cardElevation="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_news_userphoto"
+                android:layout_marginLeft="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:visibility="gone"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_news_owns"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_news_userphoto"
+                android:layout_marginTop="2dp"
+                android:text="用户名"
+                android:visibility="gone"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <RelativeLayout
                 android:id="@+id/news_header"
+                android:layout_below="@+id/tv_news_owns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -58,7 +82,7 @@
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/btn_share"
-                    android:text="SHARE"
+                    android:text="分享"
                     android:background="#00000000"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
@@ -68,7 +92,7 @@
                     android:id="@+id/btn_more"
                     android:background="#00000000"
                     android:textColor="#7AD3E0"
-                    android:text="READ MORE"
+                    android:text="更多"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

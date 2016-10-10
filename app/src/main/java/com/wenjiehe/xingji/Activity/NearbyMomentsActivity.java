@@ -309,4 +309,5 @@ public class NearbyMomentsActivity extends AppCompatActivity
             Log.i("BaiduLocationApiDem", sb.toString());*/
         }
     }
+
 }
