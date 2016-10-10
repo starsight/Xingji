@@ -42,7 +42,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserMomentsActivity extends AppCompatActivity implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
+public class MyHistorySignActivity extends AppCompatActivity implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 
     private final int SETPERGET = 10;
     //private ArrayList<Card> cards = new ArrayList<Card>();
@@ -57,7 +57,7 @@ public class UserMomentsActivity extends AppCompatActivity implements CanRefresh
     private boolean isAdapter = false;
     private CircleImageView iv_userinfo_headerphoto;
 
-    String TAG = "UserMomentsActivity";
+    String TAG = "MyHistorySignActivity";
 
     //private FragmentTransaction ft;
     //public MyHistorySignInfoFragment hsif;
@@ -73,9 +73,9 @@ public class UserMomentsActivity extends AppCompatActivity implements CanRefresh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_moments);
+        setContentView(R.layout.activity_my_history_sign);
         Toolbar toolbar = (Toolbar) findViewById(R.id.meinfo_toolbar);
-        toolbar.setTitle(AVUser.getCurrentUser().getUsername()+"的动态");
+        toolbar.setTitle(AVUser.getCurrentUser().getUsername()+"的历史签到");
         setSupportActionBar(toolbar);
 
         refresh = (CanRefreshLayout) findViewById(R.id.refresh);
@@ -106,7 +106,7 @@ public class UserMomentsActivity extends AppCompatActivity implements CanRefresh
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter = new RecyclerViewAdapter(signInfo, UserMomentsActivity.this);
+        adapter = new RecyclerViewAdapter(signInfo, MyHistorySignActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -157,7 +157,7 @@ public class UserMomentsActivity extends AppCompatActivity implements CanRefresh
                     Log.d(TAG,String.valueOf(canLoadNum));
                     getHistorySignRecord();
                 } else {
-                    SignInfo.readSignInfoFromFile(UserMomentsActivity.this, MainActivity.arraylistHistorySign);
+                    SignInfo.readSignInfoFromFile(MyHistorySignActivity.this, MainActivity.arraylistHistorySign);
                     //showSignRecord();
                     //adapter.updateRecyclerView();
                     canLoadNum = MainActivity.signNum - MainActivity.arraylistHistorySign.size();
@@ -344,7 +344,7 @@ public class UserMomentsActivity extends AppCompatActivity implements CanRefresh
                         //canLoadNum -= setPerGet;
                         getHistorySignRecord();
                     } else {
-                        SignInfo.readSignInfoFromFile(UserMomentsActivity.this, MainActivity.arraylistHistorySign);
+                        SignInfo.readSignInfoFromFile(MyHistorySignActivity.this, MainActivity.arraylistHistorySign);
                         //showSignRecord();
                         //adapter.updateRecyclerView();
 

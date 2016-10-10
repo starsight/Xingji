@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 Intent mainIntent = new Intent(v.getContext(),
-                        UserMomentsActivity.class);
+                        MyMomentsActivity.class);
                 startActivity(mainIntent);
                 //activity.finish();
             }
@@ -231,10 +231,13 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_main, sf);
             ft.commit();
         } else if (id == R.id.slide_item_history) {
-            ft = this.getFragmentManager().beginTransaction();
+            /*ft = this.getFragmentManager().beginTransaction();
             hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
-            ft.commit();
+            ft.commit();*/
+            Intent Intent = new Intent(this,
+                    MyHistorySignActivity.class);
+            startActivity(Intent);
         } else if (id == R.id.slide_item_nearby_moments) {
 //            ft = this.getFragmentManager().beginTransaction();
 //            hsf = new MyHistorySignFragment();

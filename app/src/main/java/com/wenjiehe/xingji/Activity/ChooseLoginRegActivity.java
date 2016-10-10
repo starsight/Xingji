@@ -6,8 +6,10 @@ package com.wenjiehe.xingji.Activity;
 
 import com.avos.avoscloud.AVException;
 //import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.baidu.mapapi.SDKInitializer;
 import com.wenjiehe.xingji.AVService;
@@ -31,6 +33,8 @@ import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.avos.avoscloud.AVUser.getCurrentUser;
 
 public class ChooseLoginRegActivity extends BaseActivity {
 
@@ -160,20 +164,19 @@ public class ChooseLoginRegActivity extends BaseActivity {
                 return;
             }
             progressDialogShow();
-            AVUser.logInInBackground(username,
-                    passwd,
+            AVUser.logInInBackground(username, passwd,
                     new LogInCallback() {
                         public void done(AVUser user, AVException e) {
                             if (user != null) {
                                 progressDialogDismiss();
+
                                 Intent mainIntent = new Intent(activity,
                                         MainActivity.class);
-                                AVUser currentUser = AVUser.getCurrentUser();
+                                AVUser currentUser = getCurrentUser();
                                 if (currentUser != null) {
                                     mainIntent.putExtra("username",currentUser.getUsername());
                                     mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
                                 }
-
                                 startActivity(mainIntent);
                                 activity.finish();
                             } else {
@@ -187,7 +190,6 @@ public class ChooseLoginRegActivity extends BaseActivity {
     };
 
     OnClickListener forgetPasswordListener = new OnClickListener() {
-
         @Override
         public void onClick(View arg0) {
             Intent forgetPasswordIntent = new Intent(activity, ForgetPasswordActivity.class);
@@ -339,14 +341,32 @@ public class ChooseLoginRegActivity extends BaseActivity {
                 progressDialogDismiss();
                 if (e == null) {
                     //showRegisterSuccess();
-                    Intent mainIntent = new Intent(activity, MainActivity.class);
-                    AVUser currentUser = AVUser.getCurrentUser();
-                    if (currentUser != null) {
-                        mainIntent.putExtra("username",currentUser.getUsername());
-                        mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
-                    }
-                    startActivity(mainIntent);
-                    activity.finish();
+                    /*建uMoments表*/
+                    String objectid = AVUser.getCurrentUser().getObjectId();
+                    Log.d("choose",objectid);
+                    AVObject todo = new AVObject("u"+objectid);
+                    todo.put("type","{\"21\":\"333\"}");
+                    todo.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            if (e == null) {
+                                // 存储成功
+                                Intent mainIntent = new Intent(activity, MainActivity.class);
+                                AVUser currentUser = getCurrentUser();
+                                if (currentUser != null) {
+                                    mainIntent.putExtra("username",currentUser.getUsername());
+                                    mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
+                                }
+                                startActivity(mainIntent);
+                                activity.finish();
+                            } else {
+                                progressDialogDismiss();
+                                showLoginError();
+                                // 失败的话，请检查网络环境以及 SDK 配置是否正确
+                            }
+                        }
+                    });
+
                 } else {
                     switch (e.getCode()) {
                         case 202:

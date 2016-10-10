@@ -19,8 +19,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.ChooseLoginRegActivity"
             android:label="@string/app_name">
@@ -42,13 +41,9 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="7NXABr11o7hVbKdrUffT1ylXyyzqEyON" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
 
         <activity
-            android:name=".Activity.UserMomentsActivity"
+            android:name=".Activity.MyHistorySignActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.EditUserInfoActivity"
@@ -61,9 +56,12 @@
         <activity
             android:name=".Activity.SignActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.EditSettingActivity"
+        <activity
+            android:name=".Activity.EditSettingActivity"
             android:label="设置"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.MyMomentsActivity"></activity>
+
     </application>
 
 </manifest>

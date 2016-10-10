@@ -23,9 +23,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.wenjiehe.xingji.R;
 
-import static com.baidu.location.h.i.c;
-import static com.baidu.location.h.i.n;
-import static com.xiaomi.channel.commonutils.misc.a.f;
+
 
 
 public class EditSettingActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
