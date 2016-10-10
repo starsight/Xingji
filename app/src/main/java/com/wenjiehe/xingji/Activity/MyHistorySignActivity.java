@@ -24,8 +24,10 @@ import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
+import com.canyinghao.canrefresh.classic.ClassicRefreshView;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
+import com.canyinghao.canrefresh.shapeloading.ShapeLoadingView;
 import com.wenjiehe.xingji.RecyclerViewAdapter;
 import com.wenjiehe.xingji.Util;
 import com.wenjiehe.xingji.R;
@@ -64,8 +66,9 @@ public class MyHistorySignActivity extends AppCompatActivity
     //public MyHistorySignInfoFragment hsif;
 
     CanRefreshLayout refresh;
-    RotateRefreshView canRefreshFooter;
     ShapeLoadingRefreshView canRefreshHeader;
+    ClassicRefreshView canRefreshFooter;
+
 
     private RecyclerView recyclerView;
     private List<SignInfo> signInfo = MainActivity.arraylistHistorySign;
@@ -80,8 +83,12 @@ public class MyHistorySignActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         refresh = (CanRefreshLayout) findViewById(R.id.refresh);
-        canRefreshFooter = (RotateRefreshView) findViewById(R.id.can_refresh_footer);
         canRefreshHeader = (ShapeLoadingRefreshView) findViewById(R.id.can_refresh_header);
+        canRefreshFooter = (ClassicRefreshView) findViewById(R.id.can_refresh_footer);
+        canRefreshFooter.setPullStr("下拉刷新");
+        canRefreshFooter.setReleaseStr("释放立即刷新");
+        canRefreshFooter.setCompleteStr("刷新完成");
+        canRefreshFooter.setRefreshingStr("刷新中");
 
         refresh.setOnLoadMoreListener(this);
         refresh.setOnRefreshListener(this);
@@ -420,5 +427,6 @@ public class MyHistorySignActivity extends AppCompatActivity
             iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
         //MainActivity.isUpadteUserPhoto = true;
         //MainActivity.upadteUserPhotoBitmap = bitmap;
+        refresh.autoRefresh();
     }
 }

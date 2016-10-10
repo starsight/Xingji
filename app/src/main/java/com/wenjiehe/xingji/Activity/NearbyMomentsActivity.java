@@ -1,5 +1,7 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +15,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
@@ -22,8 +25,11 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
+import com.canyinghao.canrefresh.classic.ClassicRefreshView;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
+import com.canyinghao.canrefresh.storehouse.StoreHouseRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
+import com.canyinghao.canrefresh.storehouse.StoreHouseRefreshView;
 import com.wenjiehe.xingji.NearbyRecyclerViewAdapter;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.RecyclerViewAdapter;
@@ -34,7 +40,10 @@ import com.wenjiehe.xingji.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.name;
+import static com.baidu.location.h.a.i;
 import static com.wenjiehe.xingji.Activity.MainActivity.arraylistHistorySign;
+import static com.wenjiehe.xingji.Util.hasFile;
 
 public class NearbyMomentsActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
@@ -42,8 +51,9 @@ public class NearbyMomentsActivity extends AppCompatActivity
     String TAG = "NearByMoments";
 
     CanRefreshLayout refresh;
-    RotateRefreshView canRefreshFooter;
-    ShapeLoadingRefreshView canRefreshHeader;
+    ClassicRefreshView canRefreshHeader;
+    //StoreHouseRefreshView canRefreshFooter;
+
 
     private RecyclerView recyclerView;
     private List<SignInfo> signInfo = arraylistHistorySign;
@@ -69,18 +79,20 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);    //注册监听函数
-
-        refresh = (CanRefreshLayout) findViewById(R.id.refresh);
-        canRefreshFooter = (RotateRefreshView) findViewById(R.id.can_refresh_footer);
-        canRefreshHeader = (ShapeLoadingRefreshView) findViewById(R.id.can_refresh_header);
-
         initLocation();
 
+        refresh = (CanRefreshLayout) findViewById(R.id.refresh);
+        //canRefreshFooter = (StoreHouseRefreshView) findViewById(R.id.can_refresh_footer);
+        canRefreshHeader = (ClassicRefreshView) findViewById(R.id.can_refresh_header);
+        canRefreshHeader.setPullStr("下拉刷新");
+        canRefreshHeader.setReleaseStr("释放立即刷新");
+        canRefreshHeader.setCompleteStr("刷新完成");
+        canRefreshHeader.setRefreshingStr("刷新中");
         refresh.setOnLoadMoreListener(this);
         refresh.setOnRefreshListener(this);
         refresh.setRefreshBackgroundResource(R.color.colorPrimary);
         refresh.setLoadMoreBackgroundResource(R.color.window_background);
-        canRefreshHeader.setColors(getResources().getColor(R.color.color_button), getResources().getColor(R.color.color_text), getResources().getColor(R.color.color_red));
+        //canRefreshHeader.setColors(getResources().getColor(R.color.color_button), getResources().getColor(R.color.color_text), getResources().getColor(R.color.color_red));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
@@ -89,12 +101,12 @@ public class NearbyMomentsActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
     }
+
 
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
         int span = 1000;
@@ -111,11 +123,8 @@ public class NearbyMomentsActivity extends AppCompatActivity
         //mLocationClient.start();
     }
 
-    private void syncNearbyMoments() {
-        getHistorySignRecord();
-    }
 
-    public void getHistorySignRecord() {
+    private void syncNearbyMoments() {
 
         AVQuery<AVObject> query = new AVQuery<>("signInfo");
 
@@ -143,6 +152,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
                     streettmp = avObject.getString("street");
                     eventtmp = avObject.getString("event");
                     usernameTmp = avObject.getString("username");
+                    final String str = usernameTmp;
                     locDescribetmp = avObject.getString("locdescribe");
                     if (avObject.getAVFile("signphoto") != null) {
                         photoIdTmp = avObject.getAVFile("signphoto").getObjectId();
@@ -151,7 +161,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
                             @Override
                             public void done(byte[] bytes, AVException e) {
                                 // bytes 就是文件的数据流
-                                Util.saveBitmap(Util.bytes2Bimap(bytes),"Moments/"+file.getObjectId());
+                                Util.saveBitmap(Util.bytes2Bimap(bytes), "Moments/" + file.getObjectId());
                             }
                         }, new ProgressCallback() {
                             @Override
@@ -159,18 +169,45 @@ public class NearbyMomentsActivity extends AppCompatActivity
                                 // 下载进度数据，integer 介于 0 和 100。
                             }
                         });
-                    }
-                    else
+                    } else
                         photoIdTmp = "0";
 
+                    if (!hasFile(Environment.getExternalStorageDirectory() + "/xingji/" +
+                            AVUser.getCurrentUser().getUsername() + "/Moments/" + usernameTmp)) {//没有这个头像
+                        AVQuery<AVObject> queryPhoto = new AVQuery<>("headpicture");
+                        queryPhoto.whereEqualTo("username", usernameTmp);
+                        queryPhoto.findInBackground(new FindCallback<AVObject>() {
+                            @Override
+                            public void done(List<AVObject> list, AVException e) {
+                                if (list == null)
+                                    return;
+                                for (AVObject avObject : list) {
+                                    AVFile file = avObject.getAVFile("headpicture");
+                                    file.getDataInBackground(new GetDataCallback() {
+                                        @Override
+                                        public void done(byte[] bytes, AVException e) {
+                                            // bytes 就是文件的数据流
+                                            Bitmap bitmap  = Util.bytes2Bimap(bytes);
+                                            Util.saveBitmap(bitmap,"Moments/"+str);
+                                        }
+                                    }, new ProgressCallback() {
+                                        @Override
+                                        public void done(Integer integer) {
+                                            // 下载进度数据，integer 介于 0 和 100。
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
 
                     SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
                             new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp, usernameTmp);
                     arraylistNearbyMoments.add(signinfotmp);
-                    adapter.notifyDataSetChanged();
-                    refresh.loadMoreComplete();
-                    refresh.refreshComplete();
                 }
+                adapter.notifyDataSetChanged();
+                refresh.loadMoreComplete();
+                refresh.refreshComplete();
             }
 
         });
@@ -191,9 +228,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         refresh.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //historySignNum = 0;
                 syncNearbyMoments();
-                //refresh.refreshComplete();
             }
         }, 2600);
     }
@@ -219,6 +254,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         super.onStart();
         if (!mLocationClient.isStarted())
             mLocationClient.start();
+        refresh.autoRefresh();
     }
 
     private class MyLocationListener implements BDLocationListener {

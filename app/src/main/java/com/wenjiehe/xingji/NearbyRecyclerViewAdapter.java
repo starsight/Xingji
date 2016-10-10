@@ -3,13 +3,26 @@ package com.wenjiehe.xingji;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.view.View;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.ProgressCallback;
+import com.wenjiehe.xingji.Activity.MainActivity;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 
 import java.util.List;
+
+import static com.wenjiehe.xingji.R.id.iv_news_userphoto;
+import static com.wenjiehe.xingji.Util.bytes2Bimap;
+import static com.wenjiehe.xingji.Util.hasFile;
 
 /**
  * Created by yiyuan on 2016/10/10.
@@ -42,7 +55,12 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
         personViewHolder.news_desc.setText(signInfo.get(i).getEvent());
 
         personViewHolder.tv_news_owns.setText(signInfo.get(i).username);
-
+        String str = Environment.getExternalStorageDirectory() + "/xingji/" +
+                AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(i).username;
+        if(hasFile(str)) {
+            Bitmap b = Util.file2bitmap(str);
+            personViewHolder.iv_news_userphoto.setImageBitmap(b);
+        }
         //为btn_share btn_readMore cardView设置点击事件
         personViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,20 +71,10 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
             }
         });
 
-       /*Log.d(TAG,signInfo.get(i).getPhotoId());
-        if (!signInfo.get(i).getPhotoId().equals("0")) {
-            personViewHolder.news_photo.setVisibility(View.VISIBLE);
-            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory()+
-                    "/xingji/"+ AVUser.getCurrentUser().getUsername()+"/"+signInfo.get(j).getPhotoId()));
-        }
-        else//纯文本
-            personViewHolder.news_title.setTextColor(Color.parseColor("#434343"));*/
-
 
         if (personViewHolder.news_photo.getVisibility() == View.VISIBLE)
             personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
                     "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(j).getPhotoId()));
-
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {
             @Override

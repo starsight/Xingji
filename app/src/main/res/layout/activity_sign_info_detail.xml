@@ -46,13 +46,12 @@
 
                     <ImageView
                         android:id="@+id/iv_detail_signinfophoto"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
                         android:src="@mipmap/header_bg"
                         android:visibility="gone" />
-
+                    <!-- android:scaleType="centerCrop"-->
                     <TextView
                         android:id="@+id/tv_detail_signinfolocation"
                         android:layout_width="match_parent"

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.canyinghao.canrefresh.classic.RotateRefreshView
+    <com.canyinghao.canrefresh.classic.ClassicRefreshView
         android:id="@id/can_refresh_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
