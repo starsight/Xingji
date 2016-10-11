@@ -211,6 +211,10 @@ public class MainActivity extends AppCompatActivity
                 hsf = new MyHistorySignFragment();
                 ft.replace(R.id.content_main, hsf);
                 ft.commit();*/
+                ft = getFragmentManager().beginTransaction();
+                sf = new SignFragment();
+                ft.replace(R.id.content_main, sf);
+                ft.commit();
             }
         });
     }

@@ -122,6 +122,8 @@ public class MyHistorySignActivity extends AppCompatActivity
 
         if (MainActivity.upadteUserPhotoBitmap != null)
             iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+        refresh.autoRefresh();
+
     }
 
     private void syncHistorySignInfo() {

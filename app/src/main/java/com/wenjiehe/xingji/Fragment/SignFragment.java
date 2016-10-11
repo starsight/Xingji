@@ -52,6 +52,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+
+
 public class SignFragment extends Fragment {
 
     private MapView mv_BaiduView;
@@ -83,8 +85,10 @@ public class SignFragment extends Fragment {
 
         initView(view);
         initLocation();
+        //先清除图层
+        baiduMap.clear();
         showOnMap(MainActivity.arraylistHistorySign);
-        if(AVUser.getCurrentUser().getBoolean("isShowOthersOnMap")) {
+        if (AVUser.getCurrentUser().getBoolean("isShowOthersOnMap")) {
             showOnMap(NearbyMomentsActivity.arraylistNearbyMoments);
         }
         return view;
@@ -277,13 +281,13 @@ public class SignFragment extends Fragment {
     }
 
     private void showOnMap(ArrayList<SignInfo> arraylistHistorySign) {
-        if(arraylistHistorySign==null)
+        if (arraylistHistorySign == null || arraylistHistorySign.isEmpty())
             return;
         // 设置marker图标
         bd_Sign = BitmapDescriptorFactory.fromResource(R.mipmap.sign);
-
         //先清除图层
-        baiduMap.clear();
+        //baiduMap.clear();
+
         MarkerOptions options;
         for (SignInfo signInfotmp : arraylistHistorySign) {
             // 构建MarkerOption，用于在地图上添加Marker
@@ -382,6 +386,13 @@ public class SignFragment extends Fragment {
         baiduMap.setMyLocationEnabled(true);
         if (!mLocationClient.isStarted())
             mLocationClient.start();
+        //先清除图层
+        baiduMap.clear();
+        showOnMap(MainActivity.arraylistHistorySign);
+        if (AVUser.getCurrentUser().getBoolean("isShowOthersOnMap")) {
+            showOnMap(NearbyMomentsActivity.arraylistNearbyMoments);
+        }
+
         Log.d(LOG_D, "start~~");
 
     }
