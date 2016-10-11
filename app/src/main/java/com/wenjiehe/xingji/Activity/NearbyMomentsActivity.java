@@ -1,7 +1,9 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,6 +26,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.platform.comapi.map.N;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.ClassicRefreshView;
 import com.canyinghao.canrefresh.classic.RotateRefreshView;
@@ -44,6 +47,7 @@ import static android.R.attr.name;
 import static com.baidu.location.h.a.i;
 import static com.wenjiehe.xingji.Activity.MainActivity.arraylistHistorySign;
 import static com.wenjiehe.xingji.Util.hasFile;
+import static java.lang.Boolean.getBoolean;
 
 public class NearbyMomentsActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
@@ -67,7 +71,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
     private double mylongitude = 0.0;
     private double nearbySize = 0.06;
 
-    public  ArrayList<SignInfo> arraylistNearbyMoments =new ArrayList<SignInfo>();
+    public static ArrayList<SignInfo> arraylistNearbyMoments =new ArrayList<SignInfo>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,19 @@ public class NearbyMomentsActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_nearby_moments_toolbar);
         //toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
+        if(!AVUser.getCurrentUser().getBoolean("isShareSignInfo")) {
+            new AlertDialog.Builder(NearbyMomentsActivity.this)
+                    .setTitle("提示")
+                    .setMessage("若需使用此功能请先在-设置中允许共享签到信息")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
+            //finish();
+        }
 
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);    //注册监听函数
@@ -200,12 +217,27 @@ public class NearbyMomentsActivity extends AppCompatActivity
                             }
                         });
                     }
-
-                    SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
+                    final SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
                             new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp, usernameTmp);
-                    arraylistNearbyMoments.add(signinfotmp);
+
+                    AVQuery<AVObject> query = new AVQuery<>("_User");
+                    query.whereEqualTo("username",usernameTmp);
+                    query.findInBackground(new FindCallback<AVObject>() {
+                                               @Override
+                                               public void done(List<AVObject> list, AVException e) {
+                                                   for (AVObject avObject : list) {
+                                                       Boolean b = avObject.getBoolean("isShareSignInfo");
+                                                       if(b==true) {
+                                                           arraylistNearbyMoments.add(signinfotmp);
+                                                           adapter.notifyDataSetChanged();
+                                                       }
+                                                   }
+                                               }
+                                           });
+
                 }
-                adapter.notifyDataSetChanged();
+
+
                 refresh.loadMoreComplete();
                 refresh.refreshComplete();
             }
@@ -228,6 +260,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         refresh.postDelayed(new Runnable() {
             @Override
             public void run() {
+                arraylistNearbyMoments.clear();
                 syncNearbyMoments();
             }
         }, 2600);
@@ -254,7 +287,10 @@ public class NearbyMomentsActivity extends AppCompatActivity
         super.onStart();
         if (!mLocationClient.isStarted())
             mLocationClient.start();
-        refresh.autoRefresh();
+        if(AVUser.getCurrentUser().getBoolean("isShareSignInfo")) {
+            arraylistNearbyMoments.clear();
+            refresh.autoRefresh();
+        }
     }
 
     private class MyLocationListener implements BDLocationListener {

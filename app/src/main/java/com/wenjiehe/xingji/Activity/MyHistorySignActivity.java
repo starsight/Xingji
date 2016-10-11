@@ -427,6 +427,6 @@ public class MyHistorySignActivity extends AppCompatActivity
             iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
         //MainActivity.isUpadteUserPhoto = true;
         //MainActivity.upadteUserPhotoBitmap = bitmap;
-        refresh.autoRefresh();
+        //refresh.autoRefresh();
     }
 }

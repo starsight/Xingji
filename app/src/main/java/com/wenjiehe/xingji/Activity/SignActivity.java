@@ -44,6 +44,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import static com.baidu.location.h.j.u;
+
 public class SignActivity extends AppCompatActivity {
 
     private EditText et_activity_sign;
@@ -142,8 +144,7 @@ public class SignActivity extends AppCompatActivity {
                 userSign.put("city", city);
                 userSign.put("street", street);
                 userSign.put("event", event);
-                userSign.put("locdescribe", locDescribe);
-
+                userSign.put("locescribe", locDescribe);
                 if(isWithPhoto){
                     AVFile file = null;
                     try {

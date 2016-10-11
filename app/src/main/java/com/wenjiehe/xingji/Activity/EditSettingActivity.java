@@ -78,8 +78,8 @@ public class EditSettingActivity extends AppCompatActivity implements CompoundBu
             public void onClick(View v) {
                 new AlertDialog.Builder(EditSettingActivity.this)
                         .setTitle("关于行迹")
-                .setMessage("    这是一款位置签到软件，目前还在开发中，即日起进行公测。\n "+
-                        "    主要功能有位置签到，签到分享，签到数据管理等。\n"+
+                .setMessage("    这是一款位置签到软件，目前还在开发中，即日起进行公测。"+
+                        "主要功能有位置签到，签到分享，签到数据管理等。\n"+
                 "    该产品是由独立开发者制作，若软件存在问题还请及时反馈给开发者进行修复。感谢您的使用！")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override

@@ -29,7 +29,6 @@ import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
-import com.wenjiehe.xingji.Fragment.MyHistorySignFragment;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     //private MainActivity activity;
     private FragmentTransaction ft;
     public SignFragment sf;
-    public MyHistorySignFragment hsf;
+    //public MyHistorySignFragment hsf;
 
     public static String userName;
     public static int signNum;
@@ -208,10 +207,10 @@ public class MainActivity extends AppCompatActivity
                 }*/
                 }
                 //Log.d("xingji-choose",String.valueOf(signNum));
-                ft = getFragmentManager().beginTransaction();
+                /*ft = getFragmentManager().beginTransaction();
                 hsf = new MyHistorySignFragment();
                 ft.replace(R.id.content_main, hsf);
-                ft.commit();
+                ft.commit();*/
             }
         });
     }
