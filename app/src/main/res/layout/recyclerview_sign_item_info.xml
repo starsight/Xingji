@@ -81,6 +81,17 @@
                 android:layout_below="@+id/news_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <com.ldoublem.thumbUplib.ThumbUpView
+                    android:id="@+id/tpv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="15dp"
+                    app:cracksColor="#33475f"
+                    app:edgeColor="@color/colorPrimary"
+                    app:fillColor="#ea8010"
+                    app:unlikeType="2"
+                    />
                 <Button
                     android:id="@+id/btn_share"
                     android:text="分享"
