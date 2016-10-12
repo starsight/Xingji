@@ -144,7 +144,7 @@ public class SignActivity extends AppCompatActivity {
                 userSign.put("city", city);
                 userSign.put("street", street);
                 userSign.put("event", event);
-                userSign.put("locescribe", locDescribe);
+                userSign.put("locdescribe", locDescribe);
                 if(isWithPhoto){
                     AVFile file = null;
                     try {
