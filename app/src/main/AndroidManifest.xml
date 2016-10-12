@@ -20,6 +20,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+        </service>
         <activity
             android:name=".Activity.ChooseLoginRegActivity"
             android:label="@string/app_name">

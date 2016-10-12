@@ -45,6 +45,8 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.wenjiehe.xingji.Util.hasFile;
+
 public class EditUserInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
     final String TAG = "EditUserInfoActivity";
@@ -307,6 +309,12 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 bitmap = data.getParcelableExtra("data");
                 iv_edit_userphoto.setImageBitmap(bitmap);
                 //mFace.setImageBitmap(bitmap);
+                if (hasFile(Environment.getExternalStorageDirectory() + "/xingji/" +
+                        AVUser.getCurrentUser().getUsername() + "/headpicture.jpg" )){
+                    File fe = new File(Environment.getExternalStorageDirectory()+ "/xingji/"+AVUser.getCurrentUser().getUsername(),
+                            "headpicture.jpg");
+                    fe.delete();
+                }
                 Util.saveBitmap(bitmap,"headpicture.jpg");
                 upLoadHeadPhoto();
                 MainActivity.isUpadteUserPhoto = true;
@@ -357,7 +365,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         AVFile file = null;
         try {
             file = AVFile.withAbsoluteLocalPath("headpicture.jpg",
-                    Environment.getExternalStorageDirectory() +"/xingji/headpicture.jpg");
+                    Environment.getExternalStorageDirectory() +"/xingji/"+AVUser.getCurrentUser().getUsername()+"/headpicture.jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
