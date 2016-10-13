@@ -76,30 +76,16 @@
                 android:layout_margin="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <LinearLayout
-                android:orientation="horizontal"
+            <View
+                android:layout_below="@+id/news_desc"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/fadegray" />
+            <RelativeLayout
+                android:gravity="right"
                 android:layout_below="@+id/news_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.ldoublem.thumbUplib.ThumbUpView
-                    android:id="@+id/tpv"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="15dp"
-                    app:cracksColor="#33475f"
-                    app:edgeColor="@color/colorPrimary"
-                    app:fillColor="#ea8010"
-                    app:unlikeType="2"
-                    />
-                <Button
-                    android:id="@+id/btn_share"
-                    android:text="分享"
-                    android:background="#00000000"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
                 <Button
                     android:id="@+id/btn_more"
                     android:background="#00000000"
@@ -107,7 +93,27 @@
                     android:text="更多"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
+                <Button
+                    android:id="@+id/btn_share"
+                    android:layout_toLeftOf="@id/btn_more"
+                    android:text="分享"
+                    android:background="#00000000"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <com.ldoublem.thumbUplib.ThumbUpView
+                    android:id="@+id/tpv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toLeftOf="@id/btn_share"
+                    app:cracksColor="#33475f"
+                    app:edgeColor="@color/colorPrimary"
+                    app:fillColor="#ff3030"
+                    app:unlikeType="0"
+                    />
+            </RelativeLayout>
 
 
         </RelativeLayout>
