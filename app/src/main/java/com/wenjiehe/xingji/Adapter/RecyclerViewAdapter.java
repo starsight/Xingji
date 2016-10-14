@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji;
+package com.wenjiehe.xingji.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
+import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.SignInfo;
+import com.wenjiehe.xingji.Util;
 
 import java.util.List;
 
@@ -80,8 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 tv_news_owns.setVisibility(View.VISIBLE);
                 iv_news_userphoto.setVisibility(View.VISIBLE);
-            }
-            else if(type==3){//add for moments
+            } else if (type == 3) {//add for moments
                 news_title.setTextColor(Color.parseColor("#434343"));
 
                 tv_news_owns.setVisibility(View.VISIBLE);

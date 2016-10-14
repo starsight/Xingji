@@ -26,16 +26,10 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.platform.comapi.map.N;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.ClassicRefreshView;
-import com.canyinghao.canrefresh.classic.RotateRefreshView;
-import com.canyinghao.canrefresh.storehouse.StoreHouseRefreshView;
-import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
-import com.canyinghao.canrefresh.storehouse.StoreHouseRefreshView;
-import com.wenjiehe.xingji.NearbyRecyclerViewAdapter;
+import com.wenjiehe.xingji.Adapter.NearbyRecyclerViewAdapter;
 import com.wenjiehe.xingji.R;
-import com.wenjiehe.xingji.RecyclerViewAdapter;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
 import com.wenjiehe.xingji.Util;
@@ -43,11 +37,8 @@ import com.wenjiehe.xingji.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.name;
-import static com.baidu.location.h.a.i;
 import static com.wenjiehe.xingji.Activity.MainActivity.arraylistHistorySign;
 import static com.wenjiehe.xingji.Util.hasFile;
-import static java.lang.Boolean.getBoolean;
 
 public class NearbyMomentsActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {

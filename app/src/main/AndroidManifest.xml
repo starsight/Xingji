@@ -62,7 +62,9 @@
             android:name=".Activity.EditSettingActivity"
             android:label="设置"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.MyMomentsActivity" />
+        <activity android:name=".Activity.MyMomentsActivity"
+            android:label="我的动态"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.NearbyMomentsActivity"
             android:label="附近动态"

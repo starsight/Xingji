@@ -345,7 +345,7 @@ public class ChooseLoginRegActivity extends BaseActivity {
                     String objectid = AVUser.getCurrentUser().getObjectId();
                     Log.d("choose",objectid);
                     AVObject todo = new AVObject("u"+objectid);
-                    todo.put("type","{\"21\":\"333\"}");
+                    //todo.put("type","{\"21\":\"333\"}");
                     todo.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
