@@ -9,28 +9,3 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:fastScrollEnabled="false">
 </android.support.v7.widget.RecyclerView>
-
-
-<!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activity.UserMomentsActivity"
-    tools:showIn="@layout/activity_user_info">
-
-    <com.wenjiehe.xingji.view.MyInfoCardListView android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/tools"
-        android:fastScrollEnabled="false"
-        android:id="@+id/carddemo_list_gplaycard2"
-        card:list_card_layout_resourceID="@layout/native_list_card_thumbnail_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card="http://schemas.android.com/apk/res-auto" />
-
-
-
-
-</android.support.v4.widget.NestedScrollView>-->

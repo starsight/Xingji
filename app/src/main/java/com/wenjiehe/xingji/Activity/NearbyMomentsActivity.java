@@ -289,7 +289,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
             mLocationClient.start();
         if(AVUser.getCurrentUser().getBoolean("isShareSignInfo")) {
             arraylistNearbyMoments.clear();
-            refresh.autoRefresh();
+            //refresh.autoRefresh();
         }
     }
 
