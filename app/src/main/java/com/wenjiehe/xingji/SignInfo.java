@@ -72,6 +72,10 @@ public class SignInfo implements Parcelable {
 
     }
 
+    public String getObjectId() {
+        return objectId;
+    }
+
     protected SignInfo(Parcel in) {
         latlng = in.readParcelable(LatLng.class.getClassLoader());
         location = in.readParcelable(SignLocation.class.getClassLoader());

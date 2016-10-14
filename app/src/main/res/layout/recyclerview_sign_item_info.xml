@@ -112,6 +112,7 @@
                     app:edgeColor="@color/colorPrimary"
                     app:fillColor="#ff3030"
                     app:unlikeType="0"
+                    android:visibility="gone"
                     />
             </RelativeLayout>
 

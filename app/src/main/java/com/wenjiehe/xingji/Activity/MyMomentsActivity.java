@@ -64,7 +64,7 @@ public class MyMomentsActivity extends AppCompatActivity {
             @Override
             public void done(List<AVObject> list, AVException e) {
                 for (AVObject avObject : list) {
-                    Log.d("33",String.valueOf(list.size()));
+                    //Log.d("33",String.valueOf(list.size()));
                     JSONObject moments = avObject.getJSONObject("moments");
                     mData.add(moments);
                 }

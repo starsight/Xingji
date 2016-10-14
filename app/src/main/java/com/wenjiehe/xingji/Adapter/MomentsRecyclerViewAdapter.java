@@ -68,17 +68,21 @@ public class MomentsRecyclerViewAdapter extends RecyclerView.Adapter<MomentsRecy
         String moments = null, objectid = null;
         try {
             type = data.get(position).getInt("type");
-            moments = data.get(position).getString("moments");
+            moments = data.get(position).getString("info");
             objectid = data.get(position).getString("objectid");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        if (type == 0)//喜欢了
-            holder.iv_icon.setImageResource(R.drawable.love);
-        else if (type == 1)//签到于
+        if (type == 0) {//签到于
             holder.iv_icon.setImageResource(R.drawable.sign);
-        holder.tv_content_my_moments.setText(moments);
+            holder.tv_content_my_moments.setText("签到于 " + moments);
+        } else if (type == 1) {//喜欢了
+            holder.iv_icon.setImageResource(R.drawable.love);
+            holder.tv_content_my_moments.setText(moments);
+        } else if(type==2) {//被喜欢
+            holder.iv_icon.setImageResource(R.drawable.love);
+            holder.tv_content_my_moments.setText(moments);
+        }
 
     }
 

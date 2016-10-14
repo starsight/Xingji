@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.avos.avoscloud.AVUser;
+import com.ldoublem.thumbUplib.ThumbUpView;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -53,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView news_desc;
         Button share;
         Button readMore;
+        ThumbUpView tpv;//喜欢按钮
 
         //add for moments
         TextView tv_news_owns;
@@ -73,7 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //add for moments
             tv_news_owns = (TextView) itemView.findViewById(R.id.tv_news_owns);
             iv_news_userphoto = (CircleImageView) itemView.findViewById(R.id.iv_news_userphoto);
-
+            tpv = (ThumbUpView)itemView.findViewById(R.id.tpv);
             if (type == 1)
                 news_photo.setVisibility(View.VISIBLE);
             else if (type == 0)
@@ -83,11 +85,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 tv_news_owns.setVisibility(View.VISIBLE);
                 iv_news_userphoto.setVisibility(View.VISIBLE);
+                tpv.setVisibility(View.VISIBLE);
             } else if (type == 3) {//add for moments
                 news_title.setTextColor(Color.parseColor("#434343"));
 
                 tv_news_owns.setVisibility(View.VISIBLE);
                 iv_news_userphoto.setVisibility(View.VISIBLE);
+                tpv.setVisibility(View.VISIBLE);
             }
 
         }

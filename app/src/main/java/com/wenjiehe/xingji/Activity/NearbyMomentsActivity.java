@@ -69,7 +69,6 @@ public class NearbyMomentsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_moments);
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_nearby_moments_toolbar);
-        //toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         if(!AVUser.getCurrentUser().getBoolean("isShareSignInfo")) {
