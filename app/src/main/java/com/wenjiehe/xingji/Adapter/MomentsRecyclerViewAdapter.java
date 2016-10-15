@@ -70,7 +70,7 @@ public class MomentsRecyclerViewAdapter extends RecyclerView.Adapter<MomentsRecy
         try {
             type = data.get(position).getInt("type");
             moments = data.get(position).getString("info");
-            objectid = data.get(position).getString("objectid");
+            //objectid = data.get(position).getString("objectid");
         } catch (JSONException e) {
             e.printStackTrace();
         }
