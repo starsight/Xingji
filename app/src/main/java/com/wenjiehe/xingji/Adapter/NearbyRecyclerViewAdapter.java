@@ -255,6 +255,17 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
                             }
                         }
                     });
+
+                    //查找Signinfo，在liker中删除一条记录
+                    if (!signInfo.get(j).getObjectId().equals("0")){
+                        AVObject todo = AVObject.createWithoutData("signInfo", signInfo.get(j).getObjectId());
+                        liker.remove(AVUser.getCurrentUser().getUsername());
+                        todo.put("liker",liker);
+                        todo.saveInBackground();
+                    }
+
+
+
                 }
             }
         });

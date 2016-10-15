@@ -158,8 +158,8 @@ public class NearbyMomentsActivity extends AppCompatActivity
     };
 
     private void syncNearbyMoments() {
-        //arraylistNearbyMoments.clear();
-        //adapter.notifyDataSetChanged();
+        arraylistNearbyMoments.clear();
+        adapter.notifyDataSetChanged();
         AVQuery<AVObject> query = new AVQuery<>("signInfo");
 
         query.whereGreaterThan("latitude", mylatitude - nearbySize);
@@ -280,7 +280,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         refresh.postDelayed(new Runnable() {
             @Override
             public void run() {
-                arraylistNearbyMoments.clear();
+                //arraylistNearbyMoments.clear();
                 syncNearbyMoments();
             }
         }, 2600);
@@ -300,7 +300,14 @@ public class NearbyMomentsActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         mLocationClient.stop();
-        arraylistNearbyMoments.clear();
+        //arraylistNearbyMoments.clear();
+        Log.d("Nearby","onStop~~~");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Nearby","onDestory~~~");
     }
 
     @Override
