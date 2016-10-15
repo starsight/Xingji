@@ -42,6 +42,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.wenjiehe.xingji.R.id.iv_userinfo_headerphoto;
+
 public class MyHistorySignActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 
@@ -56,7 +58,7 @@ public class MyHistorySignActivity extends AppCompatActivity
     private int canLoadNum = 0;
     //private int loadSignNumThisTime = 0;
     private boolean isAdapter = false;
-    private CircleImageView iv_userinfo_headerphoto;
+
 
     String TAG = "MyHistorySignActivity";
 
@@ -99,15 +101,7 @@ public class MyHistorySignActivity extends AppCompatActivity
         //mCardArrayAdapter = new CardArrayAdapter(this, cards);
         //listView.setAdapter(mCardArrayAdapter);
 
-        iv_userinfo_headerphoto = (CircleImageView) findViewById(R.id.iv_userinfo_headerphoto);
-        iv_userinfo_headerphoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainIntent = new Intent(v.getContext(),
-                        EditUserInfoActivity.class);
-                startActivity(mainIntent);
-            }
-        });
+
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -118,9 +112,7 @@ public class MyHistorySignActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        if (MainActivity.upadteUserPhotoBitmap != null)
-            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
-        refresh.autoRefresh();
+
 
     }
 
@@ -423,8 +415,7 @@ public class MyHistorySignActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (MainActivity.isUpadteUserPhoto == true)
-            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+
         //MainActivity.isUpadteUserPhoto = true;
         //MainActivity.upadteUserPhotoBitmap = bitmap;
         //refresh.autoRefresh();

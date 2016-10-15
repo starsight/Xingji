@@ -71,6 +71,14 @@
         <include
             layout="@layout/content_me_moments"
             android:id="@+id/can_scroll_view" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginRight="@dimen/actions_icon_width"
+            android:id="@+id/iv_userinfo_headerphoto"
+            app:layout_anchorGravity="end|center_vertical"
+            app:layout_anchor="@id/app_bar" />
 
     </android.support.design.widget.CoordinatorLayout>
 </com.canyinghao.canrefresh.CanRefreshLayout>

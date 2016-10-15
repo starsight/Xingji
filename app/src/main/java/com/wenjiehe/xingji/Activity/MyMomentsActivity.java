@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.avos.avoscloud.AVException;
@@ -29,6 +30,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.wenjiehe.xingji.R.id.iv_userinfo_headerphoto;
 
 
 public class MyMomentsActivity extends AppCompatActivity
@@ -41,6 +45,7 @@ public class MyMomentsActivity extends AppCompatActivity
     private MomentsRecyclerViewAdapter adapter = null;
     private ArrayList<JSONObject> mData = null;
     private Context mContext = null;
+    private CircleImageView iv_userinfo_headerphoto;//修改头像
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,20 @@ public class MyMomentsActivity extends AppCompatActivity
         refresh.setOnRefreshListener(this);
         refresh.setRefreshBackgroundResource(R.color.colorPrimary);
         refresh.setLoadMoreBackgroundResource(R.color.window_background);
+
+        iv_userinfo_headerphoto = (CircleImageView) findViewById(R.id.iv_userinfo_headerphoto);
+        iv_userinfo_headerphoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(v.getContext(),
+                        EditUserInfoActivity.class);
+                startActivity(mainIntent);
+            }
+        });
+
+        if (MainActivity.upadteUserPhotoBitmap != null)
+            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+        refresh.autoRefresh();
     }
 
     @Override
@@ -161,5 +180,10 @@ public class MyMomentsActivity extends AppCompatActivity
         }, 2000);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (MainActivity.isUpadteUserPhoto == true)
+            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+    }
 }
