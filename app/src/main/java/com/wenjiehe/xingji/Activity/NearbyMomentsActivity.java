@@ -51,7 +51,6 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
 
     private RecyclerView recyclerView;
-    private List<SignInfo> signInfo = arraylistHistorySign;
     private NearbyRecyclerViewAdapter adapter;
 
     /*baiduMap 定位*/
@@ -278,7 +277,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         if (!mLocationClient.isStarted())
             mLocationClient.start();
         if(AVUser.getCurrentUser().getBoolean("isShareSignInfo")) {
-            arraylistNearbyMoments.clear();
+            //arraylistNearbyMoments.clear();
             //refresh.autoRefresh();
         }
     }

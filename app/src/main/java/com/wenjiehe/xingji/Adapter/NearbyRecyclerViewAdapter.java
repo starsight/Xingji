@@ -10,8 +10,11 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.ldoublem.thumbUplib.ThumbUpView;
 import com.wenjiehe.xingji.Activity.SignActivity;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import com.wenjiehe.xingji.SignInfo;
@@ -22,7 +25,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.baidu.location.h.j.G;
 import static com.baidu.location.h.j.V;
+import static com.wenjiehe.xingji.Activity.NearbyMomentsActivity.arraylistNearbyMoments;
 import static com.wenjiehe.xingji.Util.hasFile;
 
 /**
@@ -72,6 +77,8 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
             }
         });
 
+        if(signInfo.get(j).username.equals(AVUser.getCurrentUser().getUsername()))
+            personViewHolder.tpv.setVisibility(View.GONE);
 
         if (personViewHolder.news_photo.getVisibility() == View.VISIBLE)
             personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
@@ -98,17 +105,23 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
             }
         });
 
-        personViewHolder.tpv.setOnClickListener(new View.OnClickListener() {
+
+        personViewHolder.tpv.setOnThumbUp(new ThumbUpView.OnThumbUp() {
             @Override
-            public void onClick(View v) {
-                if(v.getVisibility()==View.VISIBLE){
+            public void like(boolean like) {
+                if(like){
 //在用户的moments状态表更新一条记录
                     AVObject moments = new AVObject("u" + AVUser.getCurrentUser().getObjectId());
                     JSONObject jo = new JSONObject();
                     try {
                         jo.put("type", "1");
-                        jo.put("info", signInfo.get(j).username+"在"+signInfo.get(j).getLocation()+"的签到");
-                        jo.put("objectid", signInfo.get(j).getObjectId());
+                        jo.put("info", "喜欢了"+signInfo.get(j).username+"在"+signInfo.get(j).getLocation()+"的签到");
+                        jo.put("signobjectid", signInfo.get(j).getObjectId());
+                        //jo.put("ownerobjectid", signInfo.get(j).getObjectId());
+                        jo.put("ownerusername", signInfo.get(j).username);
+
+                        jo.put("likerusername", AVUser.getCurrentUser().getUsername());
+                        jo.put("likerobjectid", AVUser.getCurrentUser().getObjectId());
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -116,16 +129,46 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
                     moments.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
-//问题：喜欢次数的统计
+                            //问题：喜欢次数的统计
+                        }
+                    });
+
+                    //在对方的moments状态表更新一条记录
+                    AVQuery<AVObject> queryOwnerId = new AVQuery<>("_User");
+                    queryOwnerId.whereEqualTo("username",signInfo.get(j).username);
+                    queryOwnerId.findInBackground(new FindCallback<AVObject>() {
+                        @Override
+                        public void done(List<AVObject> list, AVException e) {
+                            for (AVObject avObject : list) {
+                                String ownerObjectId = avObject.getObjectId();
+                                AVObject momentsOwner = new AVObject("u" + ownerObjectId);
+                                JSONObject joOwner = new JSONObject();
+                                try {
+                                    joOwner.put("type", "2");
+                                    joOwner.put("info", AVUser.getCurrentUser().getUsername()+"喜欢了"+signInfo.get(j).username+"在"+signInfo.get(j).getLocation()+"的签到");
+                                    joOwner.put("signobjectid", signInfo.get(j).getObjectId());
+                                    //jo.put("ownerobjectid", signInfo.get(j).getObjectId());
+                                    joOwner.put("ownerusername", signInfo.get(j).username);
+
+                                    joOwner.put("likerusername", AVUser.getCurrentUser().getUsername());
+                                    joOwner.put("likerobjectid", AVUser.getCurrentUser().getObjectId());
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                                momentsOwner.put("moments", joOwner);
+                                momentsOwner.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(AVException e) {
+                                    }
+                                });
+                            }
                         }
                     });
 
 
-                    //在对方的moments状态表更新一条记录
                 }
             }
         });
-
 
     }
 }
