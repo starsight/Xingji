@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 
 import com.avos.avoscloud.AVUser;
-import com.ldoublem.thumbUplib.ThumbUpView;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
+import com.wenjiehe.xingji.ThumbUpView;
 import com.wenjiehe.xingji.Util;
 
 import java.util.List;

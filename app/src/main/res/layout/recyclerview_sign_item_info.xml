@@ -28,8 +28,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:visibility="gone"
-                android:src="@mipmap/ic_launcher" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_news_owns"
@@ -102,7 +101,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <com.ldoublem.thumbUplib.ThumbUpView
+                <com.wenjiehe.xingji.ThumbUpView
                     android:id="@+id/tpv"
                     android:layout_width="25dp"
                     android:layout_height="25dp"

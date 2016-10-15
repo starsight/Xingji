@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +89,12 @@ public class MomentsRecyclerViewAdapter extends RecyclerView.Adapter<MomentsRecy
 
     @Override
     public int getItemViewType(int position) {
-        return 0;
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
     }
 
     @Override
@@ -107,6 +113,17 @@ public class MomentsRecyclerViewAdapter extends RecyclerView.Adapter<MomentsRecy
             iv_icon = (ImageView) itemView.findViewById(R.id.iv_icon);
             tv_content_my_moments = (TextView) itemView.findViewById(R.id.tv_content_my_moments);
         }
+    }
+
+    public void addItem(JSONObject jo, int position) {
+
+        data.add(position, jo);
+        notifyItemInserted(position); //Attention!
+    }
+
+    public void removeItem(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
     }
 }
 

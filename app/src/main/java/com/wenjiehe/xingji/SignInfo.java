@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.baidu.mapapi.model.LatLng;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,41 +32,53 @@ public class SignInfo implements Parcelable {
     public String event = "到此一游";
     public String objectId = "0";
     public String photoId = "0";
+    public JSONObject liker;//喜欢者列表
 
 
-    public SignInfo(LatLng latlng, String date,SignLocation location,String objectId){
+    public SignInfo(LatLng latlng, String date, SignLocation location, String objectId) {
         this.latlng = latlng;
         this.date = date;
         this.location = location;
         this.objectId = objectId;
     }
 
-    public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId){
-        this.latlng = latlng;
-        this.date = date;
-        this.location = location;
-        this.objectId = objectId;
-        this.event = event;
-    }
-
-
-    public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId,String photoId){
+    public SignInfo(LatLng latlng, String date, SignLocation location, String event, String objectId) {
         this.latlng = latlng;
         this.date = date;
         this.location = location;
         this.objectId = objectId;
         this.event = event;
-        this.photoId = photoId;
     }
 
-    public SignInfo(LatLng latlng, String date,SignLocation location,String event,String objectId,String photoId,String username){
+
+    public SignInfo(LatLng latlng, String date, SignLocation location, String event, String objectId, String photoId) {
         this.latlng = latlng;
         this.date = date;
         this.location = location;
         this.objectId = objectId;
         this.event = event;
         this.photoId = photoId;
-        this.username =username;
+    }
+
+    public SignInfo(LatLng latlng, String date, SignLocation location, String event, String objectId, String photoId, String username) {
+        this.latlng = latlng;
+        this.date = date;
+        this.location = location;
+        this.objectId = objectId;
+        this.event = event;
+        this.photoId = photoId;
+        this.username = username;
+    }
+
+    public SignInfo(LatLng latlng, String date, SignLocation location, String event, String objectId, String photoId, String username, JSONObject liker) {
+        this.latlng = latlng;
+        this.date = date;
+        this.location = location;
+        this.objectId = objectId;
+        this.event = event;
+        this.photoId = photoId;
+        this.username = username;
+        this.liker = liker;
     }
 
     public String getPhotoId() {
@@ -115,38 +129,38 @@ public class SignInfo implements Parcelable {
         return sb.toString();
     }
 
-    public static void  readSignInfoFromFile(Context context, ArrayList<SignInfo> arraylistHistorySign){
+    public static void readSignInfoFromFile(Context context, ArrayList<SignInfo> arraylistHistorySign) {
         // System.out.println(this.getFilesDir().getAbsolutePath() + File.separator+"xingji");
         //arraylistHistorySign = new ArrayList<SignInfo>();
         int count = arraylistHistorySign.size();
-        for(int i=0;i<count;i++) {
+        for (int i = 0; i < count; i++) {
             arraylistHistorySign.remove(0);
-            Log.d("signinfo",String.valueOf(i));
+            Log.d("signinfo", String.valueOf(i));
         }
 
         System.out.println(Environment.getExternalStorageDirectory());
-        File xingjiDir = new File(context.getFilesDir().getAbsolutePath() + File.separator+"xingji");
-        if(!xingjiDir.exists()){
+        File xingjiDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + "xingji");
+        if (!xingjiDir.exists()) {
             xingjiDir.mkdir();
         }
-        File file = new File(context.getFilesDir().getAbsolutePath() + File.separator +"xingji/.historySign");
+        File file = new File(context.getFilesDir().getAbsolutePath() + File.separator + "xingji/.historySign");
 
-        if(file.exists()){
-            FileReader fr = null ;
+        if (file.exists()) {
+            FileReader fr = null;
             BufferedReader br;
             try {
                 fr = new FileReader(file);
-                br = new BufferedReader (fr);
-                String s,datetmp,provincetmp,citytmp,streettmp,eventtmp,locDescribetmp,objectIdtmp,photoIdtmp;
-                Double lattmp,lngtmp;
-                while((s=br.readLine())!=null){
+                br = new BufferedReader(fr);
+                String s, datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp, photoIdtmp;
+                Double lattmp, lngtmp;
+                while ((s = br.readLine()) != null) {
                     String[] str = s.split(";");
                     // for(int i=0;i<str.length;i++){
                     String[] strtmp = str[0].split("=");//lat
                     //Log.d("--xingji--lat",strtmp[1]);
-                    lattmp=Double.parseDouble(strtmp[1]);
+                    lattmp = Double.parseDouble(strtmp[1]);
                     strtmp = str[1].split("=");//lng
-                    lngtmp=Double.parseDouble(strtmp[1]);
+                    lngtmp = Double.parseDouble(strtmp[1]);
                     //Log.d("--xingji--lat-lng",strtmp[1]);
                     strtmp = str[2].split("=");//date
                     datetmp = strtmp[1];
@@ -165,9 +179,9 @@ public class SignInfo implements Parcelable {
                     strtmp = str[9].split("=");//photoId
                     photoIdtmp = strtmp[1];
                     arraylistHistorySign.add(new SignInfo
-                            (new LatLng(lattmp,lngtmp),datetmp,
-                                    new SignLocation(provincetmp,citytmp,streettmp,locDescribetmp),
-                                    eventtmp,objectIdtmp,photoIdtmp));
+                            (new LatLng(lattmp, lngtmp), datetmp,
+                                    new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp),
+                                    eventtmp, objectIdtmp, photoIdtmp));
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -182,18 +196,18 @@ public class SignInfo implements Parcelable {
     /*
     * 写入签到数据到文件
     * */
-    public static void writeSignInfoToFile(String path ,ArrayList<SignInfo> signinfo){
+    public static void writeSignInfoToFile(String path, ArrayList<SignInfo> signinfo) {
         File file = new File(path);
 
-        if(file.exists()) {
+        if (file.exists()) {
             file.delete();
         }
         FileWriter fw = null;
         BufferedWriter bw;
         try {
-            fw = new FileWriter(file,false);
+            fw = new FileWriter(file, false);
             bw = new BufferedWriter(fw);
-            for(SignInfo signinfobuffer : signinfo){
+            for (SignInfo signinfobuffer : signinfo) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("latitude=");
                 sb.append(String.valueOf(signinfobuffer.latlng.latitude));

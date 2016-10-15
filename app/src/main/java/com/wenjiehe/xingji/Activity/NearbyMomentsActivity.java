@@ -1,8 +1,11 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,8 +13,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
@@ -33,6 +38,8 @@ import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
 import com.wenjiehe.xingji.Util;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +69,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
     private double nearbySize = 0.06;
 
     public static ArrayList<SignInfo> arraylistNearbyMoments =new ArrayList<SignInfo>();
+    //public ArrayList<SignInfo> signTmp = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +111,13 @@ public class NearbyMomentsActivity extends AppCompatActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
         adapter = new NearbyRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
+        recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+       // recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        //mRecyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
     }
 
 
@@ -129,9 +140,26 @@ public class NearbyMomentsActivity extends AppCompatActivity
         //mLocationClient.start();
     }
 
+    public final Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    //adapter = new NearbyRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
+                   // adapter.notifyAll();
+                    adapter.notifyDataSetChanged();
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     private void syncNearbyMoments() {
-
+        //arraylistNearbyMoments.clear();
+        //adapter.notifyDataSetChanged();
         AVQuery<AVObject> query = new AVQuery<>("signInfo");
 
         query.whereGreaterThan("latitude", mylatitude - nearbySize);
@@ -144,6 +172,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
             public void done(List<AVObject> list, AVException e) {
                 String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp, photoIdTmp = "0";
                 double lattmp, lngtmp;
+                JSONObject likertmp;
                 String usernameTmp;
                 if (list == null)
                     return;
@@ -158,6 +187,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
                     streettmp = avObject.getString("street");
                     eventtmp = avObject.getString("event");
                     usernameTmp = avObject.getString("username");
+                    likertmp = avObject.getJSONObject("liker");
                     final String str = usernameTmp;
                     locDescribetmp = avObject.getString("locdescribe");
                     if (avObject.getAVFile("signphoto") != null) {
@@ -207,7 +237,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
                         });
                     }
                     final SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
-                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp, usernameTmp);
+                            new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp, usernameTmp,likertmp);
 
                     AVQuery<AVObject> query = new AVQuery<>("_User");
                     query.whereEqualTo("username",usernameTmp);
@@ -218,15 +248,16 @@ public class NearbyMomentsActivity extends AppCompatActivity
                                                        Boolean b = avObject.getBoolean("isShareSignInfo");
                                                        if(b==true) {
                                                            arraylistNearbyMoments.add(signinfotmp);
-                                                           adapter.notifyDataSetChanged();
+                                                           //signTmp.add(signinfotmp);
+                                                           Message message = new Message();
+                                                           message.what = 1;
+                                                           mHandler.sendMessage(message);
                                                        }
                                                    }
                                                }
                                            });
 
                 }
-
-
                 refresh.loadMoreComplete();
                 refresh.refreshComplete();
             }
@@ -269,6 +300,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         mLocationClient.stop();
+        arraylistNearbyMoments.clear();
     }
 
     @Override
