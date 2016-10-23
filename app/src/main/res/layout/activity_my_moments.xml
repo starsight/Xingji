@@ -6,9 +6,9 @@
     android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:can_is_coo="true"
     app:can_style_down="classic"
-    app:can_style_up="mid"
-    app:can_is_coo="true">
+    app:can_style_up="mid">
 
     <com.canyinghao.canrefresh.classic.ClassicRefreshView
         android:id="@id/can_refresh_header"
@@ -20,13 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/can_content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/can_content_view"
         android:fitsSystemWindows="true"
         tools:context=".Activity.MyMomentsActivity">
 
@@ -42,43 +41,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:titleEnabled="false"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:titleEnabled="false">
 
                 <ImageView
                     android:id="@+id/iv_myInfoBg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/header_bg"
                     app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.7"
-                    android:fitsSystemWindows="true" />
+                    app:layout_collapseParallaxMultiplier="0.7" />
 
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/activity_nearby_moments_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:navigationIcon="?attr/homeAsUpIndicator"
                     app:layout_collapseMode="pin"
+                    app:navigationIcon="?attr/homeAsUpIndicator"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
         <include
-            layout="@layout/content_me_moments"
-            android:id="@+id/can_scroll_view" />
+            android:id="@+id/can_scroll_view"
+            layout="@layout/content_me_moments" />
+
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_userinfo_headerphoto"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:src="@mipmap/ic_launcher"
             android:layout_marginRight="@dimen/actions_icon_width"
-            android:id="@+id/iv_userinfo_headerphoto"
-            app:layout_anchorGravity="end|center_vertical"
-            app:layout_anchor="@id/app_bar" />
+            android:src="@mipmap/ic_launcher"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="end|center_vertical" />
 
     </android.support.design.widget.CoordinatorLayout>
 </com.canyinghao.canrefresh.CanRefreshLayout>

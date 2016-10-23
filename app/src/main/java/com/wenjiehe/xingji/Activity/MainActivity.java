@@ -280,8 +280,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(Intent);
         } else if (id == R.id.slide_item_chat) {
             Intent Intent = new Intent(this,
-                    AVSingleChatActivity.class);
-            Intent.putExtra(Constants.MEMBER_ID, "666");
+                    ChatActivity.class);
+            //Intent.putExtra(Constants.MEMBER_ID, "666");
             startActivity(Intent);
         } else if (id == R.id.slide_item_exit) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
