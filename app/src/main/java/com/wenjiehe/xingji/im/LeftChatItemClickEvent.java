@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji.im;
+package com.wenjiehe.xingji.Im;
 
 /**
  * Created by wli on 15/8/27.

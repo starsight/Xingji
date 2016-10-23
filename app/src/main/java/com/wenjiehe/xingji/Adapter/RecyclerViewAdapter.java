@@ -138,7 +138,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         if (personViewHolder.news_photo.getVisibility() == View.VISIBLE)
             personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
-                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs/" + signInfo.get(j).getPhotoId()));
+                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(j).getPhotoId()));
 
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {

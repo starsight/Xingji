@@ -4,28 +4,18 @@ package com.wenjiehe.xingji.Activity;
  * Created by wenjie on 16/07/22.
  */
 
-import com.avos.avoscloud.AVAnalytics;
-import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 
-import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.wenjiehe.xingji.R;
-import com.wenjiehe.xingji.im.MessageHandler;
+import com.wenjiehe.xingji.Im.MessageHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.WindowManager;
 
 public class BaseActivity extends Activity {
 

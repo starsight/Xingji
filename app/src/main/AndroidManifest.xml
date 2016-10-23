@@ -98,7 +98,7 @@
         <activity android:name=".Activity.ChatActivity"
             android:label="聊天"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".im.AVSingleChatActivity"
+        <activity android:name=".Im.AVSingleChatActivity"
             android:label="聊天"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

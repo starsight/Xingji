@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji.im;
+package com.wenjiehe.xingji.Im;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,8 +16,6 @@ import com.wenjiehe.xingji.R;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import butterknife.Bind;
 

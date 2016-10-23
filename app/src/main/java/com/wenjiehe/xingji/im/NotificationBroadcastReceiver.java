@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji.im;
+package com.wenjiehe.xingji.Im;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

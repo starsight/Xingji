@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji.im;
+package com.wenjiehe.xingji.Im;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

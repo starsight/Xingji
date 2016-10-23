@@ -1,4 +1,4 @@
-package com.wenjiehe.xingji.im;
+package com.wenjiehe.xingji.Im;
 
 import com.avos.avoscloud.im.v2.AVIMMessage;
 

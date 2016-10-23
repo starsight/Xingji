@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,9 +36,9 @@ import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.Util;
-import com.wenjiehe.xingji.im.AVImClientManager;
-import com.wenjiehe.xingji.im.AVSingleChatActivity;
-import com.wenjiehe.xingji.im.Constants;
+import com.wenjiehe.xingji.Im.AVImClientManager;
+import com.wenjiehe.xingji.Im.AVSingleChatActivity;
+import com.wenjiehe.xingji.Im.Constants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -103,6 +102,7 @@ public class MainActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 Intent mainIntent = new Intent(v.getContext(),
                         MyMomentsActivity.class);
+                mainIntent.putExtra("type",MyMomentsActivity.STARTFROMMINE);
                 startActivity(mainIntent);
                 //activity.finish();
             }
