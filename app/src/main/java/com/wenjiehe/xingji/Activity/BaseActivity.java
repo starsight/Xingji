@@ -11,7 +11,10 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 
 import com.avos.avoscloud.RefreshCallback;
+import com.avos.avoscloud.im.v2.AVIMMessageManager;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.im.MessageHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +33,7 @@ public class BaseActivity extends Activity {
     private String userId, userName;
 
     private int signNum = 0;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -41,7 +45,9 @@ public class BaseActivity extends Activity {
         AVOSCloud.initialize(this,
                 "Hncn0N117OUU0Cxc46FvOrUb-9Nh9j0Va",
                 "HE1bjVngkRCnP03lK3lB6LSK");
-
+        //注册默认的消息处理逻辑
+        AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
+        //AVIMMessageManager.registerDefaultMessageHandler(new CustomMessageHandler());
         //AVAnalytics.trackAppOpened(getIntent());
         activity = this;
         userId = null;

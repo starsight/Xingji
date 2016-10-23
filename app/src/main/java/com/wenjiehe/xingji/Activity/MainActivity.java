@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +30,16 @@ import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.Util;
+import com.wenjiehe.xingji.im.AVImClientManager;
+import com.wenjiehe.xingji.im.AVSingleChatActivity;
+import com.wenjiehe.xingji.im.Constants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,15 +56,16 @@ public class MainActivity extends AppCompatActivity
 
     public static String userName;
     public static int signNum;
-   // public static ImageView iv_barSign;
+    // public static ImageView iv_barSign;
 
     public ImageView iv_headeruserPhoto;
-    public  TextView  tv_headerUserName;
+    public TextView tv_headerUserName;
     public static TextView tv_headerSignNum;
 
-    public static ArrayList<SignInfo> arraylistHistorySign =new ArrayList<SignInfo>();
+    public static ArrayList<SignInfo> arraylistHistorySign = new ArrayList<SignInfo>();
     public static boolean isUpadteUserPhoto = false;//头像更新
     public static Bitmap upadteUserPhotoBitmap = null;//更新的头像
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,14 +82,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
-        iv_headeruserPhoto = (ImageView)headerView.findViewById(R.id.iv_header_userphoto);
+        iv_headeruserPhoto = (ImageView) headerView.findViewById(R.id.iv_header_userphoto);
         tv_headerUserName = (TextView) headerView.findViewById(R.id.tv_header_username);
-        tv_headerSignNum = (TextView)headerView.findViewById(R.id.tv_header_signnum);
+        tv_headerSignNum = (TextView) headerView.findViewById(R.id.tv_header_signnum);
 
         Intent intent = getIntent();
         //获取数据
         userName = intent.getStringExtra("username");
-        signNum = intent.getIntExtra("signnum",0);
+        signNum = intent.getIntExtra("signnum", 0);
         tv_headerUserName.setText(userName);
         tv_headerSignNum.setText(String.valueOf(signNum));
 
@@ -110,10 +118,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         //创建xingji目录
-        File destDir = new File(Environment.getExternalStorageDirectory()+"/xingji");
-        File destDir2 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername());
-        File destDir3 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername()+"/Moments");
-        File destDir4 = new File(Environment.getExternalStorageDirectory()+"/xingji/"+AVUser.getCurrentUser().getUsername()+"/Signs");
+        File destDir = new File(Environment.getExternalStorageDirectory() + "/xingji");
+        File destDir2 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername());
+        File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments");
+        File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -137,26 +145,18 @@ public class MainActivity extends AppCompatActivity
                     signNum = (Integer) currentUser.get("signnum");
                 tv_headerSignNum.setText(String.valueOf(signNum));
 
-                /*AVObject todo = AVObject.createWithoutData("headpicture",currentUser.getString("headphotoid"));
-                //todo.put("headpicture",file);
-                todo.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(AVException e) {
 
-                    }
-                });*/
-                if(avObject ==null){//未联网获取
+                if (avObject == null) {//未联网获取
                     MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                            (Environment.getExternalStorageDirectory() + "/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+"headpicture.jpg");
-                    if (MainActivity.upadteUserPhotoBitmap!=null) {
+                            (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/" + "headpicture.jpg");
+                    if (MainActivity.upadteUserPhotoBitmap != null) {
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
 
-                }
-                else {
+                } else {
                     Date date = avObject.getDate("headphotodate");
                     long userphototime = Util.getFileDateInfo
-                            (Environment.getExternalStorageDirectory() + "/xingji/"+AVUser.getCurrentUser().getUsername(), "headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername(), "headpicture.jpg");
                     long onlinephototime = date.getTime();
                     //Log.d("MainActivity-2-",String.valueOf(userphototime));
                     //Log.d("MainActivity-2-",String.valueOf(date));
@@ -164,12 +164,12 @@ public class MainActivity extends AppCompatActivity
                     //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
                     if ((onlinephototime - userphototime) < 10000) {
                         MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                                (Environment.getExternalStorageDirectory() + "/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+"headpicture.jpg");
+                                (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/" + "headpicture.jpg");
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
                     //Log.d("MainActivity","不需要更新");
                     else {//获取头像
-                        if(!currentUser.getString("headphotoid").equals("0")) {
+                        if (!currentUser.getString("headphotoid").equals("0")) {
 
                             AVObject todo = AVObject.createWithoutData("headpicture", currentUser.getString("headphotoid"));
                             todo.fetchInBackground(new GetCallback<AVObject>() {
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity
                                             // bytes 就是文件的数据流
                                             MainActivity.upadteUserPhotoBitmap = Util.bytes2Bimap(bytes);
                                             iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
-                                            Util.saveBitmap(MainActivity.upadteUserPhotoBitmap,"headpicture.jpg");
+                                            Util.saveBitmap(MainActivity.upadteUserPhotoBitmap, "headpicture.jpg");
                                         }
                                     }, new ProgressCallback() {
                                         @Override
@@ -211,6 +211,23 @@ public class MainActivity extends AppCompatActivity
                 hsf = new MyHistorySignFragment();
                 ft.replace(R.id.content_main, hsf);
                 ft.commit();*/
+
+
+                AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
+                    @Override
+                    public void done(AVIMClient avimClient, AVIMException e) {
+                        /*
+                        if (filterException(e)) {
+                                Intent intent = new Intent(AVLoginActivity.this, AVSquareActivity.class);
+                                intent.putExtra(Constants.CONVERSATION_ID, Constants.SQUARE_CONVERSATION_ID);
+                                intent.putExtra(Constants.ACTIVITY_TITLE, getString(R.string.square_name));
+                                startActivity(intent);
+                                finish();
+                        }*/
+                    }
+                });
+
+
                 ft = getFragmentManager().beginTransaction();
                 sf = new SignFragment();
                 ft.replace(R.id.content_main, sf);
@@ -261,6 +278,11 @@ public class MainActivity extends AppCompatActivity
             Intent Intent = new Intent(this,
                     EditSettingActivity.class);
             startActivity(Intent);
+        } else if (id == R.id.slide_item_chat) {
+            Intent Intent = new Intent(this,
+                    AVSingleChatActivity.class);
+            Intent.putExtra(Constants.MEMBER_ID, "666");
+            startActivity(Intent);
         } else if (id == R.id.slide_item_exit) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
@@ -278,7 +300,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if(MainActivity.isUpadteUserPhoto==true){
+        if (MainActivity.isUpadteUserPhoto == true) {
             iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
             MainActivity.isUpadteUserPhoto = false;
         }
@@ -289,7 +311,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * 捕捉返回事件按钮
-     *
+     * <p>
      * 因为此 Activity 继承 TabActivity 用 onKeyDown 无响应，所以改用 dispatchKeyEvent
      * 一般的 Activity 用 onKeyDown 就可以了
      */

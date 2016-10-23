@@ -20,8 +20,33 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
-        </service>
+
+        <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
+        <service android:name="com.avos.avoscloud.PushService" />
+
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <!-- 实时通信模块、推送 END -->
+
+
+        <!--
+        反馈组件（若使用该功能，需添加以下声明）START
+        <activity
+            android:name="com.avos.avoscloud.feedback.ThreadActivity" >
+        </activity>
+        -->
+        <!-- 反馈组件 END -->
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
         <activity
             android:name=".Activity.ChooseLoginRegActivity"
             android:label="@string/app_name">
@@ -62,13 +87,20 @@
             android:name=".Activity.EditSettingActivity"
             android:label="设置"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.MyMomentsActivity"
+        <activity
+            android:name=".Activity.MyMomentsActivity"
             android:label="我的动态"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.NearbyMomentsActivity"
             android:label="附近动态"
-        android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.ChatActivity"
+            android:label="聊天"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".im.AVSingleChatActivity"
+            android:label="聊天"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

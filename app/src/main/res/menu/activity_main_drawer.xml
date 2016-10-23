@@ -12,6 +12,9 @@
             android:id="@+id/slide_item_nearby_moments"
             android:title="@string/slide_nearby_moments" />
         <item
+            android:id="@+id/slide_item_chat"
+            android:title="@string/slide_chat" />
+        <item
             android:id="@+id/slide_item_settings"
             android:title="@string/slide_settings" />
         <item

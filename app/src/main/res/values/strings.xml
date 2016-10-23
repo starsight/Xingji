@@ -9,6 +9,7 @@
     <string name="slide_sign">签到</string>
     <string name="slide_history">历史签到</string>
     <string name="slide_nearby_moments">附近动态</string>
+    <string name="slide_chat">私信</string>
     <string name="slide_settings">设置</string>
     <string name="slide_exit">退出应用</string>
 
@@ -57,4 +58,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <string name="unspport_message_type">暂不支持此消息类型</string>
+    <string name="message_is_null">消息不能为空</string>
 </resources>
