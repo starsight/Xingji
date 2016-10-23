@@ -37,7 +37,7 @@
                 android:id="@+id/chat_left_text_tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/chat_left_item_bg"
+                android:background="@mipmap/chat_left_item_bg"
                 android:gravity="left"/>
         </LinearLayout>
 

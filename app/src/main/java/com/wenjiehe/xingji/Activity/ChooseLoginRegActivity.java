@@ -342,30 +342,30 @@ public class ChooseLoginRegActivity extends BaseActivity {
                 if (e == null) {
                     //showRegisterSuccess();
                     /*建uMoments表*/
-                    String objectid = AVUser.getCurrentUser().getObjectId();
+                    /*String objectid = AVUser.getCurrentUser().getObjectId();
                     Log.d("choose",objectid);
-                    AVObject todo = new AVObject("u"+objectid);
-                    //todo.put("type","{\"21\":\"333\"}");
-                    todo.saveInBackground(new SaveCallback() {
+                    AVObject todo2 = new AVObject("u"+objectid);
+                    todo2.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
                             if (e == null) {
-                                // 存储成功
-                                Intent mainIntent = new Intent(activity, MainActivity.class);
-                                AVUser currentUser = getCurrentUser();
-                                if (currentUser != null) {
-                                    mainIntent.putExtra("username",currentUser.getUsername());
-                                    mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
-                                }
-                                startActivity(mainIntent);
-                                activity.finish();
+
                             } else {
                                 progressDialogDismiss();
                                 showLoginError();
                                 // 失败的话，请检查网络环境以及 SDK 配置是否正确
                             }
                         }
-                    });
+                    });*/
+                    // 存储成功
+                    Intent mainIntent = new Intent(activity, MainActivity.class);
+                    AVUser currentUser = AVUser.getCurrentUser();
+                    if (currentUser != null) {
+                        mainIntent.putExtra("username",currentUser.getUsername());
+                        mainIntent.putExtra("signnum",(Integer)currentUser.get("signnum"));
+                    }
+                    startActivity(mainIntent);
+                    activity.finish();
 
                 } else {
                     switch (e.getCode()) {
