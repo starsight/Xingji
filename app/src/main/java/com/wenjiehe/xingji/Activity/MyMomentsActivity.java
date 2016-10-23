@@ -135,6 +135,8 @@ public class MyMomentsActivity extends AppCompatActivity
 
         iv_userinfo_headerphoto = (CircleImageView) findViewById(R.id.iv_userinfo_headerphoto);
         if (startType == STARTFROMMINE) {
+            if (MainActivity.upadteUserPhotoBitmap != null)
+                iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
             iv_userinfo_headerphoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -164,8 +166,7 @@ public class MyMomentsActivity extends AppCompatActivity
 
         }
 
-        if (MainActivity.upadteUserPhotoBitmap != null)
-            iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
+
         refresh.autoRefresh();
     }
 
