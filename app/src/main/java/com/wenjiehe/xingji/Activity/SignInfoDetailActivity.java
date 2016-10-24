@@ -71,7 +71,6 @@ public class SignInfoDetailActivity extends AppCompatActivity {
         tv_detail_owns = (TextView) findViewById(R.id.tv_detail_owns);
 
         Intent intent = getIntent();
-
         final SignInfo item = (SignInfo) intent.getParcelableExtra("SignInfo");
         //iv_detail_signinfophoto.setImageResource(item.getPhotoId());
         tv_detail_signinfolocation.setText(item.getLocation());
@@ -92,6 +91,10 @@ public class SignInfoDetailActivity extends AppCompatActivity {
             iv_detail_userphoto.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon));
         tv_detail_owns.setText(item.username);
 
+        if (item.username.equals(AVUser.getCurrentUser().getUsername())) {
+            iv_detail_userphoto.setVisibility(View.GONE);
+            tv_detail_owns.setVisibility(View.GONE);
+        }
 
         iv_detail_userphoto.setOnClickListener(new View.OnClickListener() {
             @Override

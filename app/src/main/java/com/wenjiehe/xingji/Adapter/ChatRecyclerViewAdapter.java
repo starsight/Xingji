@@ -13,28 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
-import com.wenjiehe.xingji.Activity.ChatActivity;
 import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.Im.AVSingleChatActivity;
 import com.wenjiehe.xingji.Im.Constants;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Util;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.media.CamcorderProfile.get;
 import static com.baidu.location.h.a.i;
-import static com.wenjiehe.xingji.R.id.iv_icon;
-import static com.wenjiehe.xingji.R.id.tv_content_my_moments;
 import static com.wenjiehe.xingji.Util.hasFile;
 
 /**
@@ -43,9 +31,9 @@ import static com.wenjiehe.xingji.Util.hasFile;
 
 public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ChatViewHolder> {
     private Context context;
-    private List<ChatInfo> data;
+    private ArrayList<ChatInfo> data;
 
-    public ChatRecyclerViewAdapter(List<ChatInfo> mData, Context mContext) {
+    public ChatRecyclerViewAdapter(ArrayList<ChatInfo> mData, Context mContext) {
         this.data = mData;
         this.context = mContext;
     }
@@ -69,7 +57,8 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
         }
         final String username = user;
         holder.tv_user_chat.setText(user);
-        holder.tv_content_chat.setText(data.get(position).getLastMessage());
+        com.alibaba.fastjson.JSONObject json =JSON.parseObject(data.get(position).getLastMessage());
+        holder.tv_content_chat.setText(json.getString("_lctext"));
 
         String str2 = Environment.getExternalStorageDirectory() + "/xingji/" +
                 AVUser.getCurrentUser().getUsername() + "/Chats/" + user;

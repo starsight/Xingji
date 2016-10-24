@@ -96,7 +96,7 @@
             android:label="附近动态"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.ChatActivity"
-            android:label="聊天"
+            android:label="私信列表"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Im.AVSingleChatActivity"
             android:label="聊天"

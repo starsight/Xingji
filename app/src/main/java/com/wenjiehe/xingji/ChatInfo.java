@@ -15,7 +15,7 @@ public class ChatInfo {
     List<String> persons;
     Date lastTime;
 
-     public ChatInfo(String lastMessageFrom, String lastMessage, List<String> persons, Date lastTime) {
+    public ChatInfo(String lastMessageFrom, String lastMessage, List<String> persons, Date lastTime) {
         this.lastMessageFrom = lastMessageFrom;
         this.lastMessage = lastMessage;
         this.persons = persons;

@@ -270,7 +270,7 @@ public class SignFragment extends Fragment {
 
         LocationClientOption option = new LocationClientOption();
         option.setCoorType("bd09ll");
-        option.setScanSpan(10000);
+        //option.setScanSpan(10000);
         option.setLocationNotify(true);
         option.setIsNeedAddress(true);
         option.setOpenGps(true);

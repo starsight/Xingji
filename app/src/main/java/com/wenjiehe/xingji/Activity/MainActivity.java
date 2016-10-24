@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity
     public static TextView tv_headerSignNum;
 
     public static ArrayList<SignInfo> arraylistHistorySign = new ArrayList<SignInfo>();
-    public static List<ChatInfo> listChatList ;//私信联系人列表
+    public static ArrayList<ChatInfo> listChatList = new ArrayList<>();//私信联系人列表
     public static boolean isUpadteUserPhoto = false;//头像更新
     public static Bitmap upadteUserPhotoBitmap = null;//更新的头像
 
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 Intent mainIntent = new Intent(v.getContext(),
                         MyMomentsActivity.class);
-                mainIntent.putExtra("type",MyMomentsActivity.STARTFROMMINE);
+                mainIntent.putExtra("type", MyMomentsActivity.STARTFROMMINE);
                 startActivity(mainIntent);
                 //activity.finish();
             }
@@ -145,6 +147,16 @@ public class MainActivity extends AppCompatActivity
         }
         if (!destDir5.exists()) {
             destDir5.mkdirs();
+        }
+
+    }
+
+    protected boolean filterException(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -224,38 +236,52 @@ public class MainActivity extends AppCompatActivity
                 ft.replace(R.id.content_main, hsf);
                 ft.commit();*/
 
+                ft = getFragmentManager().beginTransaction();
+                sf = new SignFragment();
+                ft.replace(R.id.content_main, sf);
+                ft.commit();
+
                 /**私信用户名验证*/
                 AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
                     @Override
                     public void done(final AVIMClient avimClient, AVIMException e) {
-                        if(e==null){
+                        if (e == null) {
+                            listChatList.clear();
                             //登录成功
                             AVIMConversationQuery query = avimClient.getQuery();
-                            query.findInBackground(new AVIMConversationQueryCallback(){
+                            query.findInBackground(new AVIMConversationQueryCallback() {
                                 @Override
-                                public void done(List<AVIMConversation> convs, AVIMException e){
-                                    if(e==null){
+                                public void done(List<AVIMConversation> convs, AVIMException e) {
+                                    if (filterException(e)) {
                                         //listChatList = convs;
-                                        if(convs!=null){
-                                            for(AVIMConversation ac :convs){
-                                                final List<String> l =ac.getMembers();
+                                        if (convs != null) {
+                                            AVIMClient.setMessageQueryCacheEnable(false);
+                                            Log.d("convs", String.valueOf(convs.size()));
+                                            for (AVIMConversation ac : convs) {
+
+                                                final List<String> l = ac.getMembers();
                                                 final Date date = ac.getLastMessageAt();
-                                                String user=AVUser.getCurrentUser().getUsername();
-                                                for(String str:l){
-                                                    if(!str.equals(AVUser.getCurrentUser().getUsername()))
+
+                                                String user = AVUser.getCurrentUser().getUsername();
+                                                for (String str : l) {
+                                                    if (!str.equals(AVUser.getCurrentUser().getUsername()))
                                                         user = str;
                                                 }
-                                                Util.downloadPicture(user,"Chats");
                                                 ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
                                                     @Override
                                                     public void done(AVIMMessage avimMessage, AVIMException e) {
-                                                        String lastMessage = avimMessage.getContent();
-                                                        String lastMessageFrom = avimMessage.getFrom();
+                                                        if (avimMessage != null) {
+                                                            String lastMessage = avimMessage.getContent();
+                                                            String lastMessageFrom = avimMessage.getFrom();
+                                                            //Log.d("2333", String.valueOf(listChatList.size()));
+                                                            ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
+                                                            listChatList.add(chatinfo);
+                                                        }
 
-                                                        ChatInfo chatinfo = new ChatInfo(lastMessage,lastMessageFrom,l,date);
-                                                        listChatList.add(chatinfo);
                                                     }
                                                 });
+                                                Util.downloadPicture(user, "Chats");
+                                                //Log.d("23333", l.toString());
                                             }
                                         }
                                         //convs就是获取到的conversation列表
@@ -275,11 +301,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-
-                ft = getFragmentManager().beginTransaction();
-                sf = new SignFragment();
-                ft.replace(R.id.content_main, sf);
-                ft.commit();
             }
         });
     }
