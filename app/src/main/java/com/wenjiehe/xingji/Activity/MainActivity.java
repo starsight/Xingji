@@ -240,6 +240,12 @@ public class MainActivity extends AppCompatActivity
                                             for(AVIMConversation ac :convs){
                                                 final List<String> l =ac.getMembers();
                                                 final Date date = ac.getLastMessageAt();
+                                                String user=AVUser.getCurrentUser().getUsername();
+                                                for(String str:l){
+                                                    if(!str.equals(AVUser.getCurrentUser().getUsername()))
+                                                        user = str;
+                                                }
+                                                Util.downloadPicture(user,"Chats");
                                                 ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
                                                     @Override
                                                     public void done(AVIMMessage avimMessage, AVIMException e) {

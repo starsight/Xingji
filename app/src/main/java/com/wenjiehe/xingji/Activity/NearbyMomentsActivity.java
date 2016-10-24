@@ -208,7 +208,8 @@ public class NearbyMomentsActivity extends AppCompatActivity
                     } else
                         photoIdTmp = "0";
 
-                    if (!hasFile(Environment.getExternalStorageDirectory() + "/xingji/" +
+                    Util.downloadPicture(usernameTmp,"Moments");
+                    /*if (!hasFile(Environment.getExternalStorageDirectory() + "/xingji/" +
                             AVUser.getCurrentUser().getUsername() + "/Moments/" + usernameTmp)) {//没有这个头像
                         AVQuery<AVObject> queryPhoto = new AVQuery<>("headpicture");
                         queryPhoto.whereEqualTo("username", usernameTmp);
@@ -235,7 +236,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
                                 }
                             }
                         });
-                    }
+                    }*/
                     final SignInfo signinfotmp = new SignInfo(new LatLng(lattmp, lngtmp), datetmp,
                             new SignLocation(provincetmp, citytmp, streettmp, locDescribetmp), eventtmp, objectIdtmp, photoIdTmp, usernameTmp,likertmp);
 

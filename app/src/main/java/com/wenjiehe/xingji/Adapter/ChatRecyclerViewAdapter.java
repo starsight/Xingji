@@ -1,6 +1,10 @@
 package com.wenjiehe.xingji.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +18,12 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.wenjiehe.xingji.Activity.ChatActivity;
 import com.wenjiehe.xingji.ChatInfo;
+import com.wenjiehe.xingji.Im.AVSingleChatActivity;
+import com.wenjiehe.xingji.Im.Constants;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +35,7 @@ import static android.media.CamcorderProfile.get;
 import static com.baidu.location.h.a.i;
 import static com.wenjiehe.xingji.R.id.iv_icon;
 import static com.wenjiehe.xingji.R.id.tv_content_my_moments;
+import static com.wenjiehe.xingji.Util.hasFile;
 
 /**
  * Created by yiyuan on 2016/10/23.
@@ -52,15 +61,32 @@ public class ChatRecyclerViewAdapter extends RecyclerView.Adapter<ChatRecyclerVi
     @Override
     public void onBindViewHolder(ChatRecyclerViewAdapter.ChatViewHolder holder, int position) {
         final ChatViewHolder holdertmp = holder;
-        List<String> persons= data.get(position).getMembers();
-        for(String str :persons){
-            if (!str.equals(AVUser.getCurrentUser().getUsername()))
-                holdertmp.tv_user_chat.setText(str);
+        List<String> l = data.get(position).getPersons();
+        String user=AVUser.getCurrentUser().getUsername();
+        for(String str:l){
+            if(!str.equals(AVUser.getCurrentUser().getUsername()))
+                user = str;
         }
+        final String username = user;
+        holder.tv_user_chat.setText(user);
+        holder.tv_content_chat.setText(data.get(position).getLastMessage());
 
-        data.get(position)
+        String str2 = Environment.getExternalStorageDirectory() + "/xingji/" +
+                AVUser.getCurrentUser().getUsername() + "/Chats/" + user;
+        if (hasFile(str2)) {
+            Bitmap b = Util.file2bitmap(str2);
+            holder.iv_chat_icon.setImageBitmap(b);
+        } else
+            holder.iv_chat_icon.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon));
 
-
+        holder.chat_card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Intent = new Intent(context, AVSingleChatActivity.class);
+                Intent.putExtra(Constants.MEMBER_ID, username);
+                context.startActivity(Intent);
+            }
+        });
     }
 
     @Override

@@ -21,4 +21,20 @@ public class ChatInfo {
         this.persons = persons;
         this.lastTime = lastTime;
     }
+
+    public String getLastMessageFrom() {
+        return lastMessageFrom;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public List<String> getPersons() {
+        return persons;
+    }
+
+    public Date getLastTime() {
+        return lastTime;
+    }
 }

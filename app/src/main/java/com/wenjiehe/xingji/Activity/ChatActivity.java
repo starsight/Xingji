@@ -2,6 +2,8 @@ package com.wenjiehe.xingji.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -34,7 +36,11 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         activity_chat_recycler = (RecyclerView) findViewById(R.id.activity_chat_recycler);
         adapter = new ChatRecyclerViewAdapter(listChatList, ChatActivity.this);
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        activity_chat_recycler.setAdapter(adapter);
+        activity_chat_recycler.setHasFixedSize(true);
+        activity_chat_recycler.setLayoutManager(layoutManager);
+        activity_chat_recycler.setItemAnimator(new DefaultItemAnimator());
     }
 
 

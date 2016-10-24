@@ -5,7 +5,14 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.ProgressCallback;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wenjie on 16/08/06.
@@ -106,7 +114,38 @@ public class Util {
 
     }
 
-
+    public static void downloadPicture(String usernameTmp,String pathTmp){
+        final String str = usernameTmp;
+        final String path = pathTmp;
+        if (!hasFile(Environment.getExternalStorageDirectory() + "/xingji/" +
+                AVUser.getCurrentUser().getUsername() + "/"+pathTmp +"/"+ usernameTmp)) {//没有这个头像
+            AVQuery<AVObject> queryPhoto = new AVQuery<>("headpicture");
+            queryPhoto.whereEqualTo("username", usernameTmp);
+            queryPhoto.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (list == null)
+                        return;
+                    for (AVObject avObject : list) {
+                        AVFile file = avObject.getAVFile("headpicture");
+                        file.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, AVException e) {
+                                // bytes 就是文件的数据流
+                                Bitmap bitmap  = Util.bytes2Bimap(bytes);
+                                Util.saveBitmap(bitmap,path+"/"+str);
+                            }
+                        }, new ProgressCallback() {
+                            @Override
+                            public void done(Integer integer) {
+                                // 下载进度数据，integer 介于 0 和 100。
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
 
 
 }
