@@ -12,22 +12,28 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.wenjiehe.xingji.Adapter.ChatRecyclerViewAdapter;
 import com.wenjiehe.xingji.Adapter.MomentsRecyclerViewAdapter;
 import com.wenjiehe.xingji.Adapter.RecyclerViewAdapter;
+import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.R;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView activity_chat_recycler;
-    private RecyclerViewAdapter adapter;
+    private ChatRecyclerViewAdapter adapter;
+
+    private List<ChatInfo> listChatList = MainActivity.listChatList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         activity_chat_recycler = (RecyclerView) findViewById(R.id.activity_chat_recycler);
-        //adapter = new MomentsRecyclerViewAdapter(mData, MyMomentsActivity.this);
+        adapter = new ChatRecyclerViewAdapter(listChatList, ChatActivity.this);
 
     }
 

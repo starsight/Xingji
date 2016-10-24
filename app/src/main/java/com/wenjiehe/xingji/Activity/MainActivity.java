@@ -30,8 +30,14 @@ import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
@@ -43,6 +49,7 @@ import com.wenjiehe.xingji.Im.Constants;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     public static TextView tv_headerSignNum;
 
     public static ArrayList<SignInfo> arraylistHistorySign = new ArrayList<SignInfo>();
+    public static List<ChatInfo> listChatList ;//私信联系人列表
     public static boolean isUpadteUserPhoto = false;//头像更新
     public static Bitmap upadteUserPhotoBitmap = null;//更新的头像
 
@@ -122,6 +130,7 @@ public class MainActivity extends AppCompatActivity
         File destDir2 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername());
         File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments");
         File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs");
+        File destDir5 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Chats");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -133,6 +142,9 @@ public class MainActivity extends AppCompatActivity
         }
         if (!destDir4.exists()) {
             destDir4.mkdirs();
+        }
+        if (!destDir5.exists()) {
+            destDir5.mkdirs();
         }
     }
 
@@ -212,10 +224,40 @@ public class MainActivity extends AppCompatActivity
                 ft.replace(R.id.content_main, hsf);
                 ft.commit();*/
 
-
+                /**私信用户名验证*/
                 AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
                     @Override
-                    public void done(AVIMClient avimClient, AVIMException e) {
+                    public void done(final AVIMClient avimClient, AVIMException e) {
+                        if(e==null){
+                            //登录成功
+                            AVIMConversationQuery query = avimClient.getQuery();
+                            query.findInBackground(new AVIMConversationQueryCallback(){
+                                @Override
+                                public void done(List<AVIMConversation> convs, AVIMException e){
+                                    if(e==null){
+                                        //listChatList = convs;
+                                        if(convs!=null){
+                                            for(AVIMConversation ac :convs){
+                                                final List<String> l =ac.getMembers();
+                                                final Date date = ac.getLastMessageAt();
+                                                ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
+                                                    @Override
+                                                    public void done(AVIMMessage avimMessage, AVIMException e) {
+                                                        String lastMessage = avimMessage.getContent();
+                                                        String lastMessageFrom = avimMessage.getFrom();
+
+                                                        ChatInfo chatinfo = new ChatInfo(lastMessage,lastMessageFrom,l,date);
+                                                        listChatList.add(chatinfo);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                        //convs就是获取到的conversation列表
+                                        //注意：按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
+                                    }
+                                }
+                            });
+                        }
                         /*
                         if (filterException(e)) {
                                 Intent intent = new Intent(AVLoginActivity.this, AVSquareActivity.class);

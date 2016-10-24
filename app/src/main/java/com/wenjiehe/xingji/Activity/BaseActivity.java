@@ -47,9 +47,7 @@ public class BaseActivity extends Activity {
             userName = currentUser.getUsername();
             if (currentUser.get("signnum") != null)
                 signNum = (Integer) currentUser.get("signnum");
-
         }
-
     }
 
     public String getUserId() {

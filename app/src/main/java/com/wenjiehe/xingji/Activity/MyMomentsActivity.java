@@ -134,7 +134,7 @@ public class MyMomentsActivity extends AppCompatActivity
         refresh.setLoadMoreBackgroundResource(R.color.window_background);
 
         iv_userinfo_headerphoto = (CircleImageView) findViewById(R.id.iv_userinfo_headerphoto);
-        if (startType == STARTFROMMINE) {
+        if (username==AVUser.getCurrentUser().getUsername()) {//startType == STARTFROMMINE||(startType ==STARTFROMOTHERS&&)
             if (MainActivity.upadteUserPhotoBitmap != null)
                 iv_userinfo_headerphoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
             iv_userinfo_headerphoto.setOnClickListener(new View.OnClickListener() {
