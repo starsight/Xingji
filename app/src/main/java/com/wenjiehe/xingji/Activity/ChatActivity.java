@@ -68,5 +68,9 @@ public class ChatActivity extends AppCompatActivity {
         //Log.d("2333", String.valueOf(listChatList.size()));
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 }

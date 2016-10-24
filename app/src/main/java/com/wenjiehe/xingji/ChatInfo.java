@@ -37,4 +37,12 @@ public class ChatInfo {
     public Date getLastTime() {
         return lastTime;
     }
+
+    public void setLastMessageFrom(String lastMessageFrom) {
+        this.lastMessageFrom = lastMessageFrom;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
 }
