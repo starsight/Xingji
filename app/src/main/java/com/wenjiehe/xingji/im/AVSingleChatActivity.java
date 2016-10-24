@@ -13,8 +13,12 @@ import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.wenjiehe.xingji.Activity.MainActivity;
+import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.R;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
@@ -24,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
+
+import static com.wenjiehe.xingji.Activity.MainActivity.listChatList;
 
 /**
  * Created by wli on 15/8/14.
@@ -100,6 +106,25 @@ public class AVSingleChatActivity extends AVBaseActivity {
                         });
                     }
                 }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+
+        chatFragment.getImConversation().getLastMessage(new AVIMSingleMessageQueryCallback() {
+            @Override
+            public void done(AVIMMessage avimMessage, AVIMException e) {
+                if (avimMessage != null) {
+                    String lastMessage = avimMessage.getContent();
+                    String lastMessageFrom = avimMessage.getFrom();
+                    listChatList.get(2).setLastMessage(lastMessage);
+                    listChatList.get(2).setLastMessageFrom(lastMessageFrom);
+                }
+
             }
         });
     }

@@ -114,7 +114,10 @@ public class ChatFragment extends Fragment {
     }
   }
 
-
+  /**by wenjie**/
+  public AVIMConversation getImConversation() {
+    return imConversation;
+  }
 
   /**
    * 拉取消息，必须加入 conversation 后才能拉取消息
