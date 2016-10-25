@@ -4,6 +4,7 @@ package com.wenjiehe.xingji.Activity;
  * Created by wenjie on 16/07/22.
  */
 
+import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVUser;
 
@@ -35,10 +36,9 @@ public class BaseActivity extends Activity {
         AVOSCloud.initialize(this,
                 "Hncn0N117OUU0Cxc46FvOrUb-9Nh9j0Va",
                 "HE1bjVngkRCnP03lK3lB6LSK");
-        //注册默认的消息处理逻辑
-        AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
+
         //AVIMMessageManager.registerDefaultMessageHandler(new CustomMessageHandler());
-        //AVAnalytics.trackAppOpened(getIntent());
+        AVAnalytics.trackAppOpened(getIntent());
         activity = this;
         userId = null;
         AVUser currentUser = AVUser.getCurrentUser();

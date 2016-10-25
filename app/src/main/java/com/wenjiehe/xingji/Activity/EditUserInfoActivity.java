@@ -377,7 +377,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void done(AVException e) {
                     final String headphotoidnew = object.getObjectId();
-                    AVUser.getCurrentUser().put("headphotodate",object.getUpdatedAt());
+                    AVUser.getCurrentUser().put("headphotodate",object.getCreatedAt());
                     AVUser.getCurrentUser().put("headphotoid",headphotoidnew);
                     AVUser.getCurrentUser().put("headphotofileid",object.getAVFile("headpicture").getObjectId());
                     AVUser.getCurrentUser().saveInBackground(new SaveCallback() {

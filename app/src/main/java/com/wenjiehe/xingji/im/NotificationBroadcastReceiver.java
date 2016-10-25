@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 /**
@@ -14,21 +15,24 @@ import android.text.TextUtils;
  */
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
 
-  @Override
-  public void onReceive(Context context, Intent intent) {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
     /*if (AVImClientManager.getInstance().getClient() == null) {
       gotoLoginActivity(context);
     } else {*/
-      String conversationId = intent.getStringExtra(Constants.CONVERSATION_ID);
-      if (!TextUtils.isEmpty(conversationId)) {
-        if (Constants.SQUARE_CONVERSATION_ID.equals(conversationId)) {
-         // gotoSquareActivity(context, intent);
-        } else {
-          gotoSingleChatActivity(context, intent);
+        Log.d("23333",intent.toString());
+        String conversationId = intent.getStringExtra(Constants.CONVERSATION_ID);
+        if (!TextUtils.isEmpty(conversationId)) {
+            if (Constants.SQUARE_CONVERSATION_ID.equals(conversationId)) {
+                // gotoSquareActivity(context, intent);
+                // Log.d("hello2",intent.toString());
+            } else {
+                gotoSingleChatActivity(context, intent);
+            }
         }
-      }
 
-  }
+    }
 //
 //  /**
 //   * 如果 app 上下文已经缺失，则跳转到登陆页面，走重新登陆的流程
@@ -52,15 +56,19 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
 //    context.startActivity(startActivityIntent);
 //  }
 //
-  /**
-   * 跳转至单聊页面
-   * @param context
-   * @param intent
-   */
-  private void gotoSingleChatActivity(Context context, Intent intent) {
-    Intent startActivityIntent = new Intent(context, AVSingleChatActivity.class);
-    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
-    context.startActivity(startActivityIntent);
-  }
+
+    /**
+     * 跳转至单聊页面
+     *
+     * @param context
+     * @param intent
+     */
+    private void gotoSingleChatActivity(Context context, Intent intent) {
+        Intent startActivityIntent = new Intent(context, AVSingleChatActivity.class);
+        startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Log.d("hello",intent.toString());
+        // System.out.println(Constants.MEMBER_ID);
+        startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
+        context.startActivity(startActivityIntent);
+    }
 }

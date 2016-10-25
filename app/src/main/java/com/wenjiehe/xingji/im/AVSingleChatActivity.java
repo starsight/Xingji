@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
@@ -92,6 +93,7 @@ public class AVSingleChatActivity extends AVBaseActivity {
      * 如果存在，则直接赋值给 ChatFragment，否者创建后再赋值
      */
     private void getConversation(final String memberId) {
+        //Log.d("999999",memberId);
         final AVIMClient client = AVImClientManager.getInstance().getClient();
         AVIMConversationQuery conversationQuery = client.getQuery();
         conversationQuery.withMembers(Arrays.asList(memberId), true);
@@ -118,19 +120,6 @@ public class AVSingleChatActivity extends AVBaseActivity {
         });
     }
 
-    boolean isSync= false;
-    public final Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    isSync = true;
-                    break;
-                default:
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };
 
     @Override
     public void onBackPressed() {

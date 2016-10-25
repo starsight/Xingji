@@ -30,16 +30,20 @@ import com.avos.avoscloud.GetCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.ProgressCallback;
+import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.RefreshCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMMessageManager;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.wenjiehe.xingji.ChatInfo;
+import com.wenjiehe.xingji.Im.MessageHandler;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 import com.wenjiehe.xingji.SignInfo;
@@ -240,6 +244,9 @@ public class MainActivity extends AppCompatActivity
                 sf = new SignFragment();
                 ft.replace(R.id.content_main, sf);
                 ft.commit();
+
+                //注册默认的消息处理逻辑
+                AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(MainActivity.this));
 
                 /**私信用户名验证*/
                 AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
