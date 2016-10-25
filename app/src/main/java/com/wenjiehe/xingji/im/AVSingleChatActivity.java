@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,8 +21,10 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.wenjiehe.xingji.Activity.MainActivity;
+import com.wenjiehe.xingji.Activity.MyHistorySignActivity;
 import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.SignInfo;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
 
@@ -30,6 +35,7 @@ import java.util.List;
 import butterknife.Bind;
 
 import static com.wenjiehe.xingji.Activity.MainActivity.listChatList;
+import static com.wenjiehe.xingji.R.id.refresh;
 
 /**
  * Created by wli on 15/8/14.
@@ -41,6 +47,8 @@ public class AVSingleChatActivity extends AVBaseActivity {
     protected Toolbar toolbar;
 
     protected ChatFragment chatFragment;
+
+    String memberId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,7 @@ public class AVSingleChatActivity extends AVBaseActivity {
             }
         });
 
-        String memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
+        memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
         setTitle(memberId);
         getConversation(memberId);
     }
@@ -110,22 +118,23 @@ public class AVSingleChatActivity extends AVBaseActivity {
         });
     }
 
+    boolean isSync= false;
+    public final Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    isSync = true;
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
 
-
-        chatFragment.getImConversation().getLastMessage(new AVIMSingleMessageQueryCallback() {
-            @Override
-            public void done(AVIMMessage avimMessage, AVIMException e) {
-                if (avimMessage != null) {
-                    String lastMessage = avimMessage.getContent();
-                    String lastMessageFrom = avimMessage.getFrom();
-                    listChatList.get(2).setLastMessage(lastMessage);
-                    listChatList.get(2).setLastMessageFrom(lastMessageFrom);
-                }
-
-            }
-        });
     }
 }

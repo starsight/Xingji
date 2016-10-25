@@ -10,22 +10,30 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.wenjiehe.xingji.Adapter.ChatRecyclerViewAdapter;
 import com.wenjiehe.xingji.Adapter.MomentsRecyclerViewAdapter;
 import com.wenjiehe.xingji.Adapter.RecyclerViewAdapter;
 import com.wenjiehe.xingji.ChatInfo;
+import com.wenjiehe.xingji.Im.AVImClientManager;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.Util;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static com.wenjiehe.xingji.R.id.toolbar;
@@ -69,8 +77,51 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
+    protected void onRestart() {
+        super.onRestart();
+        AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
+            @Override
+            public void done(final AVIMClient avimClient, AVIMException e) {
+                if (e == null) {
+                    listChatList.clear();
+                    //登录成功
+                    AVIMConversationQuery query = avimClient.getQuery();
+                    query.findInBackground(new AVIMConversationQueryCallback() {
+                        @Override
+                        public void done(List<AVIMConversation> convs, AVIMException e) {
+                            if (e==null) {
+                                if (convs != null) {
+                                    AVIMClient.setMessageQueryCacheEnable(false);
+                                    for (AVIMConversation ac : convs) {
+                                        final List<String> l = ac.getMembers();
+                                        final Date date = ac.getLastMessageAt();
+                                        String user = AVUser.getCurrentUser().getUsername();
+                                        for (String str : l) {
+                                            if (!str.equals(AVUser.getCurrentUser().getUsername()))
+                                                user = str;
+                                        }
+                                        ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
+                                            @Override
+                                            public void done(AVIMMessage avimMessage, AVIMException e) {
+                                                if (avimMessage != null) {
+                                                    String lastMessage = avimMessage.getContent();
+                                                    String lastMessageFrom = avimMessage.getFrom();
+                                                    ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
+                                                    listChatList.add(chatinfo);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+
+                                            }
+                                        });
+                                        Util.downloadPicture(user, "Chats");
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
     }
 }
