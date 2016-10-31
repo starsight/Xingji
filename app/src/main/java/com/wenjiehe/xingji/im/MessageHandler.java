@@ -101,7 +101,7 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
         intent.putExtra(Constants.CONVERSATION_ID, conversation.getConversationId());
         intent.putExtra(Constants.MEMBER_ID, message.getFrom());
         List<String> l = conversation.getMembers();
-        String tittle = "nihao";
+        String tittle = "消息";
         for (String s : l) {
             if (!s.equals(message.getFrom()))
                 tittle = s;

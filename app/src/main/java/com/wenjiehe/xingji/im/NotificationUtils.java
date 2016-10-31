@@ -79,7 +79,7 @@ public class NotificationUtils {
             notification.sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + sound);
         }
         manager.notify(notificationId, notification);*/
-
+        //intent.setFlags(0);
         NotificationManager mNManager =(NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         Notification notify1;
         //定义一个PendingIntent点击Notification后启动一个Activity

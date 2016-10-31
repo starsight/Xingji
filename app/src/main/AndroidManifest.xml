@@ -59,6 +59,7 @@
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.ForgetPasswordActivity"
@@ -100,6 +101,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Im.AVSingleChatActivity"
             android:label="聊天"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

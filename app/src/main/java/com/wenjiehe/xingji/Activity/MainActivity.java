@@ -152,7 +152,28 @@ public class MainActivity extends AppCompatActivity
         if (!destDir5.exists()) {
             destDir5.mkdirs();
         }
+        Log.d("2333","member1");
+        String memberId = intent.getStringExtra(Constants.MEMBER_ID);
+        if(memberId!=null){
+            Log.d("2333",intent.getStringExtra(Constants.MEMBER_ID));
+            Intent startActivityIntent = new Intent(this, AVSingleChatActivity.class);
+            startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
+            startActivity(startActivityIntent);
+        }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d("2333","member2");
+        String memberId = intent.getStringExtra(Constants.MEMBER_ID);
+        if(memberId!=null){
+            Log.d("2333",intent.getStringExtra(Constants.MEMBER_ID));
+            Intent startActivityIntent = new Intent(this, AVSingleChatActivity.class);
+            startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
+            startActivity(startActivityIntent);
+        }
     }
 
     protected boolean filterException(Exception e) {
