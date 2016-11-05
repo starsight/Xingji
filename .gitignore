@@ -1,6 +1,6 @@
 /app/*.apk
 /app/*.markdown
-
+debug.keystore
 
 # OSX
 
