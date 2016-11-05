@@ -23,6 +23,10 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+
 /**
  * Created by wenjie on 16/08/06.
  */
@@ -147,5 +151,35 @@ public class Util {
         }
     }
 
+    public static void test(){
+        /*Observable o =  Observable.create(new Observable.OnSubscribe<String>(){
+
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onNext("");
+            }
+        });*/
+
+        Observable oo = Observable.just("hello","hello2");
+
+        Observer<String> or = new Observer<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.d("rxjava",s);
+            }
+        };
+
+        oo.subscribe(or);
+    }
 
 }
