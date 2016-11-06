@@ -150,36 +150,4 @@ public class Util {
             });
         }
     }
-
-    public static void test(){
-        /*Observable o =  Observable.create(new Observable.OnSubscribe<String>(){
-
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                subscriber.onNext("");
-            }
-        });*/
-
-        Observable oo = Observable.just("hello","hello2");
-
-        Observer<String> or = new Observer<String>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(String s) {
-                Log.d("rxjava",s);
-            }
-        };
-
-        oo.subscribe(or);
-    }
-
 }

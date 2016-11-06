@@ -54,8 +54,12 @@ import com.wenjiehe.xingji.Im.Constants;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import static com.wenjiehe.xingji.Activity.ChatActivity.ChatListComp;
 
 
 public class MainActivity extends AppCompatActivity
@@ -304,6 +308,7 @@ public class MainActivity extends AppCompatActivity
                                                             //Log.d("2333", String.valueOf(listChatList.size()));
                                                             ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
                                                             listChatList.add(chatinfo);
+                                                            Collections.sort(listChatList,ChatListComp);
                                                         }
 
                                                     }

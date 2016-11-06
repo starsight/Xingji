@@ -33,8 +33,15 @@ import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
 
 import static com.wenjiehe.xingji.R.id.toolbar;
 
@@ -45,6 +52,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ArrayList<ChatInfo> listChatList;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,32 +97,72 @@ public class ChatActivity extends AppCompatActivity {
                     query.findInBackground(new AVIMConversationQueryCallback() {
                         @Override
                         public void done(List<AVIMConversation> convs, AVIMException e) {
-                            if (e==null) {
+                            if (e == null) {
                                 if (convs != null) {
                                     AVIMClient.setMessageQueryCacheEnable(false);
-                                    for (AVIMConversation ac : convs) {
-                                        final List<String> l = ac.getMembers();
-                                        final Date date = ac.getLastMessageAt();
-                                        String user = AVUser.getCurrentUser().getUsername();
-                                        for (String str : l) {
-                                            if (!str.equals(AVUser.getCurrentUser().getUsername()))
-                                                user = str;
-                                        }
-                                        ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
-                                            @Override
-                                            public void done(AVIMMessage avimMessage, AVIMException e) {
-                                                if (avimMessage != null) {
-                                                    String lastMessage = avimMessage.getContent();
-                                                    String lastMessageFrom = avimMessage.getFrom();
-                                                    ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
-                                                    listChatList.add(chatinfo);
-                                                    adapter.notifyDataSetChanged();
+
+                                    Observable.from(convs)
+                                            .subscribe(new Observer<AVIMConversation>() {
+
+                                                @Override
+                                                public void onCompleted() {
+                                                    Log.d("rxjava", "onCompleted");
                                                 }
 
-                                            }
-                                        });
-                                        Util.downloadPicture(user, "Chats");
-                                    }
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    Log.d("rxjava", "onError");
+                                                }
+
+                                                @Override
+                                                public void onNext(AVIMConversation ac) {
+                                                    final List<String> l = ac.getMembers();
+                                                    final Date date = ac.getLastMessageAt();
+                                                    String user = AVUser.getCurrentUser().getUsername();
+                                                    for (String str : l) {
+                                                        if (!str.equals(AVUser.getCurrentUser().getUsername()))
+                                                            user = str;
+                                                    }
+                                                    ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
+                                                        @Override
+                                                        public void done(AVIMMessage avimMessage, AVIMException e) {
+                                                            if (avimMessage != null) {
+                                                                String lastMessage = avimMessage.getContent();
+                                                                String lastMessageFrom = avimMessage.getFrom();
+                                                                ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
+                                                                listChatList.add(chatinfo);
+                                                                Collections.sort(listChatList,ChatListComp);
+                                                                adapter.notifyDataSetChanged();
+                                                            }
+
+                                                        }
+                                                    });
+                                                    Util.downloadPicture(user, "Chats");
+                                                }
+                                            });
+//                                    for (AVIMConversation ac : convs) {
+//                                        final List<String> l = ac.getMembers();
+//                                        final Date date = ac.getLastMessageAt();
+//                                        String user = AVUser.getCurrentUser().getUsername();
+//                                        for (String str : l) {
+//                                            if (!str.equals(AVUser.getCurrentUser().getUsername()))
+//                                                user = str;
+//                                        }
+//                                        ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
+//                                            @Override
+//                                            public void done(AVIMMessage avimMessage, AVIMException e) {
+//                                                if (avimMessage != null) {
+//                                                    String lastMessage = avimMessage.getContent();
+//                                                    String lastMessageFrom = avimMessage.getFrom();
+//                                                    ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
+//                                                    listChatList.add(chatinfo);
+//                                                    adapter.notifyDataSetChanged();
+//                                                }
+//
+//                                            }
+//                                        });
+//                                        Util.downloadPicture(user, "Chats");
+//                                    }
                                 }
                             }
                         }
@@ -124,4 +172,12 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public static Comparator<ChatInfo> ChatListComp = new Comparator<ChatInfo>() {
+        @Override
+        public int compare(ChatInfo lhs, ChatInfo rhs) {
+            return rhs.getLastTime().compareTo(lhs.getLastTime());
+        }
+    };
 }
