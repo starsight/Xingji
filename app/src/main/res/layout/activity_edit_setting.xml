@@ -164,6 +164,22 @@
             android:text="给行迹评分"
             android:textColor="#000000"
             android:textSize="17sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/fadegray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_activity_edit_setting_feedback"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dip"
+            android:text="意见反馈"
+            android:textColor="#000000"
+            android:textSize="17sp" />
 
     </LinearLayout>
 </RelativeLayout>

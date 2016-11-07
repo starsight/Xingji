@@ -32,6 +32,7 @@ import com.avos.avoscloud.LogUtil;
 import com.avos.avoscloud.ProgressCallback;
 import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.RefreshCallback;
+import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
@@ -269,6 +270,9 @@ public class MainActivity extends AppCompatActivity
                 sf = new SignFragment();
                 ft.replace(R.id.content_main, sf);
                 ft.commit();
+
+                FeedbackAgent agent = new FeedbackAgent(MainActivity.this);
+                agent.sync();
 
                 //注册默认的消息处理逻辑
                 AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(MainActivity.this));

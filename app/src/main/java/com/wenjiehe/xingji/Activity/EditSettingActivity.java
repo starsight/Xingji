@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Util;
 
@@ -30,6 +31,7 @@ public class EditSettingActivity extends AppCompatActivity implements CompoundBu
 
     TextView tv_activity_edit_setting_about;
     TextView tv_activity_edit_setting_access;
+    TextView tv_activity_edit_setting_feedback;
 
 
     Switch sw_edit_showsign,sw_edit_privacy;
@@ -52,6 +54,7 @@ public class EditSettingActivity extends AppCompatActivity implements CompoundBu
 
         tv_activity_edit_setting_about = (TextView) findViewById(R.id.tv_activity_edit_setting_about);
         tv_activity_edit_setting_access = (TextView) findViewById(R.id.tv_activity_edit_setting_access);
+        tv_activity_edit_setting_feedback = (TextView) findViewById(R.id.tv_activity_edit_setting_feedback);
         sw_edit_privacy = (Switch) findViewById(R.id.sw_edit_privacy);
         sw_edit_showsign = (Switch) findViewById(R.id.sw_edit_showsign);
 
@@ -88,6 +91,16 @@ public class EditSettingActivity extends AppCompatActivity implements CompoundBu
                 }).show();
             }
         });
+
+        tv_activity_edit_setting_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedbackAgent agent = new FeedbackAgent(EditSettingActivity.this);
+                agent.startDefaultThreadActivity();
+            }
+        });
+
+
 
         sw_edit_privacy.setChecked(AVUser.getCurrentUser().getBoolean("isShareSignInfo"));
         sw_edit_showsign.setChecked(AVUser.getCurrentUser().getBoolean("isShowOthersOnMap"));
