@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activity.EditSettingActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".Activity.EditSettingActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/edit_userinfo_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:fitsSystemWindows="true"
-        android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                       android:id="@+id/edit_userinfo_toolbar"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       android:background="?attr/colorPrimary"
+                                       android:fitsSystemWindows="true"
+                                       android:minHeight="?attr/actionBarSize"
+                                       app:navigationIcon="?attr/homeAsUpIndicator"
+                                       app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                                       app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/edit_userinfo_toolbar"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edit_userinfo_toolbar"
+        android:orientation="vertical">
 
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/actions_padding_left"
             android:layout_marginTop="@dimen/card_topcolored_subtitle_textsize"
-            android:text="隐私设置" />
+            android:text="隐私设置"/>
 
         <RelativeLayout
             android:id="@+id/layout_edit_privacy"
@@ -52,7 +52,7 @@
                 android:layout_marginLeft="20dip"
                 android:text="共享签到信息"
                 android:textColor="#000000"
-                android:textSize="17sp" />
+                android:textSize="17sp"/>
 
             <Switch
                 android:id="@+id/sw_edit_privacy"
@@ -64,23 +64,23 @@
                 android:gravity="right"
                 android:text=""
                 android:textColor="#000000"
-                android:textSize="17sp" />
+                android:textSize="17sp"/>
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:layout_marginLeft="@dimen/actions_padding"
             android:layout_marginRight="@dimen/actions_padding"
-            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
-            android:text="开启后，行迹将会把你的签到信息推送给签到位置附近的人，你也可以查看当前位置附近其他人的签到信息。" />
+            android:text="开启后，行迹将会把你的签到信息推送给签到位置附近的人，你也可以查看当前位置附近其他人的签到信息。"/>
 
         <View
             android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/actions_padding_left"
             android:layout_height="1px"
-            android:background="@color/fadegray" />
+            android:layout_marginBottom="@dimen/actions_padding_left"
+            android:background="@color/fadegray"/>
 
         <RelativeLayout
             android:id="@+id/layout_edit_showsign"
@@ -99,7 +99,7 @@
                 android:layout_marginLeft="20dip"
                 android:text="在地图中显示陌生人的签到信息"
                 android:textColor="#000000"
-                android:textSize="17sp" />
+                android:textSize="17sp"/>
 
             <Switch
                 android:id="@+id/sw_edit_showsign"
@@ -111,75 +111,76 @@
                 android:gravity="right"
                 android:text=""
                 android:textColor="#000000"
-                android:textSize="17sp" />
+                android:textSize="17sp"/>
         </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:layout_marginLeft="@dimen/actions_padding"
             android:layout_marginRight="@dimen/actions_padding"
-            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
-            android:text="开启此功能前，需允许行迹共享你的签到信息" />
+            android:text="开启此功能前，需允许行迹共享你的签到信息"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
-            android:background="@color/fadegray" />
+            android:background="@color/fadegray"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/actions_padding_left"
             android:layout_marginTop="@dimen/card_topcolored_subtitle_textsize"
-            android:text="其他" />
+            android:text="其他"/>
 
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_activity_edit_setting_about"
-                android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
-                android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dip"
-                android:text="关于行迹"
-                android:textColor="#000000"
-                android:textSize="17sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/fadegray" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_activity_edit_setting_access"
-            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
-            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dip"
-            android:text="给行迹评分"
-            android:textColor="#000000"
-            android:textSize="17sp" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/fadegray" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/tv_activity_edit_setting_feedback"
-            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
-            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:layout_marginLeft="20dip"
+            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
             android:text="意见反馈"
             android:textColor="#000000"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/fadegray"/>
+
+        <TextView
+            android:id="@+id/tv_activity_edit_setting_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:layout_marginLeft="20dip"
+            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:text="关于行迹"
+            android:textColor="#000000"
+            android:textSize="17sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/fadegray"/>
+
+        <TextView
+            android:id="@+id/tv_activity_edit_setting_access"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:layout_marginLeft="20dip"
+            android:layout_marginTop="@dimen/card_main_content_native_material_large_image_paddingBottom"
+            android:text="给行迹评分"
+            android:textColor="#000000"
+            android:textSize="17sp"/>
+
 
     </LinearLayout>
 </RelativeLayout>

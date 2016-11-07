@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVMixpushManager;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetCallback;
@@ -273,6 +274,10 @@ public class MainActivity extends AppCompatActivity
 
                 FeedbackAgent agent = new FeedbackAgent(MainActivity.this);
                 agent.sync();
+
+                AVMixpushManager.registerXiaomiPush(MainActivity.this, "2882303761517484277", "5991748410277", null);
+                // 设置默认打开的 Activity
+                PushService.setDefaultPushCallback(MainActivity.this, MainActivity.class);
 
                 //注册默认的消息处理逻辑
                 AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(MainActivity.this));
