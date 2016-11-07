@@ -61,4 +61,8 @@
 
     <string name="unspport_message_type">暂不支持此消息类型</string>
     <string name="message_is_null">消息不能为空</string>
+
+
+    <string name="version_name">v0.8.2</string>
+    <string name="can_not_find_version_name">无版本信息</string>
 </resources>

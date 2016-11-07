@@ -66,7 +66,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
     private double mylatitude = 0.0;
     private double mylongitude = 0.0;
-    private double nearbySize = 0.06;
+    private double nearbySize = 0.5;//0.06
 
     public static ArrayList<SignInfo> arraylistNearbyMoments =new ArrayList<SignInfo>();
     //public ArrayList<SignInfo> signTmp = new ArrayList<>();

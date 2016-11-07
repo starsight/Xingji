@@ -132,6 +132,7 @@ public class ChatActivity extends AppCompatActivity {
                                                                 ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
                                                                 listChatList.add(chatinfo);
                                                                 Collections.sort(listChatList,ChatListComp);
+                                                                //Log.d("rxjava",listChatList.toArray().toString());
                                                                 adapter.notifyDataSetChanged();
                                                             }
 

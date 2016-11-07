@@ -1,5 +1,8 @@
 package com.wenjiehe.xingji;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -150,4 +153,16 @@ public class Util {
             });
         }
     }
+
+    public static String getVersion(Context context) {
+            try {
+                  PackageManager manager = context.getPackageManager();
+                  PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+                  String version = info.versionName;
+                   return context.getString(R.string.version_name) ;//+ version
+               } catch (Exception e) {
+                   e.printStackTrace();
+                   return context.getString(R.string.can_not_find_version_name);
+               }
+        }
 }

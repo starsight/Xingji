@@ -103,7 +103,8 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
         List<String> l = conversation.getMembers();
         String tittle = "消息";
         for (String s : l) {
-            if (!s.equals(message.getFrom()))
+           // Log.d("messagess",s);
+            if (s.equals(message.getFrom()))
                 tittle = s;
         }
         NotificationUtils.showNotification(context, tittle, notificationContent, null, intent);
