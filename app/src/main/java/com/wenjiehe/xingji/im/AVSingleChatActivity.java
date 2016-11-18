@@ -42,12 +42,12 @@ import static com.wenjiehe.xingji.R.id.refresh;
  * Created by wli on 15/8/14.
  * 一对一单聊的页面，需要传入 Constants.MEMBER_ID
  */
-public class AVSingleChatActivity extends AVBaseActivity {
+public class AVSingleChatActivity extends com.wenjiehe.xingji.Im.AVBaseActivity {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
 
-    protected ChatFragment chatFragment;
+    protected com.wenjiehe.xingji.Im.ChatFragment chatFragment;
 
     String memberId;
 
@@ -60,7 +60,7 @@ public class AVSingleChatActivity extends AVBaseActivity {
             StatusBarCompat.compat(this, getResources().getColor(R.color.colorPrimary));
         }
 
-        chatFragment = (ChatFragment) getFragmentManager().findFragmentById(R.id.fragment_chat);
+        chatFragment = (com.wenjiehe.xingji.Im.ChatFragment) getFragmentManager().findFragmentById(R.id.fragment_chat);
 
 
         setSupportActionBar(toolbar);
@@ -72,7 +72,7 @@ public class AVSingleChatActivity extends AVBaseActivity {
             }
         });
 
-        memberId = getIntent().getStringExtra(Constants.MEMBER_ID);
+        memberId = getIntent().getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
         setTitle(memberId);
         getConversation(memberId);
     }
@@ -81,8 +81,8 @@ public class AVSingleChatActivity extends AVBaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
-        if (null != extras && extras.containsKey(Constants.MEMBER_ID)) {
-            String memberId = extras.getString(Constants.MEMBER_ID);
+        if (null != extras && extras.containsKey(com.wenjiehe.xingji.Im.Constants.MEMBER_ID)) {
+            String memberId = extras.getString(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
             setTitle(memberId);
             getConversation(memberId);
         }
@@ -94,7 +94,7 @@ public class AVSingleChatActivity extends AVBaseActivity {
      */
     private void getConversation(final String memberId) {
         //Log.d("999999",memberId);
-        final AVIMClient client = AVImClientManager.getInstance().getClient();
+        final AVIMClient client = com.wenjiehe.xingji.Im.AVImClientManager.getInstance().getClient();
         AVIMConversationQuery conversationQuery = client.getQuery();
         conversationQuery.withMembers(Arrays.asList(memberId), true);
         conversationQuery.whereEqualTo("customConversationType", 1);
