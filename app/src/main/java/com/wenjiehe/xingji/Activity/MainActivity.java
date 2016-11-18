@@ -45,14 +45,15 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.wenjiehe.xingji.ChatInfo;
-import com.wenjiehe.xingji.Im.MessageHandler;
-import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.Fragment.SignFragment;
-import com.wenjiehe.xingji.SignInfo;
-import com.wenjiehe.xingji.Util;
 import com.wenjiehe.xingji.Im.AVImClientManager;
 import com.wenjiehe.xingji.Im.AVSingleChatActivity;
 import com.wenjiehe.xingji.Im.Constants;
+import com.wenjiehe.xingji.Im.MessageHandler;
+import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.SignInfo;
+import com.wenjiehe.xingji.Util;
+
 
 import java.io.File;
 import java.util.ArrayList;

@@ -85,6 +85,7 @@ public class SignActivity extends AppCompatActivity {
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_sign_toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         et_activity_sign = (EditText) findViewById(R.id.et_activity_sign);
