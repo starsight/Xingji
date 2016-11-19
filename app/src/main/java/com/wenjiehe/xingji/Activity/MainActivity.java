@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         syncUserInfo();
 
+
         iv_headeruserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+        MainActivityPermissionsDispatcher.createFileWithCheck(this);
         createFile();
 
         Log.d("2333","member1");
