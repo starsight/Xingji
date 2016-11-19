@@ -8,14 +8,22 @@ android {
         applicationId "com.wenjiehe.xingji"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 28
-        versionName "0.9.3"
+        versionCode 29
+        versionName "0.9.5"
+        multiDexEnabled true
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
