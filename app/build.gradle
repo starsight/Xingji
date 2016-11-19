@@ -10,7 +10,6 @@ android {
         targetSdkVersion 23
         versionCode 29
         versionName "0.9.5"
-        multiDexEnabled true
         jackOptions {
             enabled true
         }
