@@ -1,10 +1,14 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -46,10 +50,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.Fragment.SignFragment;
-import com.wenjiehe.xingji.Im.AVImClientManager;
-import com.wenjiehe.xingji.Im.AVSingleChatActivity;
-import com.wenjiehe.xingji.Im.Constants;
-import com.wenjiehe.xingji.Im.MessageHandler;
+
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.Util;
@@ -62,9 +63,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
 import static com.wenjiehe.xingji.Activity.ChatActivity.ChatListComp;
 
-
+@RuntimePermissions
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -85,6 +93,7 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<ChatInfo> listChatList = new ArrayList<>();//私信联系人列表
     public static boolean isUpadteUserPhoto = false;//头像更新
     public static Bitmap upadteUserPhotoBitmap = null;//更新的头像
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,33 +147,14 @@ public class MainActivity extends AppCompatActivity
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        //创建xingji目录
-        File destDir = new File(Environment.getExternalStorageDirectory() + "/xingji");
-        File destDir2 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername());
-        File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments");
-        File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs");
-        File destDir5 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Chats");
-        if (!destDir.exists()) {
-            destDir.mkdirs();
-        }
-        if (!destDir2.exists()) {
-            destDir2.mkdirs();
-        }
-        if (!destDir3.exists()) {
-            destDir3.mkdirs();
-        }
-        if (!destDir4.exists()) {
-            destDir4.mkdirs();
-        }
-        if (!destDir5.exists()) {
-            destDir5.mkdirs();
-        }
+        createFile();
+
         Log.d("2333","member1");
-        String memberId = intent.getStringExtra(Constants.MEMBER_ID);
+        String memberId = intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
         if(memberId!=null){
-            Log.d("2333",intent.getStringExtra(Constants.MEMBER_ID));
-            Intent startActivityIntent = new Intent(this, AVSingleChatActivity.class);
-            startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
+            Log.d("2333",intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
+            Intent startActivityIntent = new Intent(this, com.wenjiehe.xingji.Im.AVSingleChatActivity.class);
+            startActivityIntent.putExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID, intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             startActivity(startActivityIntent);
         }
 
@@ -174,11 +164,11 @@ public class MainActivity extends AppCompatActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Log.d("2333","member2");
-        String memberId = intent.getStringExtra(Constants.MEMBER_ID);
+        String memberId = intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
         if(memberId!=null){
-            Log.d("2333",intent.getStringExtra(Constants.MEMBER_ID));
-            Intent startActivityIntent = new Intent(this, AVSingleChatActivity.class);
-            startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
+            Log.d("2333",intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
+            Intent startActivityIntent = new Intent(this, com.wenjiehe.xingji.Im.AVSingleChatActivity.class);
+            startActivityIntent.putExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID, intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             startActivity(startActivityIntent);
         }
     }
@@ -281,10 +271,10 @@ public class MainActivity extends AppCompatActivity
                 PushService.setDefaultPushCallback(MainActivity.this, MainActivity.class);
 
                 //注册默认的消息处理逻辑
-                AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(MainActivity.this));
+                AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new com.wenjiehe.xingji.Im.MessageHandler(MainActivity.this));
 
                 /**私信用户名验证*/
-                AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
+                com.wenjiehe.xingji.Im.AVImClientManager.getInstance().open(AVUser.getCurrentUser().getUsername(), new AVIMClientCallback() {
                     @Override
                     public void done(final AVIMClient avimClient, AVIMException e) {
                         if (e == null) {
@@ -450,5 +440,67 @@ public class MainActivity extends AppCompatActivity
         } else {
             finish();
         }
+    }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForCamera(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                    .setMessage("请求访问存储权限")
+               // .setPositiveButton("允许", (dialog, button) -> request.proceed())
+                .setPositiveButton("允许", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForCamera() {
+        Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForCamera() {
+        Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void createFile(){
+        //创建xingji目录
+        File destDir = new File(Environment.getExternalStorageDirectory() + "/xingji");
+        File destDir2 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername());
+        File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments");
+        File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs");
+        File destDir5 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Chats");
+        if (!destDir.exists()) {
+            destDir.mkdirs();
+        }
+        if (!destDir2.exists()) {
+            destDir2.mkdirs();
+        }
+        if (!destDir3.exists()) {
+            destDir3.mkdirs();
+        }
+        if (!destDir4.exists()) {
+            destDir4.mkdirs();
+        }
+        if (!destDir5.exists()) {
+            destDir5.mkdirs();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }

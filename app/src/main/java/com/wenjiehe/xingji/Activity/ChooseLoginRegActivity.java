@@ -15,6 +15,7 @@ import com.baidu.mapapi.SDKInitializer;
 import com.wenjiehe.xingji.AVService;
 import com.wenjiehe.xingji.R;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -34,6 +35,8 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import permissions.dispatcher.NeedsPermission;
+
 import static com.avos.avoscloud.AVUser.getCurrentUser;
 
 public class ChooseLoginRegActivity extends BaseActivity {
@@ -51,6 +54,7 @@ public class ChooseLoginRegActivity extends BaseActivity {
     boolean isEnterLoginOrReg = false;
 
     private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
