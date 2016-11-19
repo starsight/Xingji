@@ -15,7 +15,7 @@ build/
 
 # IDEA
 *.iml
-.idea/
+.idea/*
 
 
 # Built application files
