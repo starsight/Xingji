@@ -449,10 +449,16 @@ public class MainActivity extends AppCompatActivity
         new AlertDialog.Builder(this)
                     .setMessage("请求访问存储权限")
                 //.setPositiveButton("允许", (dialog, button) -> request.proceed())
+                .setPositiveButton("允许", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
                 .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        request.cancel();
                     }
                 })
                 .show();
