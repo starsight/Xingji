@@ -249,6 +249,8 @@ public class SignActivity extends AppCompatActivity {
                 .btnTextColor(Color.parseColor("#006495ED"))
                 // 标题
                 .title("图片")
+                // 返回图标ResId
+                .backResId(R.drawable.white_back)
                 // 标题文字颜色
                 .titleColor(Color.WHITE)
                 // TitleBar背景色

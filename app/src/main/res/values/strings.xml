@@ -1,68 +1,68 @@
 <resources>
-    <string name="app_name">行迹</string>
+    <string name="app_name" translatable="false">行迹</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
-    <string name="action_settings">设置</string>
-    <string name="header_signnum_text">签到次数:</string>
-    <string name="slide_sign">签到</string>
-    <string name="slide_history">历史签到</string>
-    <string name="slide_nearby_moments">附近动态</string>
-    <string name="slide_chat">私信</string>
-    <string name="slide_settings">设置</string>
-    <string name="slide_exit">退出应用</string>
-
-
-    <string name="action_logout">更换帐号</string>
-    <string name="action_about_app">关于与建议</string>
-    <string name="network_error">网络错误，请检查您的网络连接</string>
-    <string name="dialog_OK">确定</string>
-    <string name="dialog_Cancel">取消</string>
-    <string name="dialog_error_title">错误</string>
-    <string name="dialog_message_title">提示</string>
-    <string name="dialog_message_success">成功</string>
-    <string name="dialog_text_wait">请等待</string>
-
-    <string name="login_input_user_name">请输入名字</string>
-    <string name="login_input_user_password">请输入密码</string>
-    <string name="login_button_login">登录</string>
-    <string name="login_button_register">注册</string>
-    <string name="login_button_forget_password">忘记用户名或密码？</string>
-    <string name="error_login_error">登陆失败，请确认网络和用户名密码后重试</string>
-
-    <string name="forget_password_find_password_button">发送邮件</string>
-    <string name="forget_password_send_email">已发送邮件</string>
-    <string name="forget_password_email_error">邮件发送错误，请确认您的邮件地址</string>
-
-    <string name="register_input_user_password_again">请再次输入密码</string>
-    <string name="register_input_user_email">请输入E-mail地址</string>
-    <string name="error_register_password_null">密码不可为空</string>
-    <string name="error_register_user_name_null">用户名不可空</string>
-    <string name="error_register_email_address_null">E-mail地址不可空</string>
-    <string name="error_register_email_address_format">E-mail地址格式有误</string>
-    <string name="error_register_user_name_repeat">用户名已被注册，请重新填写</string>
-    <string name="error_register_email_repeat">邮箱已被注册，请更换邮箱</string>
-    <string name="success_register_success">注册成功</string>
+    <string name="action_settings" translatable="false">设置</string>
+    <string name="header_signnum_text" translatable="false">签到次数:</string>
+    <string name="slide_sign" translatable="false">签到</string>
+    <string name="slide_history" translatable="false">历史签到</string>
+    <string name="slide_nearby_moments" translatable="false">附近动态</string>
+    <string name="slide_chat" translatable="false">私信</string>
+    <string name="slide_settings" translatable="false">设置</string>
+    <string name="slide_exit" translatable="false">退出应用</string>
 
 
-    <string name="wait_loading">正在加载</string>
-    <string name="error_loading">加载错误，请检查网络</string>
-    <string name="error_loading_click_again">加载失败，轻触重试</string>
+    <string name="action_logout" translatable="false">更换帐号</string>
+    <string name="action_about_app" translatable="false">关于与建议</string>
+    <string name="network_error" translatable="false">网络错误，请检查您的网络连接</string>
+    <string name="dialog_OK" translatable="false">确定</string>
+    <string name="dialog_Cancel" translatable="false">取消</string>
+    <string name="dialog_error_title" translatable="false">错误</string>
+    <string name="dialog_message_title" translatable="false">提示</string>
+    <string name="dialog_message_success" translatable="false">成功</string>
+    <string name="dialog_text_wait" translatable="false">请等待</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_me_info">动态</string>
-    <string name="title_activity_change_me_info">个人资料</string>
-    <string name="title_activity_sign_info_detail">签到页</string>
+    <string name="login_input_user_name" translatable="false">请输入名字</string>
+    <string name="login_input_user_password" translatable="false">请输入密码</string>
+    <string name="login_button_login" translatable="false">登录</string>
+    <string name="login_button_register" translatable="false">注册</string>
+    <string name="login_button_forget_password" translatable="false">忘记用户名或密码？</string>
+    <string name="error_login_error" translatable="false">登陆失败，请确认网络和用户名密码后重试</string>
+
+    <string name="forget_password_find_password_button" translatable="false">发送邮件</string>
+    <string name="forget_password_send_email" translatable="false">已发送邮件</string>
+    <string name="forget_password_email_error" translatable="false">邮件发送错误，请确认您的邮件地址</string>
+
+    <string name="register_input_user_password_again" translatable="false">请再次输入密码</string>
+    <string name="register_input_user_email" translatable="false">请输入E-mail地址</string>
+    <string name="error_register_password_null" translatable="false">密码不可为空</string>
+    <string name="error_register_user_name_null" translatable="false">用户名不可空</string>
+    <string name="error_register_email_address_null" translatable="false">E-mail地址不可空</string>
+    <string name="error_register_email_address_format" translatable="false">E-mail地址格式有误</string>
+    <string name="error_register_user_name_repeat" translatable="false">用户名已被注册，请重新填写</string>
+    <string name="error_register_email_repeat" translatable="false">邮箱已被注册，请更换邮箱</string>
+    <string name="success_register_success" translatable="false">注册成功</string>
+
+
+    <string name="wait_loading" translatable="false">正在加载</string>
+    <string name="error_loading" translatable="false">加载错误，请检查网络</string>
+    <string name="error_loading_click_again" translatable="false">加载失败，轻触重试</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_me_info" translatable="false">动态</string>
+    <string name="title_activity_change_me_info" translatable="false">个人资料</string>
+    <string name="title_activity_sign_info_detail" translatable="false">签到页</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 
-    <string name="unspport_message_type">暂不支持此消息类型</string>
-    <string name="message_is_null">消息不能为空</string>
+    <string name="unspport_message_type" translatable="false">暂不支持此消息类型</string>
+    <string name="message_is_null" translatable="false">消息不能为空</string>
 
 
-    <string name="version_name">v0.9.6</string>
-    <string name="can_not_find_version_name">无版本信息</string>
+    <string name="version_name" translatable="false">v0.9.6</string>
+    <string name="can_not_find_version_name" translatable="false">无版本信息</string>
 </resources>
