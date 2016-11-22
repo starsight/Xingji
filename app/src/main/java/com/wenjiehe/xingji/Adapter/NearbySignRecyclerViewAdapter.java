@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
@@ -16,7 +15,6 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
-import com.wenjiehe.xingji.Activity.SignActivity;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -26,22 +24,18 @@ import com.wenjiehe.xingji.Util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.media.CamcorderProfile.get;
-import static com.baidu.location.h.j.G;
-import static com.baidu.location.h.j.V;
-import static com.wenjiehe.xingji.Activity.NearbyMomentsActivity.arraylistNearbyMoments;
 import static com.wenjiehe.xingji.Util.hasFile;
 
 /**
  * Created by yiyuan on 2016/10/10.
  */
 
-public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
+public class NearbySignRecyclerViewAdapter extends SignRecyclerViewAdapter {
 
-    public NearbyRecyclerViewAdapter(List<SignInfo> signInfo, Context context) {
+    public NearbySignRecyclerViewAdapter(List<SignInfo> signInfo, Context context) {
         this.signInfo = signInfo;
         this.context = context;
     }
@@ -57,7 +51,7 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
 
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.NewsViewHolder personViewHolder, int i) {
+    public void onBindViewHolder(SignRecyclerViewAdapter.NewsViewHolder personViewHolder, int i) {
         final int j = i;
 
         //personViewHolder.news_photo.setImageResource(signInfo.get(i).getPhotoId());
@@ -79,6 +73,7 @@ public class NearbyRecyclerViewAdapter extends RecyclerViewAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, SignInfoDetailActivity.class);
                 intent.putExtra("SignInfo", signInfo.get(j));
+                intent.putExtra("isFromMe", false);
                 context.startActivity(intent);
             }
         });

@@ -17,14 +17,9 @@ import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
-import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.wenjiehe.xingji.Adapter.ChatRecyclerViewAdapter;
-import com.wenjiehe.xingji.Adapter.MomentsRecyclerViewAdapter;
-import com.wenjiehe.xingji.Adapter.RecyclerViewAdapter;
 import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.Im.AVImClientManager;
 import com.wenjiehe.xingji.R;
@@ -32,8 +27,6 @@ import com.wenjiehe.xingji.Util;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -41,9 +34,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
-
-import static com.wenjiehe.xingji.R.id.toolbar;
 
 public class ChatActivity extends AppCompatActivity {
 

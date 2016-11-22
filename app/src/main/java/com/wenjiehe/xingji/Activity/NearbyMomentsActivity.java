@@ -1,9 +1,6 @@
 package com.wenjiehe.xingji.Activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -13,10 +10,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
@@ -33,7 +28,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.ClassicRefreshView;
-import com.wenjiehe.xingji.Adapter.NearbyRecyclerViewAdapter;
+import com.wenjiehe.xingji.Adapter.NearbySignRecyclerViewAdapter;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.SignLocation;
@@ -43,9 +38,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.wenjiehe.xingji.Activity.MainActivity.arraylistHistorySign;
-import static com.wenjiehe.xingji.Util.hasFile;
 
 public class NearbyMomentsActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
@@ -58,7 +50,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
 
     private RecyclerView recyclerView;
-    private NearbyRecyclerViewAdapter adapter;
+    private NearbySignRecyclerViewAdapter adapter;
 
     /*baiduMap 定位*/
     public LocationClient mLocationClient = null;
@@ -110,7 +102,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter = new NearbyRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
+        adapter = new NearbySignRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -144,7 +136,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    //adapter = new NearbyRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
+                    //adapter = new NearbySignRecyclerViewAdapter(arraylistNearbyMoments, NearbyMomentsActivity.this);
                    // adapter.notifyAll();
                     adapter.notifyDataSetChanged();
                     break;

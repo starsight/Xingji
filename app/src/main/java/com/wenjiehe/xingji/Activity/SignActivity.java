@@ -50,6 +50,8 @@ import java.util.List;
 
 import static com.baidu.location.h.j.O;
 import static com.baidu.location.h.j.u;
+import static com.wenjiehe.xingji.Util.bitmapCompress;
+import static com.wenjiehe.xingji.Util.file2bitmap;
 
 public class SignActivity extends AppCompatActivity {
 
@@ -273,7 +275,12 @@ public class SignActivity extends AppCompatActivity {
         if (requestCode == RESQUESTCODE && resultCode == RESULT_OK && data != null) {
             List<String> pathList = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
             for (String path : pathList) {
-                photoDis = path;
+                Bitmap bitmapOrigin = Util.file2bitmap(path);
+                Bitmap bitmapAfter = Util.bitmapCompress(bitmapOrigin);
+                int name = bitmapAfter.hashCode();
+                Util.saveBitmap(bitmapAfter,"Temp/"+name);
+                //photoDis = path;
+                photoDis = Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Temp/"+name;
                 iv_activity_sign_photo.setImageBitmap(Util.file2bitmap(path));
                 //tvResult.append(path + "\n");
             }

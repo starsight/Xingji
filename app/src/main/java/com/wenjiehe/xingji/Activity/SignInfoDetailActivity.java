@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -72,18 +73,24 @@ public class SignInfoDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final SignInfo item = (SignInfo) intent.getParcelableExtra("SignInfo");
+        Boolean  isFromMe = intent.getBooleanExtra("isFromMe",true);
+        String path="/Moments/";
+        if(isFromMe==true)
+            path="/Signs/";
+
         //iv_detail_signinfophoto.setImageResource(item.getPhotoId());
         tv_detail_signinfolocation.setText(item.getLocation());
         tv_detail_signinfoevent.setText(item.getEvent());
 
         if (!item.getPhotoId().equals("0")) {
-            Bitmap bm = Util.file2bitmap(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/" + item.getPhotoId());
+            Log.d("SigninfoDetail",item.getPhotoId());
+            Bitmap bm = Util.file2bitmap(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + path + item.getPhotoId());
             iv_detail_signinfophoto.setImageBitmap(bm);
             iv_detail_signinfophoto.setVisibility(View.VISIBLE);
         }
 
         String str = Environment.getExternalStorageDirectory() + "/xingji/" +
-                AVUser.getCurrentUser().getUsername() + "/Moments/" + item.username;
+                AVUser.getCurrentUser().getUsername() + path + item.username;
         if (hasFile(str)) {
             Bitmap b = Util.file2bitmap(str);
             iv_detail_userphoto.setImageBitmap(b);

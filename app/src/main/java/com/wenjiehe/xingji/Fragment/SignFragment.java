@@ -85,6 +85,9 @@ public class SignFragment extends Fragment {
 
         initView(view);
         initLocation();
+
+        // 设置marker图标
+        bd_Sign = BitmapDescriptorFactory.fromResource(R.mipmap.sign);
         //先清除图层
         baiduMap.clear();
         showOnMap(MainActivity.arraylistHistorySign);
@@ -191,6 +194,8 @@ public class SignFragment extends Fragment {
                 iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));
                 baiduMap.clear();
                 MarkerOptions options;
+                // 设置marker图标 若不设报空指针
+                bd_Sign = BitmapDescriptorFactory.fromResource(R.mipmap.sign);
                 for (SignInfo signInfotmp : MainActivity.arraylistHistorySign) {
                     // 构建MarkerOption，用于在地图上添加Marker
                     options = new MarkerOptions().position(signInfotmp.latlng)
@@ -283,8 +288,7 @@ public class SignFragment extends Fragment {
     private void showOnMap(ArrayList<SignInfo> arraylistHistorySign) {
         if (arraylistHistorySign == null || arraylistHistorySign.isEmpty())
             return;
-        // 设置marker图标
-        bd_Sign = BitmapDescriptorFactory.fromResource(R.mipmap.sign);
+
         //先清除图层
         //baiduMap.clear();
 

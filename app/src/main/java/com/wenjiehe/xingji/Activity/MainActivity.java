@@ -465,12 +465,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showDeniedForCamera() {
+    void showDeniedForStorage() {
         Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showNeverAskForCamera() {
+    void showNeverAskForStorage() {
         Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
     }
 
@@ -482,6 +482,7 @@ public class MainActivity extends AppCompatActivity
         File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments");
         File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs");
         File destDir5 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Chats");
+        File destDir6 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Temp");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -496,6 +497,9 @@ public class MainActivity extends AppCompatActivity
         }
         if (!destDir5.exists()) {
             destDir5.mkdirs();
+        }
+        if (!destDir6.exists()) {
+            destDir6.mkdirs();
         }
     }
 

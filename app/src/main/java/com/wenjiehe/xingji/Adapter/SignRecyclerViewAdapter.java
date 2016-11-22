@@ -29,17 +29,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by wenjie on 16/08/07.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.NewsViewHolder> {
+public class SignRecyclerViewAdapter extends RecyclerView.Adapter<SignRecyclerViewAdapter.NewsViewHolder> {
 
-    final String TAG = "RecyclerViewAdapter";
+    final String TAG = "SignRecyclerViewAdapter";
     protected List<SignInfo> signInfo;
     protected Context context;
 
-    public RecyclerViewAdapter() {
+    public SignRecyclerViewAdapter() {
 
     }
 
-    public RecyclerViewAdapter(List<SignInfo> signInfo, Context context) {
+    public SignRecyclerViewAdapter(List<SignInfo> signInfo, Context context) {
         this.signInfo = signInfo;
         this.context = context;
     }
@@ -100,7 +100,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public RecyclerViewAdapter.NewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public SignRecyclerViewAdapter.NewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(context).inflate(R.layout.recyclerview_sign_item_info, viewGroup, false);
 
         NewsViewHolder nvh = new NewsViewHolder(v, i);
@@ -108,7 +108,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.NewsViewHolder personViewHolder, int i) {
+    public void onBindViewHolder(SignRecyclerViewAdapter.NewsViewHolder personViewHolder, int i) {
         final int j = i;
 
         //personViewHolder.news_photo.setImageResource(signInfo.get(i).getPhotoId());
@@ -124,6 +124,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 SignInfo s = signInfo.get(j);
                 s.username = AVUser.getCurrentUser().getUsername();
                 intent.putExtra("SignInfo", s);
+                intent.putExtra("isFromMe", true);
                 context.startActivity(intent);
             }
         });

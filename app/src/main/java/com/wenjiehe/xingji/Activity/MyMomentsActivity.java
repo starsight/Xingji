@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
@@ -24,11 +23,9 @@ import com.avos.avoscloud.FindCallback;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.ClassicRefreshView;
 import com.wenjiehe.xingji.Adapter.MomentsRecyclerViewAdapter;
-import com.wenjiehe.xingji.Adapter.NearbyRecyclerViewAdapter;
 import com.wenjiehe.xingji.Im.AVSingleChatActivity;
 import com.wenjiehe.xingji.Im.Constants;
 import com.wenjiehe.xingji.R;
-import com.wenjiehe.xingji.SignInfo;
 import com.wenjiehe.xingji.Util;
 
 import org.json.JSONObject;
@@ -38,10 +35,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.avos.avoscloud.Messages.OpType.query;
-import static com.wenjiehe.xingji.R.id.iv_detail_userphoto;
-import static com.wenjiehe.xingji.R.id.iv_userinfo_headerphoto;
-import static com.wenjiehe.xingji.R.id.toolbar;
 import static com.wenjiehe.xingji.Util.hasFile;
 
 

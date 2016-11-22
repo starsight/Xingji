@@ -17,6 +17,8 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,39 +38,55 @@ import rx.Subscriber;
 public class Util {
 
     //获取文件时间
-    public static long getFileDateInfo(String path,String filename){
+    public static long getFileDateInfo(String path, String filename) {
         //  File file = new File(getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
-        File file = new File(path,filename);
+        File file = new File(path, filename);
         Date date = new Date(file.lastModified());
-        Log.d("Util",String.valueOf(date.getTime()));
-        if(date.getTime()==0)
+        Log.d("Util", String.valueOf(date.getTime()));
+        if (date.getTime() == 0)
             return 5000;
         return date.getTime();
     }
 
     public static Bitmap bytes2Bimap(byte[] b) {
-              if (b.length != 0) {
-                         return BitmapFactory.decodeByteArray(b, 0, b.length);
-                     } else {
-                         return null;
-                     }
-             }
+        if (b.length != 0) {
+            return BitmapFactory.decodeByteArray(b, 0, b.length);
+        } else {
+            return null;
+        }
+    }
 
-    public static void  saveBitmap(Bitmap bm,String name) {
+    public  static Bitmap bitmapCompress(Bitmap bitmap) {
+        // http://blog.csdn.net/chzphoenix/article/details/30242315
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        int options = 100;
+        while ( baos.toByteArray().length / 1024>500) {
+            baos.reset();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);
+            options -= 10;
+            if(options<=20)
+                break;
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        return BitmapFactory.decodeStream(isBm, null, null);
+    }
+
+    public static void saveBitmap(Bitmap bm, String name) {
         //Log.e(TAG, "保存图片");
 
-        File f = new File(Environment.getExternalStorageDirectory() +"/xingji/"+AVUser.getCurrentUser().getUsername()+"/"+name);
+        File f = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/" + name);
         //File f = new File(this.getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture.jpg");
         Date date = new Date(f.lastModified());
-        Log.d("xing--",date.toString());
+        Log.d("xing--", date.toString());
         //Log.d("xing--",getActivity().getFilesDir().getAbsolutePath() + File.separator +"xingji/headpicture3");
         if (f.exists()) {
             f.delete();
         }
         try {
             FileOutputStream out = new FileOutputStream(f);
-            if(name.equals("headpicture.jpg"))
-            bm.compress(Bitmap.CompressFormat.JPEG, 65, out);
+            if (name.equals("headpicture.jpg"))
+                bm.compress(Bitmap.CompressFormat.JPEG, 65, out);
             else
                 bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
@@ -84,7 +102,7 @@ public class Util {
     }
 
     public static Bitmap file2bitmap(String filePath) {
-        return  BitmapFactory.decodeFile(filePath);
+        return BitmapFactory.decodeFile(filePath);
     }
 
     public static boolean hasSdcard() {
@@ -107,25 +125,24 @@ public class Util {
                 FileOutputStream fs = new FileOutputStream(newPath);
                 byte[] buffer = new byte[1444];
                 int length;
-                while ( (byteread = inStream.read(buffer)) != -1) {
+                while ((byteread = inStream.read(buffer)) != -1) {
                     bytesum += byteread; //字节数 文件大小
                     System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
                 inStream.close();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public static void downloadPicture(String usernameTmp,String pathTmp){
+    public static void downloadPicture(String usernameTmp, String pathTmp) {
         final String str = usernameTmp;
         final String path = pathTmp;
         if (!hasFile(Environment.getExternalStorageDirectory() + "/xingji/" +
-                AVUser.getCurrentUser().getUsername() + "/"+pathTmp +"/"+ usernameTmp)) {//没有这个头像
+                AVUser.getCurrentUser().getUsername() + "/" + pathTmp + "/" + usernameTmp)) {//没有这个头像
             AVQuery<AVObject> queryPhoto = new AVQuery<>("headpicture");
             queryPhoto.whereEqualTo("username", usernameTmp);
             queryPhoto.findInBackground(new FindCallback<AVObject>() {
@@ -139,8 +156,8 @@ public class Util {
                             @Override
                             public void done(byte[] bytes, AVException e) {
                                 // bytes 就是文件的数据流
-                                Bitmap bitmap  = Util.bytes2Bimap(bytes);
-                                Util.saveBitmap(bitmap,path+"/"+str);
+                                Bitmap bitmap = Util.bytes2Bimap(bytes);
+                                Util.saveBitmap(bitmap, path + "/" + str);
                             }
                         }, new ProgressCallback() {
                             @Override
@@ -155,14 +172,14 @@ public class Util {
     }
 
     public static String getVersion(Context context) {
-            try {
-                  PackageManager manager = context.getPackageManager();
-                  PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-                  String version = info.versionName;
-                   return context.getString(R.string.version_name) ;//+ version
-               } catch (Exception e) {
-                   e.printStackTrace();
-                   return context.getString(R.string.can_not_find_version_name);
-               }
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            String version = info.versionName;
+            return context.getString(R.string.version_name);//+ version
+        } catch (Exception e) {
+            e.printStackTrace();
+            return context.getString(R.string.can_not_find_version_name);
         }
+    }
 }

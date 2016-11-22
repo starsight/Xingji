@@ -1,6 +1,5 @@
 package com.wenjiehe.xingji.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
@@ -26,7 +24,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.ClassicRefreshView;
 import com.canyinghao.canrefresh.shapeloading.ShapeLoadingRefreshView;
-import com.wenjiehe.xingji.Adapter.RecyclerViewAdapter;
+import com.wenjiehe.xingji.Adapter.SignRecyclerViewAdapter;
 import com.wenjiehe.xingji.Util;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -39,10 +37,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.wenjiehe.xingji.R.id.iv_userinfo_headerphoto;
 
 public class MyHistorySignActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
@@ -72,7 +66,7 @@ public class MyHistorySignActivity extends AppCompatActivity
 
     private RecyclerView recyclerView;
     private List<SignInfo> signInfo = MainActivity.arraylistHistorySign;
-    private RecyclerViewAdapter adapter;
+    private SignRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +100,7 @@ public class MyHistorySignActivity extends AppCompatActivity
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView = (RecyclerView) findViewById(R.id.can_scroll_view);
-        adapter = new RecyclerViewAdapter(signInfo, MyHistorySignActivity.this);
+        adapter = new SignRecyclerViewAdapter(signInfo, MyHistorySignActivity.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
