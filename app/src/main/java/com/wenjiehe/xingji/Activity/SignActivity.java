@@ -1,14 +1,11 @@
 package com.wenjiehe.xingji.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,13 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.wenjiehe.xingji.R;
@@ -39,19 +34,17 @@ import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
 
+import net.bither.util.NativeUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
-import static com.baidu.location.h.j.O;
-import static com.baidu.location.h.j.u;
-import static com.wenjiehe.xingji.Util.bitmapCompress;
-import static com.wenjiehe.xingji.Util.file2bitmap;
+import static android.R.attr.name;
+
 
 public class SignActivity extends AppCompatActivity {
 
@@ -278,9 +271,12 @@ public class SignActivity extends AppCompatActivity {
             List<String> pathList = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
             for (String path : pathList) {
                 Bitmap bitmapOrigin = Util.file2bitmap(path);
-                Bitmap bitmapAfter = Util.bitmapCompress(bitmapOrigin);
-                int name = bitmapAfter.hashCode();
-                Util.saveBitmap(bitmapAfter,"Temp/"+name);
+                //Bitmap bitmapAfter = Util.ratio(bitmapOrigin);
+
+                //Bitmap bitmapAfter = Util.ratio(path);
+                //int name = bitmapAfter.hashCode();
+                //Util.saveBitmap(bitmapAfter,"Temp/"+name);
+                NativeUtil.compressBitmap(bitmapOrigin,path+"/Temp/"+bitmapOrigin.hashCode());
                 //photoDis = path;
                 photoDis = Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Temp/"+name;
                 iv_activity_sign_photo.setImageBitmap(Util.file2bitmap(path));
