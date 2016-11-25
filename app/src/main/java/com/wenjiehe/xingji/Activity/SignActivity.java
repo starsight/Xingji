@@ -33,7 +33,6 @@ import com.wenjiehe.xingji.Util;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
-
 import net.bither.util.NativeUtil;
 
 import org.json.JSONException;
@@ -42,8 +41,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
-
-import static android.R.attr.name;
 
 
 public class SignActivity extends AppCompatActivity {
@@ -272,13 +269,13 @@ public class SignActivity extends AppCompatActivity {
             for (String path : pathList) {
                 Bitmap bitmapOrigin = Util.file2bitmap(path);
                 //Bitmap bitmapAfter = Util.ratio(bitmapOrigin);
-
                 //Bitmap bitmapAfter = Util.ratio(path);
-                //int name = bitmapAfter.hashCode();
+                int name = bitmapOrigin.hashCode();
                 //Util.saveBitmap(bitmapAfter,"Temp/"+name);
-                NativeUtil.compressBitmap(bitmapOrigin,path+"/Temp/"+bitmapOrigin.hashCode());
+                photoDis = Environment.getExternalStorageDirectory() + "/xingji/" +
+                        AVUser.getCurrentUser().getUsername() + "/Temp/"+name;
+                NativeUtil.compressBitmap(bitmapOrigin,photoDis);
                 //photoDis = path;
-                photoDis = Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Temp/"+name;
                 iv_activity_sign_photo.setImageBitmap(Util.file2bitmap(path));
                 //tvResult.append(path + "\n");
             }
