@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.avos.avoscloud.AVUser;
+import com.bumptech.glide.Glide;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -140,8 +141,12 @@ public class SignRecyclerViewAdapter extends RecyclerView.Adapter<SignRecyclerVi
 
 
         if (personViewHolder.news_photo.getVisibility() == View.VISIBLE)
-            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
-                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs/" + signInfo.get(j).getPhotoId()));
+            Glide.with(context)
+            .load(Environment.getExternalStorageDirectory() +
+                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs/" + signInfo.get(j).getPhotoId())
+                    .into(personViewHolder.news_photo);
+//            personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
+//                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs/" + signInfo.get(j).getPhotoId()));
 
 
         personViewHolder.share.setOnClickListener(new View.OnClickListener() {
