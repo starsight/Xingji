@@ -53,7 +53,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
-
 public class SignFragment extends Fragment {
 
     private MapView mv_BaiduView;
@@ -69,7 +68,8 @@ public class SignFragment extends Fragment {
     private double mylatitude = 0.0;
     private double mylongitude = 0.0;
     private double precision = 0.001;
-    private String street, city, province, date, locDescribe;
+    private String street, city, province, date;
+    private ArrayList<String> locDescribe;
     private LatLng point = new LatLng(mylatitude, mylongitude);
 
     private final static int RESQUESTCODE = 1;
@@ -128,34 +128,33 @@ public class SignFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         if (which == 0) {
-                                            SignInfo signInfoTmp = new SignInfo(point, date,
-                                                    new SignLocation(province, city, street, locDescribe), "0");
+                                            //SignInfo signInfoTmp = new SignInfo(point, date,
+                                            //      new SignLocation(province, city, street, locDescribe), "0");
                                             Intent intent = new Intent(getActivity(), SignActivity.class);
                                             intent.putExtra("username", MainActivity.userName);
                                             intent.putExtra("latitude", point.latitude);
                                             intent.putExtra("longitude", point.longitude);
-                                            intent.putExtra("date", signInfoTmp.date);
-                                            intent.putExtra("province", signInfoTmp.location.province);
-                                            intent.putExtra("city", signInfoTmp.location.city);
-                                            intent.putExtra("street", signInfoTmp.location.street);
-                                            intent.putExtra("event", signInfoTmp.event);
-                                            intent.putExtra("locdescribe", signInfoTmp.location.locDescribe);
+                                            intent.putExtra("date", date);
+                                            intent.putExtra("province", province);
+                                            intent.putExtra("city", city);
+                                            intent.putExtra("street", street);
+                                            intent.putExtra("event", "到此一游~~");
+                                            intent.putExtra("locdescribe", locDescribe);
+                                            //intent.putExtra("locdescribe", signInfoTmp.location.locDescribe);
                                             intent.putExtra("type", 1);
 
                                             startActivityForResult(intent, RESQUESTCODE);
                                         } else {
-                                            SignInfo signInfoTmp = new SignInfo(point, date,
-                                                    new SignLocation(province, city, street, locDescribe), "0");
                                             Intent intent = new Intent(getActivity(), SignActivity.class);
                                             intent.putExtra("username", MainActivity.userName);
                                             intent.putExtra("latitude", point.latitude);
                                             intent.putExtra("longitude", point.longitude);
-                                            intent.putExtra("date", signInfoTmp.date);
-                                            intent.putExtra("province", signInfoTmp.location.province);
-                                            intent.putExtra("city", signInfoTmp.location.city);
-                                            intent.putExtra("street", signInfoTmp.location.street);
-                                            intent.putExtra("event", signInfoTmp.event);
-                                            intent.putExtra("locdescribe", signInfoTmp.location.locDescribe);
+                                            intent.putExtra("date", date);
+                                            intent.putExtra("province", province);
+                                            intent.putExtra("city", city);
+                                            intent.putExtra("street", street);
+                                            intent.putExtra("event", "到此一游");
+                                            intent.putExtra("locdescribe", locDescribe);
                                             intent.putExtra("type", 2);
 
                                             startActivityForResult(intent, RESQUESTCODE);
@@ -213,7 +212,7 @@ public class SignFragment extends Fragment {
      */
 
     private void upLoadSign() {
-        SignInfo signInfoTmp = new SignInfo(point, date,
+        /*SignInfo signInfoTmp = new SignInfo(point, date,
                 new SignLocation(province, city, street, locDescribe), "0");
         final AVObject userSign = new AVObject("signInfo");
         userSign.put("username", MainActivity.userName);
@@ -265,7 +264,7 @@ public class SignFragment extends Fragment {
                     // 失败的话，请检查网络环境以及 SDK 配置是否正确
                 }
             }
-        });
+        });*/
     }
 
     private void initLocation() {
@@ -351,14 +350,16 @@ public class SignFragment extends Fragment {
             street = location.getStreet();
             city = location.getCity();
             province = location.getProvince();
-            locDescribe = location.getLocationDescribe();
+            //locDescribe = location.getLocationDescribe();
             SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             date = sDateFormat.format(new java.util.Date());
             //     Log.d("signfragment",location.getBuildingName());
             Log.d("signfragment", location.getLocationDescribe());
             if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
+                locDescribe = new ArrayList<>();
                 for (int i = 0; i < location.getPoiList().size(); i++) {
                     Poi poi = (Poi) location.getPoiList().get(i);
+                    locDescribe.add(poi.getName());
                     Log.d("signfragment", poi.getName() + ";");
                 }
             }

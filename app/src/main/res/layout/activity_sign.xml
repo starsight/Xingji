@@ -60,12 +60,12 @@
             android:layout_height="1px"
             android:background="@color/gray" />
 
-        <TextView
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/actions_padding_left"
             android:layout_marginLeft="@dimen/actions_padding_left"
-            android:id="@+id/tv_activity_sign_location"/>
+            android:id="@+id/sp_activity_sign_location"/>
 
     </LinearLayout>
 </RelativeLayout>

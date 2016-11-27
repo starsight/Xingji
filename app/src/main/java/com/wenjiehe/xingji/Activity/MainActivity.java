@@ -71,6 +71,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 import static com.wenjiehe.xingji.Activity.ChatActivity.ChatListComp;
+import static com.wenjiehe.xingji.Util.RecursionDeleteFile;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity
@@ -151,10 +152,10 @@ public class MainActivity extends AppCompatActivity
         MainActivityPermissionsDispatcher.createFileWithCheck(this);
         createFile();
 
-        Log.d("2333","member1");
+        Log.d("2333", "member1");
         String memberId = intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
-        if(memberId!=null){
-            Log.d("2333",intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
+        if (memberId != null) {
+            Log.d("2333", intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             Intent startActivityIntent = new Intent(this, com.wenjiehe.xingji.Im.AVSingleChatActivity.class);
             startActivityIntent.putExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID, intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             startActivity(startActivityIntent);
@@ -165,10 +166,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.d("2333","member2");
+        Log.d("2333", "member2");
         String memberId = intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
-        if(memberId!=null){
-            Log.d("2333",intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
+        if (memberId != null) {
+            Log.d("2333", intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             Intent startActivityIntent = new Intent(this, com.wenjiehe.xingji.Im.AVSingleChatActivity.class);
             startActivityIntent.putExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID, intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             startActivity(startActivityIntent);
@@ -310,7 +311,7 @@ public class MainActivity extends AppCompatActivity
                                                             //Log.d("2333", String.valueOf(listChatList.size()));
                                                             ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
                                                             listChatList.add(chatinfo);
-                                                            Collections.sort(listChatList,ChatListComp);
+                                                            Collections.sort(listChatList, ChatListComp);
                                                         }
 
                                                     }
@@ -447,7 +448,7 @@ public class MainActivity extends AppCompatActivity
     @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showRationaleForStorage(final PermissionRequest request) {
         new AlertDialog.Builder(this)
-                    .setMessage("请求访问存储权限")
+                .setMessage("请求访问存储权限")
                 //.setPositiveButton("允许", (dialog, button) -> request.proceed())
                 .setPositiveButton("允许", new DialogInterface.OnClickListener() {
                     @Override
@@ -475,14 +476,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void createFile(){
+    void createFile() {
         //创建xingji目录
-        File destDir = new File(Environment.getExternalStorageDirectory() + "/xingji");
+        File destDir = new File(Environment.getExternalStorageDirectory() + "/xingji/");
         File destDir2 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername());
-        File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments");
-        File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs");
-        File destDir5 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Chats");
-        File destDir6 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Temp");
+        File destDir3 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/");
+        File destDir4 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Signs/");
+        File destDir5 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Chats/");
+        File destDir6 = new File(Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Temp/");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -491,15 +492,21 @@ public class MainActivity extends AppCompatActivity
         }
         if (!destDir3.exists()) {
             destDir3.mkdirs();
+        } else {
+            Util.RecursionDeleteFile(destDir3);
         }
         if (!destDir4.exists()) {
             destDir4.mkdirs();
         }
         if (!destDir5.exists()) {
             destDir5.mkdirs();
+        } else {
+            Util.RecursionDeleteFile(destDir5);
         }
         if (!destDir6.exists()) {
             destDir6.mkdirs();
+        } else {
+            Util.RecursionDeleteFile(destDir6);
         }
     }
 

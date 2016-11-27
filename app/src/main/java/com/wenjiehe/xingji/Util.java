@@ -75,9 +75,9 @@ public class Util {
         }
         try {
             FileOutputStream out = new FileOutputStream(f);
-            if (name.equals("headpicture.jpg"))
-                bm.compress(Bitmap.CompressFormat.JPEG, 65, out);
-            else
+            //if (name.equals("headpicture.jpg"))
+            //    bm.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            //else
                 bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
@@ -170,6 +170,28 @@ public class Util {
         } catch (Exception e) {
             e.printStackTrace();
             return context.getString(R.string.can_not_find_version_name);
+        }
+    }
+
+    /**
+     * 递归删除文件和文件夹
+     * @param file    要删除的根目录
+     */
+    public static void RecursionDeleteFile(File file){
+        if(file.isFile()){
+            file.delete();
+            return;
+        }
+        if(file.isDirectory()){
+            File[] childFile = file.listFiles();
+            if(childFile == null || childFile.length == 0){
+                file.delete();
+                return;
+            }
+            for(File f : childFile){
+                RecursionDeleteFile(f);
+            }
+            file.delete();
         }
     }
 }

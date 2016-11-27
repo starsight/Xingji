@@ -14,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,17 +43,23 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 
 public class SignActivity extends AppCompatActivity {
 
     private EditText et_activity_sign;
-    private TextView tv_activity_sign_location;
+    private Spinner sp_activity_sign_location;
     private TextView tv_activity_sign_send;
     private ImageView iv_activity_sign_photo;
 
-    private String username, street, city, province, date, event = "到此一游", locDescribe;
+    private String username, street, city, province, date, event = "到此一游",locDescribe;
+    private ArrayList<String> locTemp= new ArrayList<>();
+    private ArrayAdapter<String> sp_adapter;
+
     private double latitude = 0.0;
     private double longitude = 0.0;
     //private LatLng point= null;
@@ -81,7 +90,7 @@ public class SignActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         et_activity_sign = (EditText) findViewById(R.id.et_activity_sign);
-        tv_activity_sign_location = (TextView) findViewById(R.id.tv_activity_sign_location);
+        sp_activity_sign_location = (Spinner) findViewById(R.id.sp_activity_sign_location);
         tv_activity_sign_send = (TextView) findViewById(R.id.tv_activity_sign_send);
         iv_activity_sign_photo = (ImageView) findViewById(R.id.iv_activity_sign_photo);
 
@@ -95,10 +104,30 @@ public class SignActivity extends AppCompatActivity {
         city = intent.getStringExtra("city");
         street = intent.getStringExtra("street");
         event = intent.getStringExtra("event");
-        locDescribe = intent.getStringExtra("locdescribe");
+        locTemp = intent.getStringArrayListExtra("locdescribe");
+        locDescribe = locTemp.get(0);
+
+        //Log.e("233",locTemp[0]);
         //Log.d("event0",intent.getStringExtra("event"));
         //point = new LatLng(latitude, longitude);
-        tv_activity_sign_location.setText(locDescribe);
+        //适配器
+        sp_adapter= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locTemp);
+        //设置样式
+        sp_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        sp_activity_sign_location.setAdapter(sp_adapter);
+        //sp_activity_sign_location.(locTemp[0]);
+        sp_activity_sign_location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locDescribe = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if (intent.getIntExtra("type", 1) == 2) {
             iv_activity_sign_photo.setVisibility(View.VISIBLE);
