@@ -494,6 +494,7 @@ public class MainActivity extends AppCompatActivity
             destDir3.mkdirs();
         } else {
             Util.RecursionDeleteFile(destDir3);
+            destDir3.mkdirs();
         }
         if (!destDir4.exists()) {
             destDir4.mkdirs();
@@ -502,11 +503,13 @@ public class MainActivity extends AppCompatActivity
             destDir5.mkdirs();
         } else {
             Util.RecursionDeleteFile(destDir5);
+            destDir5.mkdirs();
         }
         if (!destDir6.exists()) {
             destDir6.mkdirs();
         } else {
             Util.RecursionDeleteFile(destDir6);
+            destDir6.mkdirs();
         }
     }
 
