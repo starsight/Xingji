@@ -151,6 +151,7 @@ public class NearbySignRecyclerViewAdapter extends SignRecyclerViewAdapter {
                     //在对方的moments状态表更新一条记录
                     AVQuery<AVObject> queryOwnerId = new AVQuery<>("_User");
                     queryOwnerId.whereEqualTo("username", signInfo.get(j).username);
+                    //Log.d("usernameTmp1",signInfo.get(j).username);
                     queryOwnerId.findInBackground(new FindCallback<AVObject>() {
                         @Override
                         public void done(List<AVObject> list, AVException e) {
