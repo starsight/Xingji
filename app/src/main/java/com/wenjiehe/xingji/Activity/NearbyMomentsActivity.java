@@ -165,7 +165,8 @@ public class NearbyMomentsActivity extends AppCompatActivity
                 String datetmp, provincetmp, citytmp, streettmp, eventtmp, locDescribetmp, objectIdtmp, photoIdTmp = "0";
                 double lattmp, lngtmp;
                 JSONObject likertmp;
-                String usernameTmp;
+                String usernameTmp = null;
+
                 if (list == null)
                     return;
 
@@ -234,9 +235,12 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
                     AVQuery<AVObject> query = new AVQuery<>("_User");
                     query.whereEqualTo("username",usernameTmp);
+                    //Log.d("usernameTmp",usernameTmp);
                     query.findInBackground(new FindCallback<AVObject>() {
                                                @Override
                                                public void done(List<AVObject> list, AVException e) {
+                                                   if(list==null)
+                                                       return;
                                                    for (AVObject avObject : list) {
                                                        Boolean b = avObject.getBoolean("isShareSignInfo");
                                                        if(b==true) {
