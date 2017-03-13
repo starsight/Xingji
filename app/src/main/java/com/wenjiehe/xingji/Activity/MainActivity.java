@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity
 
                 if (avObject == null) {//未联网获取
                     MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
-                            (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/" + "headpicture.jpg");
+                            (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser()  .getUsername() + "/" + "headpicture.jpg");
                     if (MainActivity.upadteUserPhotoBitmap != null) {
                         iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
                     }
