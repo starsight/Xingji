@@ -64,6 +64,6 @@
     <string name="message_is_null" translatable="false">消息不能为空</string>
 
 
-    <string name="version_name" translatable="false">v1.0.0</string>
+    <string name="version_name" translatable="false">v1.1.0</string>
     <string name="can_not_find_version_name" translatable="false">无版本信息</string>
 </resources>

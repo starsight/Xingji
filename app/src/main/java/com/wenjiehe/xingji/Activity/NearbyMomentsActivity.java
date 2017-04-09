@@ -1,5 +1,6 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class NearbyMomentsActivity extends AppCompatActivity
         implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 
@@ -85,6 +90,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);    //注册监听函数
+        NearbyMomentsActivityPermissionsDispatcher.onRefreshWithCheck(this);
         initLocation();
 
         refresh = (CanRefreshLayout) findViewById(R.id.refresh);
@@ -263,6 +269,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
     }
 
+
     @Override
     public void onLoadMore() {
         refresh.postDelayed(new Runnable() {
@@ -272,6 +279,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         }, 1500);
     }
 
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     @Override
     public void onRefresh() {
         refresh.postDelayed(new Runnable() {

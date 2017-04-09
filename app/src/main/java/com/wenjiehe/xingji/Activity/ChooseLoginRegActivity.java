@@ -42,6 +42,7 @@ import permissions.dispatcher.NeedsPermission;
 import static com.avos.avoscloud.AVUser.getCurrentUser;
 import static com.wenjiehe.xingji.Util.isEmail;
 
+
 public class ChooseLoginRegActivity extends BaseActivity {
 
     Button bt_login;

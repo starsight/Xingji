@@ -149,7 +149,10 @@ public class MainActivity extends AppCompatActivity
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        MainActivityPermissionsDispatcher.createFileWithCheck(this);
+        MainActivityPermissionsDispatcher.createFileWithCheck(this);//访问外存储器的权限
+        MainActivityPermissionsDispatcher.syncUserInfoWithCheck(this);//访问位置的权限
+
+
         createFile();
 
         Log.d("2333", "member1");
@@ -185,7 +188,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void syncUserInfo() {
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    protected void syncUserInfo() {
         final AVUser currentUser = AVUser.getCurrentUser();
         currentUser.refreshInBackground(new RefreshCallback<AVObject>() {
             @Override
@@ -445,7 +449,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+   @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showRationaleForStorage(final PermissionRequest request) {
         new AlertDialog.Builder(this)
                 .setMessage("请求访问存储权限")
@@ -467,12 +471,12 @@ public class MainActivity extends AppCompatActivity
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showDeniedForStorage() {
-        Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showNeverAskForStorage() {
-        Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
