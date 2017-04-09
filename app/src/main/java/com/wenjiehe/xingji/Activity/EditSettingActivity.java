@@ -62,12 +62,7 @@ public class EditSettingActivity extends AppCompatActivity implements CompoundBu
         tv_activity_edit_setting_access.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*ArrayList<String> arr  = queryInstalledMarketPkgs(EditSettingActivity.this);
-                if(arr.isEmpty())
-                    Log.d("ww","kongde");
-                else
-                    Log.d("ww","bukongde");*/
-                Intent intent = new Intent();
+                Intent intent;
                 Uri uri = Uri.parse("market://details?id=" + getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -138,13 +133,6 @@ public class EditSettingActivity extends AppCompatActivity implements CompoundBu
                     }
                     else {
                         Toast.makeText(EditSettingActivity.this, "需要先允许共享签到信息", Toast.LENGTH_SHORT).show();
-                        //Thread t = new Thread();
-                        //t.run();
-                        /*try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }*/
                         compoundButton.setChecked(false);
                         return;
                     }

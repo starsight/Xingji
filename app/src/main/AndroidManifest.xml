@@ -124,7 +124,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.ForgetPasswordActivity"
-            android:label="@string/app_name"
+            android:label="@string/forgetpasswd"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data

@@ -14,6 +14,7 @@ import com.avos.avoscloud.SignUpCallback;
 import com.baidu.mapapi.SDKInitializer;
 import com.wenjiehe.xingji.AVService;
 import com.wenjiehe.xingji.R;
+import com.wenjiehe.xingji.Util;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -35,9 +36,11 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import permissions.dispatcher.NeedsPermission;
 
 import static com.avos.avoscloud.AVUser.getCurrentUser;
+import static com.wenjiehe.xingji.Util.isEmail;
 
 public class ChooseLoginRegActivity extends BaseActivity {
 
@@ -198,7 +201,7 @@ public class ChooseLoginRegActivity extends BaseActivity {
         public void onClick(View arg0) {
             Intent forgetPasswordIntent = new Intent(activity, ForgetPasswordActivity.class);
             startActivity(forgetPasswordIntent);
-            activity.finish();
+            //activity.finish();
         }
     };
 
@@ -246,7 +249,7 @@ public class ChooseLoginRegActivity extends BaseActivity {
                         if (!et_regUserName.getText().toString().isEmpty()) {
                             if (!et_regPassword.getText().toString().isEmpty()) {
                                 if (!et_regEmail.getText().toString().isEmpty()) {
-                                    if(isEmail(et_regEmail.getText().toString())){
+                                    if(Util.isEmail(et_regEmail.getText().toString())){
                                     progressDialogShow();
                                     register();
                                     } else {
@@ -438,13 +441,4 @@ public class ChooseLoginRegActivity extends BaseActivity {
         //System.out.println("按下了back键   onBackPressed()");
     }
 
-    /*
-    * 检查email格式问题*/
-    public boolean isEmail(String email) {
-        String str = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
-        Pattern p = Pattern.compile(str);
-        Matcher m = p.matcher(email);
-
-        return m.matches();
-    }
 }

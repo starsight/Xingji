@@ -31,7 +31,6 @@ import com.wenjiehe.xingji.Util;
 
 import java.util.List;
 
-import butterknife.Bind;
 
 import static com.wenjiehe.xingji.Activity.MyMomentsActivity.STARTFROMOTHERS;
 import static com.wenjiehe.xingji.Activity.NearbyMomentsActivity.arraylistNearbyMoments;

@@ -4,6 +4,7 @@
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
+    <string name="forgetpasswd" translatable="false">忘记密码</string>
     <string name="action_settings" translatable="false">设置</string>
     <string name="header_signnum_text" translatable="false">签到次数:</string>
     <string name="slide_sign" translatable="false">签到</string>

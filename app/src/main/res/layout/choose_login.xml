@@ -43,7 +43,7 @@
             android:paddingRight="30dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:background="#7EC0EE"
+            android:background="@drawable/corner_textview"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical|center_horizontal"
             android:id="@+id/bt_login"
