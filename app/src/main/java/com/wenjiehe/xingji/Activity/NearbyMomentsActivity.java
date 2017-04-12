@@ -90,7 +90,8 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);    //注册监听函数
-        NearbyMomentsActivityPermissionsDispatcher.onRefreshWithCheck(this);
+        //NearbyMomentsActivityPermissionsDispatcher.onRefreshWithCheck(this);
+        NearbyMomentsActivityPermissionsDispatcher.initLocationWithCheck(this);
         initLocation();
 
         refresh = (CanRefreshLayout) findViewById(R.id.refresh);
@@ -118,8 +119,8 @@ public class NearbyMomentsActivity extends AppCompatActivity
 
     }
 
-
-    private void initLocation() {
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    protected void initLocation() {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -279,7 +280,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
         }, 1500);
     }
 
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+
     @Override
     public void onRefresh() {
         refresh.postDelayed(new Runnable() {
