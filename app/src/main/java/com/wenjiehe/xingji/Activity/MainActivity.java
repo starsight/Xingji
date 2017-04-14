@@ -69,6 +69,8 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
+import rx.Observable;
+import rx.Observer;
 
 import static com.wenjiehe.xingji.Activity.ChatActivity.ChatListComp;
 import static com.wenjiehe.xingji.Util.RecursionDeleteFile;
@@ -292,37 +294,56 @@ public class MainActivity extends AppCompatActivity
                                 @Override
                                 public void done(List<AVIMConversation> convs, AVIMException e) {
                                     if (filterException(e)) {
-                                        //listChatList = convs;
                                         if (convs != null) {
                                             AVIMClient.setMessageQueryCacheEnable(false);
-                                            Log.d("convs", String.valueOf(convs.size()));
-                                            for (AVIMConversation ac : convs) {
+                                            //Log.d("chatbefore", String.valueOf(convs.size()));
+                                            Observable.from(convs)
+                                                    .subscribe(new Observer<AVIMConversation>() {
 
-                                                final List<String> l = ac.getMembers();
-                                                final Date date = ac.getLastMessageAt();
-
-                                                String user = AVUser.getCurrentUser().getUsername();
-                                                for (String str : l) {
-                                                    if (!str.equals(AVUser.getCurrentUser().getUsername()))
-                                                        user = str;
-                                                }
-                                                ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
-                                                    @Override
-                                                    public void done(AVIMMessage avimMessage, AVIMException e) {
-                                                        if (avimMessage != null) {
-                                                            String lastMessage = avimMessage.getContent();
-                                                            String lastMessageFrom = avimMessage.getFrom();
-                                                            //Log.d("2333", String.valueOf(listChatList.size()));
-                                                            ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
-                                                            listChatList.add(chatinfo);
-                                                            Collections.sort(listChatList, ChatListComp);
+                                                        @Override
+                                                        public void onCompleted() {
+                                                            Log.d("rxjava", "onCompleted");
                                                         }
 
-                                                    }
-                                                });
-                                                Util.downloadPicture(user, "Chats");
-                                                //Log.d("23333", l.toString());
-                                            }
+                                                        @Override
+                                                        public void onError(Throwable e) {
+                                                            Log.d("rxjava", "onError");
+                                                        }
+
+                                                        @Override
+                                                        public void onNext(AVIMConversation ac) {
+                                                            final List<String> l = ac.getMembers();
+                                                            final Date date = ac.getLastMessageAt();
+                                                            String user = AVUser.getCurrentUser().getUsername();
+                                                            for (String str : l) {
+                                                                if (!str.equals(AVUser.getCurrentUser().getUsername()))
+                                                                    user = str;
+                                                            }
+                                                            //Log.d("chatbefore",user);
+                                                            ac.getLastMessage(new AVIMSingleMessageQueryCallback() {
+                                                                @Override
+                                                                public void done(AVIMMessage avimMessage, AVIMException e) {
+                                                                    if (avimMessage != null) {
+                                                                        String lastMessage = avimMessage.getContent();
+                                                                        String lastMessageFrom = avimMessage.getFrom();
+                                                                        ChatInfo chatinfo = new ChatInfo(lastMessageFrom, lastMessage, l, date);
+                                                                        int count =0;
+                                                                        for (ChatInfo c:listChatList) {
+                                                                            if(!c.getPersons().equals(l)){
+                                                                                count++;
+                                                                            }
+                                                                        }
+                                                                        if(count==listChatList.size()){
+                                                                            listChatList.add(chatinfo);
+                                                                            Collections.sort(listChatList,ChatListComp);
+                                                                        }
+                                                                     }
+
+                                                                }
+                                                            });
+                                                            Util.downloadPicture(user, "Chats");
+                                                        }
+                                                    });
                                         }
                                         //convs就是获取到的conversation列表
                                         //注意：按每个对话的最后更新日期（收到最后一条消息的时间）倒序排列
@@ -330,6 +351,7 @@ public class MainActivity extends AppCompatActivity
                                 }
                             });
                         }
+
                         /*
                         if (filterException(e)) {
                                 Intent intent = new Intent(AVLoginActivity.this, AVSquareActivity.class);
@@ -391,6 +413,9 @@ public class MainActivity extends AppCompatActivity
             Intent Intent = new Intent(this,
                     ChatActivity.class);
             //Intent.putExtra(Constants.MEMBER_ID, "666");
+//            for (ChatInfo c:listChatList) {
+//                Log.d("chatbefore3",c.getPersons().toString());
+//            }
             startActivity(Intent);
         } else if (id == R.id.slide_item_exit) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

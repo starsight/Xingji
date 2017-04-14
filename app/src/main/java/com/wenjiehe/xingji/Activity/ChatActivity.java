@@ -90,7 +90,6 @@ public class ChatActivity extends AppCompatActivity {
                             if (e == null) {
                                 if (convs != null) {
                                     AVIMClient.setMessageQueryCacheEnable(false);
-
                                     Observable.from(convs)
                                             .subscribe(new Observer<AVIMConversation>() {
 
