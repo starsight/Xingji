@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -277,9 +278,17 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         // 判断存储卡是否可以用，可用进行存储
         if (Util.hasSdcard()) {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    Uri.fromFile(new File(Environment
-                            .getExternalStorageDirectory(), PHOTO_FILE_NAME)));
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= 24) {
+                uri = FileProvider.getUriForFile(EditUserInfoActivity.this,
+                        EditUserInfoActivity.this.getApplicationContext().getPackageName() + ".provider",
+                        new File(Environment.getExternalStorageDirectory(), PHOTO_FILE_NAME)
+                );
+            } else {
+                uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), PHOTO_FILE_NAME));
+            }
+
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
         startActivityForResult(intent, PHOTO_REQUEST_CAMERA);
     }
@@ -299,7 +308,14 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
             if (Util.hasSdcard()) {
                 tempFile = new File(Environment.getExternalStorageDirectory(),
                         PHOTO_FILE_NAME);
-                crop(Uri.fromFile(tempFile));
+                Uri uri;
+                if (Build.VERSION.SDK_INT >= 24) {
+                    uri = FileProvider.getUriForFile(getApplicationContext(), EditUserInfoActivity.this.getApplicationContext().getPackageName() + ".provider", tempFile);
+                } else {
+                    uri = Uri.fromFile(tempFile);
+                }
+                //uri = Uri.fromFile(tempFile);
+                crop(uri);
             } else {
                 Toast.makeText(EditUserInfoActivity.this, "未找到存储卡，无法存储照片！",Toast.LENGTH_SHORT).show();
             }
@@ -353,6 +369,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         intent.putExtra("outputFormat", "JPEG");
         intent.putExtra("noFaceDetection", true);// 取消人脸识别
         intent.putExtra("return-data", true);// true:不返回uri，false：返回uri
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, PHOTO_REQUEST_CUT);
     }
 

@@ -3,126 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#ffffff"
             android:orientation="vertical" >
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_regUserName"
                 android:layout_marginTop="16dip"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@color/whitesmoke">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="20dip"
-                    android:textSize="20sp"
-                    android:id="@+id/tv_regUserName"
-                    android:text="用户名:"
-                    android:width="@dimen/reg_tv_width"
-                    />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_regUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textColor="#000000"
-                    android:layout_toRightOf="@+id/tv_regUserName"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
                     android:textSize="20sp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_regPasswd"
                 android:layout_marginTop="16dip"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@color/whitesmoke">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="20dip"
-                    android:width="@dimen/reg_tv_width"
-                    android:textSize="20sp"
-                    android:id="@+id/tv_regPasswd"
-                    android:text="密码:"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_regPasswd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@id/tv_regPasswd"
-                    android:layout_marginLeft="20dp"
-                    android:width="150dp"
-                    android:inputType="textPassword"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dip"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@color/whitesmoke">
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="20dip"
-                    android:textSize="20sp"
-                    android:width="@dimen/reg_tv_width"
-                    android:id="@+id/tv_regEmail"
-                    android:text="邮箱:"/>
-                <EditText
-                    android:id="@+id/et_regEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@id/tv_regEmail"
-                    android:layout_marginLeft="20dp"
-                    android:width="200dp"
-                    android:inputType="textWebEmailAddress"
                     android:text=""
                     android:textColor="#000000"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
                     android:textSize="20sp"
-                    />
-            </RelativeLayout>
+                    android:inputType="textPassword"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_regEmail"
+                android:layout_marginTop="16dip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/et_regEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="20sp"
+                    android:inputType="textWebEmailAddress"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </android.support.design.widget.TextInputLayout>
 
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
+                android:layout_marginLeft="50dip"
+                android:layout_marginRight="50dip"
                 android:layout_marginTop="16dip"
                 android:shadowRadius="0"
                 android:gravity="center_vertical|center_horizontal"
                 android:id="@+id/bt_register"
-                android:background="#7EC0EE"
+                android:background="@drawable/corner_textview"
                 android:text="注册新用户"
                 android:textSize="20sp"
-                >
-
-            </Button>
+                />
 
         </LinearLayout>
 </LinearLayout>

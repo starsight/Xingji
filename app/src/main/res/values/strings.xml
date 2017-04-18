@@ -39,7 +39,9 @@
     <string name="register_input_user_password_again" translatable="false">请再次输入密码</string>
     <string name="register_input_user_email" translatable="false">请输入E-mail地址</string>
     <string name="error_register_password_null" translatable="false">密码不可为空</string>
+    <string name="error_register_password_length" translatable="false">密码长度应在6-20位</string>
     <string name="error_register_user_name_null" translatable="false">用户名不可空</string>
+    <string name="error_register_user_name_length" translatable="false">用户名长度应在3-15位</string>
     <string name="error_register_email_address_null" translatable="false">E-mail地址不可空</string>
     <string name="error_register_email_address_format" translatable="false">E-mail地址格式有误</string>
     <string name="error_register_user_name_repeat" translatable="false">用户名已被注册，请重新填写</string>

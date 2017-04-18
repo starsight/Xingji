@@ -23,6 +23,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.TouchDelegate;
@@ -67,8 +70,6 @@ public class ChooseLoginRegActivity extends BaseActivity {
         //AVAnalytics.trackAppOpened(getIntent());
 
         //AVService.initPushService(this);
-
-
 
         bt_chooseLogin = (Button) findViewById(R.id.bt_choose_login);
         bt_chooseRegister = (Button) findViewById(R.id.bt_choose_register);
@@ -216,6 +217,12 @@ public class ChooseLoginRegActivity extends BaseActivity {
             //bt_chooseLogin.setBackground(R.color.choose_log_reg_background);
             isEnterLoginOrReg = true;
             setContentView(R.layout.choose_login);
+            final TextInputLayout textInputLayout1 = (TextInputLayout)findViewById(R.id.til_loginUserName);
+            final TextInputLayout textInputLayout2 = (TextInputLayout)findViewById(R.id.til_loginPasswd);
+            generateEditUserName(textInputLayout1, "用户名");
+            generateEditPasswd(textInputLayout2,"密码");
+
+
             bt_login = (Button) findViewById(R.id.bt_login);
             tv_loginForgetPassword = (TextView) findViewById(R.id.tv_loginForgetPassword);
             et_loginUserName = (EditText) findViewById(R.id.et_loginUserName);
@@ -233,10 +240,18 @@ public class ChooseLoginRegActivity extends BaseActivity {
             isEnterLoginOrReg = true;
 
             //bt_chooseRegister.setVisibility(View.GONE);
-           //Button bt_chooseRegister2 = (Button) findViewById(R.id.bt_choose_register2);
+            //Button bt_chooseRegister2 = (Button) findViewById(R.id.bt_choose_register2);
             //bt_chooseRegister2.setVisibility(View.VISIBLE);
 
             setContentView(R.layout.choose_register);
+
+            final TextInputLayout textInputLayout1 = (TextInputLayout)findViewById(R.id.til_regUserName);
+            final TextInputLayout textInputLayout2 = (TextInputLayout)findViewById(R.id.til_regPasswd);
+            final TextInputLayout textInputLayout3 = (TextInputLayout)findViewById(R.id.til_regEmail);
+            generateEditUserName(textInputLayout1, "用户名");
+            generateEditPasswd(textInputLayout2,"密码");
+            generateEditEmail(textInputLayout3, "邮箱地址");
+
             bt_register = (Button) findViewById(R.id.bt_register);
 
             et_regUserName = (EditText) findViewById(R.id.et_regUserName);
@@ -251,8 +266,19 @@ public class ChooseLoginRegActivity extends BaseActivity {
                             if (!et_regPassword.getText().toString().isEmpty()) {
                                 if (!et_regEmail.getText().toString().isEmpty()) {
                                     if(Util.isEmail(et_regEmail.getText().toString())){
-                                    progressDialogShow();
-                                    register();
+                                        if(et_regUserName.getText().length()>=3&&et_regUserName.getText().length()<=15){
+                                            if(et_regPassword.getText().length()>=6&&et_regPassword.getText().length()<=20){
+                                                progressDialogShow();
+                                                register();
+                                            }else{
+                                                showError(activity
+                                                        .getString(R.string.error_register_password_length));
+                                            }
+                                        }else{
+                                            showError(activity
+                                                    .getString(R.string.error_register_user_name_length));
+                                        }
+
                                     } else {
                                         showError(activity
                                                 .getString(R.string.error_register_email_address_format));
@@ -440,6 +466,100 @@ public class ChooseLoginRegActivity extends BaseActivity {
             super.onBackPressed();
         isEnterLoginOrReg = false;
         //System.out.println("按下了back键   onBackPressed()");
+    }
+
+    private void generateEditUserName(final TextInputLayout text,String textinput) {
+        EditText editText = text.getEditText();
+        final String texterrorsmall ="用户名输入不应小于3位";
+        final String texterrorbig = "用户名输入不要超过15位";
+        final int lengthSmall=3;
+        final int lengthBig=15;
+
+        text.setHint(textinput);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() < lengthSmall) {
+                    text.setError(texterrorsmall);
+                    text.setErrorEnabled(true);
+                } else if (s.length() > lengthBig) {
+                    text.setError(texterrorbig);
+                    text.setErrorEnabled(true);
+                }else {
+                    text.setErrorEnabled(false);
+                }
+            }
+        });
+    }
+
+    private void generateEditPasswd(final TextInputLayout text,String textinput) {
+        EditText editText = text.getEditText();
+        final String texterrorsmall ="密码长度应大于6位";
+        final String texterrorbig = "密码长度应小于20位";
+        final int lengthSmall=6;
+        final int lengthBig=20;
+
+        text.setHint(textinput);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() < lengthSmall) {
+                    text.setError(texterrorsmall);
+                    text.setErrorEnabled(true);
+                } else if (s.length() > lengthBig) {
+                    text.setError(texterrorbig);
+                    text.setErrorEnabled(true);
+                }else {
+                    text.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void generateEditEmail(final TextInputLayout text,String textinput) {
+        EditText editText = text.getEditText();
+        text.setHint(textinput);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!Util.isEmail(s.toString())){
+                    text.setError(getString(R.string.error_register_email_address_format));
+                    text.setErrorEnabled(true);
+                }else{
+                    text.setErrorEnabled(false);
+                }
+            }
+        });
     }
 
 }

@@ -258,7 +258,7 @@ public class SignActivity extends AppCompatActivity {
             }
         };
         // 配置选项
-        ImgSelConfig config = new ImgSelConfig.Builder(loader)
+        ImgSelConfig config = new ImgSelConfig.Builder(SignActivity.this,loader)
                 // 是否多选
                 .multiSelect(false)
                 // “确定”按钮背景色
