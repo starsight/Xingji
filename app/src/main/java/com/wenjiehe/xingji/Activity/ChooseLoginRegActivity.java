@@ -23,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,11 +42,16 @@ import java.util.regex.Pattern;
 
 
 import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
 import static com.avos.avoscloud.AVUser.getCurrentUser;
 import static com.wenjiehe.xingji.Util.isEmail;
 
-
+@RuntimePermissions
 public class ChooseLoginRegActivity extends BaseActivity {
 
     Button bt_login;
@@ -84,13 +90,57 @@ public class ChooseLoginRegActivity extends BaseActivity {
             activity.finish();
         }
 
+        ChooseLoginRegActivityPermissionsDispatcher.registerTouchListenerWithCheck(this);//访问外存储器的权限
+        registerTouchListener();
+
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void registerTouchListener(){
         bt_chooseLogin.setOnClickListener(chooseLoginListener);
         bt_chooseRegister.setOnClickListener(chooseRegisterListener);
 
         bt_chooseRegister.setOnTouchListener(regTouchListener);
         bt_chooseLogin.setOnTouchListener(loginTouchListener);
-
     }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForStorage(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage("请求访问存储权限，进行必要的文件存储。")
+                //.setPositiveButton("允许", (dialog, button) -> request.proceed())
+                .setPositiveButton("允许", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForStorage() {
+        //Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForStorage() {
+        //Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        //MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        ChooseLoginRegActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+     }
 
     View.OnTouchListener loginTouchListener = new View.OnTouchListener() {
         @Override
@@ -98,13 +148,10 @@ public class ChooseLoginRegActivity extends BaseActivity {
 
             //bt_chooseLogin.setBackgroundColor(getResources().getColor(R.color.choose_log_reg_background));
             //Button bt_chooseRegister2 = (Button) findViewById(R.id.bt_choose_register2);
-
-
-
-                switch (event.getAction()) {
+         switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        System.out.print(bt_chooseRegister.getY());
-                        System.out.print("---"+event.getY());
+                        //System.out.print(bt_chooseRegister.getY());
+                        //System.out.print("---"+event.getY());
                         //按钮按下逻辑
                         bt_chooseLogin.setTextColor(getResources().getColor(R.color.white));
                         //bt_chooseRegister2.setVisibility(View.VISIBLE);
@@ -221,7 +268,6 @@ public class ChooseLoginRegActivity extends BaseActivity {
             final TextInputLayout textInputLayout2 = (TextInputLayout)findViewById(R.id.til_loginPasswd);
             generateEditUserName(textInputLayout1, "用户名");
             generateEditPasswd(textInputLayout2,"密码");
-
 
             bt_login = (Button) findViewById(R.id.bt_login);
             tv_loginForgetPassword = (TextView) findViewById(R.id.tv_loginForgetPassword);
@@ -446,8 +492,7 @@ public class ChooseLoginRegActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-       //
-        if(isEnterLoginOrReg == true) {
+        if(isEnterLoginOrReg) {
             setContentView(R.layout.choose_reg_login);
             bt_chooseLogin = (Button) findViewById(R.id.bt_choose_login);
             bt_chooseRegister = (Button) findViewById(R.id.bt_choose_register);

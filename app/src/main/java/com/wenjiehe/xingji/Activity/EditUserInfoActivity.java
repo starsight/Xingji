@@ -1,13 +1,17 @@
 package com.wenjiehe.xingji.Activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,9 +49,16 @@ import java.io.IOException;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
 import static com.wenjiehe.xingji.Util.hasFile;
 
+//@RuntimePermissions
 public class EditUserInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
     final String TAG = "EditUserInfoActivity";
@@ -83,6 +94,9 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
 //        tv_edit_age.setOnClickListener(this);
 //        tv_edit_tel.setOnClickListener(this);
 //        tv_edit_introduce.setOnClickListener(this);
+
+        //EditUserInfoActivityPermissionsDispatcher.cameraWithCheck(EditUserInfoActivity.this);
+
 
         layout_edit_userphoto = (RelativeLayout)findViewById(R.id.layout_edit_userphoto);
         layout_edit_userphoto.setOnClickListener(this);
@@ -149,6 +163,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -158,8 +173,11 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                         .setItems(new  String[] {"拍照", "从相册中选择" },
                                 new  DialogInterface.OnClickListener() {
                                     public   void  onClick(DialogInterface dialog,  int  which) {
-                                        if(which==0)
+                                        if(which==0) {
+                                            if (ContextCompat.checkSelfPermission(EditUserInfoActivity.this, Manifest.permission.CAMERA)
+                                                    == PackageManager.PERMISSION_GRANTED)
                                             camera();
+                                        }
                                         else
                                             gallery();
                                         dialog.dismiss();
@@ -186,6 +204,43 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+/*
+    @OnShowRationale(Manifest.permission.CAMERA)
+    void showRationaleForStorage(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage("请求访问摄像头，进行头像采集。")
+                //.setPositiveButton("允许", (dialog, button) -> request.proceed())
+                .setPositiveButton("允许", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    void showDeniedForStorage() {
+        //Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    void showNeverAskForStorage() {
+        //Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        EditUserInfoActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }*/
 
 
     public void editTextInfo(final String Message, final TextView textview) {
@@ -274,6 +329,7 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
     /*
      * 从相机获取
      */
+    //@NeedsPermission(Manifest.permission.CAMERA)
     public void camera() {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         // 判断存储卡是否可以用，可用进行存储

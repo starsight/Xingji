@@ -125,8 +125,10 @@ public class MainActivity extends AppCompatActivity
         tv_headerUserName.setText(userName);
         tv_headerSignNum.setText(String.valueOf(signNum));
 
+        MainActivityPermissionsDispatcher.createFileWithCheck(this);//访问外存储器的权限
+        MainActivityPermissionsDispatcher.syncUserInfoWithCheck(this);//访问位置的权限
         syncUserInfo();
-
+        createFile();
 
         iv_headeruserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,16 +153,10 @@ public class MainActivity extends AppCompatActivity
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        MainActivityPermissionsDispatcher.createFileWithCheck(this);//访问外存储器的权限
-        MainActivityPermissionsDispatcher.syncUserInfoWithCheck(this);//访问位置的权限
-
-
-        createFile();
-
-        Log.d("2333", "member1");
+        //Log.d("2333", "member1");
         String memberId = intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID);
         if (memberId != null) {
-            Log.d("2333", intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
+            //Log.d("2333", intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             Intent startActivityIntent = new Intent(this, com.wenjiehe.xingji.Im.AVSingleChatActivity.class);
             startActivityIntent.putExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID, intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             startActivity(startActivityIntent);
@@ -412,10 +408,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.slide_item_chat) {
             Intent Intent = new Intent(this,
                     ChatActivity.class);
-            //Intent.putExtra(Constants.MEMBER_ID, "666");
-//            for (ChatInfo c:listChatList) {
-//                Log.d("chatbefore3",c.getPersons().toString());
-//            }
             startActivity(Intent);
         } else if (id == R.id.slide_item_exit) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -434,7 +426,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (MainActivity.isUpadteUserPhoto == true) {
+        if (MainActivity.isUpadteUserPhoto) {
             iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
             MainActivity.isUpadteUserPhoto = false;
         }
@@ -474,10 +466,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showRationaleForLocation(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage("请求访问位置权限，进行位置签到。")
+                //.setPositiveButton("允许", (dialog, button) -> request.proceed())
+                .setPositiveButton("允许", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showRationaleForStorage(final PermissionRequest request) {
         new AlertDialog.Builder(this)
-                .setMessage("请求访问存储权限")
+                .setMessage("请求访问存储权限，进行必要的文件存储。")
                 //.setPositiveButton("允许", (dialog, button) -> request.proceed())
                 .setPositiveButton("允许", new DialogInterface.OnClickListener() {
                     @Override
