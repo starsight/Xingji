@@ -1,6 +1,10 @@
 package com.wenjiehe.xingji;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,6 +21,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.GetDataCallback;
 import com.avos.avoscloud.ProgressCallback;
+import com.wenjiehe.xingji.Activity.MainActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -205,5 +210,29 @@ public class Util {
         Matcher m = p.matcher(email);
 
         return m.matches();
+    }
+    public static void authorityManagement(final Context context,String message){
+        new AlertDialog.Builder(context)
+                .setTitle("提示")
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok,new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                        intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+
+                        context.startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                ((Activity)context).finish();
+                            }
+                        }).show();
     }
 }

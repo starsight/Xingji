@@ -22,6 +22,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -36,6 +38,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -121,17 +124,20 @@ public class ChooseLoginRegActivity extends BaseActivity {
                         request.cancel();
                     }
                 })
+                .setCancelable(false)
                 .show();
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showDeniedForStorage() {
-        //Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+        Util.authorityManagement(activity,"行迹需要获取定位权限，点击确定跳转至应用详情授予定位权限");
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showNeverAskForStorage() {
         //Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
+        Util.authorityManagement(activity,"行迹需要获取定位权限，点击确定跳转至应用详情授予定位权限");
     }
 
     @Override

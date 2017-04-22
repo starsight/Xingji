@@ -281,6 +281,9 @@ public class SignFragment extends Fragment {
         option.setIsNeedLocationPoiList(true);
         option.setIsNeedLocationDescribe(true);
 
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        baiduMap.setMapStatus(msu);
+
         mLocationClient.setLocOption(option);
     }
 

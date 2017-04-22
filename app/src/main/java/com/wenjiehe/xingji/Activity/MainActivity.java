@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -74,6 +75,7 @@ import rx.Observer;
 
 import static com.wenjiehe.xingji.Activity.ChatActivity.ChatListComp;
 import static com.wenjiehe.xingji.Util.RecursionDeleteFile;
+import static com.wenjiehe.xingji.Util.authorityManagement;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity
@@ -125,8 +127,9 @@ public class MainActivity extends AppCompatActivity
         tv_headerUserName.setText(userName);
         tv_headerSignNum.setText(String.valueOf(signNum));
 
-        MainActivityPermissionsDispatcher.createFileWithCheck(this);//访问外存储器的权限
         MainActivityPermissionsDispatcher.syncUserInfoWithCheck(this);//访问位置的权限
+        MainActivityPermissionsDispatcher.createFileWithCheck(this);//访问外存储器的权限
+
         syncUserInfo();
         createFile();
 
@@ -209,10 +212,7 @@ public class MainActivity extends AppCompatActivity
                     long userphototime = Util.getFileDateInfo
                             (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername(), "headpicture.jpg");
                     long onlinephototime = date.getTime();
-                    //Log.d("MainActivity-2-",String.valueOf(userphototime));
-                    //Log.d("MainActivity-2-",String.valueOf(date));
-                    //Log.d("MainActivity-2-",String.valueOf(userphototime));
-                    //Log.d("MainActivity-2-",String.valueOf(onlinephototime));
+
                     if ((onlinephototime - userphototime) < 10000) {
                         MainActivity.upadteUserPhotoBitmap = Util.file2bitmap
                                 (Environment.getExternalStorageDirectory() + "/xingji/" + AVUser.getCurrentUser().getUsername() + "/" + "headpicture.jpg");
@@ -483,8 +483,22 @@ public class MainActivity extends AppCompatActivity
                         request.cancel();
                     }
                 })
+                .setCancelable(false)
                 .show();
     }
+
+    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showDeniedForLocation() {
+        //Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+        Util.authorityManagement(MainActivity.this,"行迹需要定位权限，点击确定跳转至应用详情授予定位权限");
+
+    }
+
+    @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
+    void showNeverAskForLocation() {
+        Util.authorityManagement(MainActivity.this,"行迹需要获取定位权限，点击确定跳转至应用详情授予定位权限");
+    }
+
 
    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showRationaleForStorage(final PermissionRequest request) {
@@ -503,17 +517,20 @@ public class MainActivity extends AppCompatActivity
                         request.cancel();
                     }
                 })
+                .setCancelable(false)
                 .show();
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showDeniedForStorage() {
         //Toast.makeText(this, "拒绝权限", Toast.LENGTH_SHORT).show();
+        Util.authorityManagement(MainActivity.this,"行迹需要获取存储权限，点击确定跳转至应用详情授予文件存储权限");
+
     }
 
     @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showNeverAskForStorage() {
-        //Toast.makeText(this, "不再提示", Toast.LENGTH_SHORT).show();
+        Util.authorityManagement(MainActivity.this,"行迹需要获取存储权限，点击确定跳转至应用详情授予文件存储权限");
     }
 
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
