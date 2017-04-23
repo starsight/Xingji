@@ -18,6 +18,8 @@
     <string name="action_logout" translatable="false">更换帐号</string>
     <string name="action_about_app" translatable="false">关于与建议</string>
     <string name="network_error" translatable="false">网络错误，请检查您的网络连接</string>
+    <string name="phone_error" translatable="false">手机号码输入错误</string>
+    <string name="phone_register_error" translatable="false">手机已经被注册</string>
     <string name="dialog_OK" translatable="false">确定</string>
     <string name="dialog_Cancel" translatable="false">取消</string>
     <string name="dialog_error_title" translatable="false">错误</string>

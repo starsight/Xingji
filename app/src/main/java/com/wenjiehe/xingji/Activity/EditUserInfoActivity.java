@@ -152,6 +152,12 @@ public class EditUserInfoActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(EditUserInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
                 else {
                     switch (e.getCode()) {
+                        case 127:
+                            Toast.makeText(EditUserInfoActivity.this,EditUserInfoActivity.this
+                                    .getString(R.string.phone_error), Toast.LENGTH_SHORT).show();
+                        case 214:
+                            Toast.makeText(EditUserInfoActivity.this,EditUserInfoActivity.this
+                                    .getString(R.string.phone_register_error), Toast.LENGTH_SHORT).show();
                         default:
                             Toast.makeText(EditUserInfoActivity.this,EditUserInfoActivity.this
                                     .getString(R.string.network_error), Toast.LENGTH_SHORT).show();
