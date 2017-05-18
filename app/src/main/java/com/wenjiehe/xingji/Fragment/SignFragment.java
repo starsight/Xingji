@@ -281,7 +281,7 @@ public class SignFragment extends Fragment {
         option.setIsNeedLocationPoiList(true);
         option.setIsNeedLocationDescribe(true);
 
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         baiduMap.setMapStatus(msu);
 
         mLocationClient.setLocOption(option);
@@ -313,9 +313,13 @@ public class SignFragment extends Fragment {
         initLocation();
         baiduMap.setMyLocationEnabled(true);
         mLocationClient.start();
-        LatLng lat = new LatLng(mylatitude, mylongitude);
-        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(lat);
-        baiduMap.animateMapStatus(msu);
+        if(mylatitude!=0.0&&mylongitude!=0.0) {
+            LatLng lat = new LatLng(mylatitude, mylongitude);
+            MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(lat);
+            baiduMap.animateMapStatus(msu);
+        }else{
+            Toast.makeText(getActivity(),"正在定位中……",Toast.LENGTH_SHORT).show();
+        }
         for (SignInfo signInfo : MainActivity.arraylistHistorySign) {
             if (isSigned(signInfo.latlng))
                 iv_barSign.setImageDrawable(getResources().getDrawable(R.mipmap.sign_bar));

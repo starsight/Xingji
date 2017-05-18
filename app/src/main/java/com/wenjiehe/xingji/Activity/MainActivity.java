@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity
             startActivityIntent.putExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID, intent.getStringExtra(com.wenjiehe.xingji.Im.Constants.MEMBER_ID));
             startActivity(startActivityIntent);
         }
-
+        Log.d("Main:","onCreate");
     }
 
     @Override
@@ -430,6 +430,7 @@ public class MainActivity extends AppCompatActivity
             iv_headeruserPhoto.setImageBitmap(MainActivity.upadteUserPhotoBitmap);
             MainActivity.isUpadteUserPhoto = false;
         }
+        Log.d("Main:","onResume");
     }
 
 
@@ -576,5 +577,29 @@ public class MainActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Main:","onStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("Main:","onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Main:","onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("Main:","onPause");
     }
 }
