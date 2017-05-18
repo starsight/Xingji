@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.app.FragmentTransaction;
@@ -49,6 +50,7 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.huawei.android.pushagent.api.PushManager;
 import com.wenjiehe.xingji.ChatInfo;
 import com.wenjiehe.xingji.Fragment.SignFragment;
 
@@ -73,6 +75,7 @@ import permissions.dispatcher.RuntimePermissions;
 import rx.Observable;
 import rx.Observer;
 
+import static android.R.attr.delay;
 import static com.wenjiehe.xingji.Activity.ChatActivity.ChatListComp;
 import static com.wenjiehe.xingji.Util.RecursionDeleteFile;
 import static com.wenjiehe.xingji.Util.authorityManagement;
@@ -132,6 +135,7 @@ public class MainActivity extends AppCompatActivity
 
         syncUserInfo();
         createFile();
+        PushManager.requestToken(MainActivity.this);//huawei push
 
         iv_headeruserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -380,42 +384,66 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
         if (id == R.id.slide_item_sign) {
-            ft = this.getFragmentManager().beginTransaction();
+            //Toast.makeText(MainActivity.this,"重新定位中…",Toast.LENGTH_SHORT).show();
+            /*ft = this.getFragmentManager().beginTransaction();
             sf = new SignFragment();
             ft.replace(R.id.content_main, sf);
-            ft.commit();
+            ft.commit();*/
+            sf.goToMyLocation();
         } else if (id == R.id.slide_item_history) {
             /*ft = this.getFragmentManager().beginTransaction();
             hsf = new MyHistorySignFragment();
             ft.replace(R.id.content_main, hsf);
             ft.commit();*/
-            Intent Intent = new Intent(this,
-                    MyHistorySignActivity.class);
-            startActivity(Intent);
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    Intent Intent = new Intent(MainActivity.this, MyHistorySignActivity.class);
+                    startActivity(Intent);
+                }
+            }, 500);
         } else if (id == R.id.slide_item_nearby_moments) {
 //            ft = this.getFragmentManager().beginTransaction();
 //            hsf = new MyHistorySignFragment();
 //            ft.replace(R.id.content_main, hsf);
 //            ft.commit();
-            Intent Intent = new Intent(this,
-                    NearbyMomentsActivity.class);
-            startActivity(Intent);
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    Intent Intent = new Intent(MainActivity.this, NearbyMomentsActivity.class);
+                    startActivity(Intent);
+                }
+            }, 500);
         } else if (id == R.id.slide_item_settings) {
-            Intent Intent = new Intent(this,
-                    EditSettingActivity.class);
-            startActivity(Intent);
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    Intent Intent = new Intent(MainActivity.this, EditSettingActivity.class);
+                    startActivity(Intent);
+                }
+            }, 500);
+
         } else if (id == R.id.slide_item_chat) {
-            Intent Intent = new Intent(this,
-                    ChatActivity.class);
-            startActivity(Intent);
+
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    Intent Intent = new Intent(MainActivity.this, ChatActivity.class);
+                    startActivity(Intent);
+                }
+            }, 500);
         } else if (id == R.id.slide_item_exit) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            finish();
+            //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            //drawer.closeDrawer(GravityCompat.START);
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    //execute the task
+                    finish();
+                }
+            }, 600);
+
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 

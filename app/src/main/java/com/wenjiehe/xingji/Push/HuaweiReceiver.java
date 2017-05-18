@@ -8,6 +8,8 @@ import android.os.Message;
 import android.util.Log;
 
 import com.huawei.android.pushagent.api.PushEventReceiver;
+import com.wenjiehe.xingji.Activity.MainActivity;
+import com.wenjiehe.xingji.XingjiApplication;
 
 /**
  * Created by Administrator on 2017/5/18.
@@ -18,15 +20,16 @@ public class HuaweiReceiver  extends PushEventReceiver{
      * 显示Push消息
      */
     public void showPushMessage(int type, String msg) {
-        PustDemoActivity mPustTestActivity = MyApplication.instance().getMainActivity();
+        MainActivity mPustTestActivity = XingjiApplication.instance().getMainActivity();
         if (mPustTestActivity != null) {
-            Handler handler = mPustTestActivity.getHandler();
+            Log.d("mPustTestActivity",msg);
+            /*Handler handler = mPustTestActivity.getHandler();
             if (handler != null) {
                 Message message = handler.obtainMessage();
                 message.what = type;
                 message.obj = msg;
                 handler.sendMessageDelayed(message, 1L);
-            }
+            }*/
         }
     }
 
@@ -34,8 +37,8 @@ public class HuaweiReceiver  extends PushEventReceiver{
     public void onToken(Context context, String token, Bundle extras){
         String belongId = extras.getString("belongId");
         String content = "获取token和belongId成功，token = " + token + ",belongId = " + belongId;
-        Log.d(PustDemoActivity.TAG, content);
-        showPushMessage(PustDemoActivity.RECEIVE_TOKEN_MSG, content);
+        //Log.d(PustDemoActivity.TAG, content);
+        //showPushMessage(PustDemoActivity.RECEIVE_TOKEN_MSG, content);
     }
 
 
@@ -43,8 +46,8 @@ public class HuaweiReceiver  extends PushEventReceiver{
     public boolean onPushMsg(Context context, byte[] msg, Bundle bundle) {
         try {
             String content = "收到一条Push消息： " + new String(msg, "UTF-8");
-            Log.d(PustDemoActivity.TAG, content);
-            showPushMessage(PustDemoActivity.RECEIVE_PUSH_MSG, content);
+            //Log.d(PustDemoActivity.TAG, content);
+            //showPushMessage(PustDemoActivity.RECEIVE_PUSH_MSG, content);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,8 +62,8 @@ public class HuaweiReceiver  extends PushEventReceiver{
                 manager.cancel(notifyId);
             }
             String content = "收到通知附加消息： " + extras.getString(BOUND_KEY.pushMsgKey);
-            Log.d(PustDemoActivity.TAG, content);
-            showPushMessage(PustDemoActivity.RECEIVE_NOTIFY_CLICK_MSG, content);
+            //Log.d(PustDemoActivity.TAG, content);
+            //showPushMessage(PustDemoActivity.RECEIVE_NOTIFY_CLICK_MSG, content);
         } else if (Event.PLUGINRSP.equals(event)) {
             final int TYPE_LBS = 1;
             final int TYPE_TAG = 2;
@@ -72,8 +75,8 @@ public class HuaweiReceiver  extends PushEventReceiver{
             } else if(TYPE_TAG == reportType) {
                 message = "TAG report result :";
             }
-            Log.d(PustDemoActivity.TAG, message + isSuccess);
-            showPushMessage(PustDemoActivity.RECEIVE_TAG_LBS_MSG, message + isSuccess);
+            //Log.d(PustDemoActivity.TAG, message + isSuccess);
+            //showPushMessage(PustDemoActivity.RECEIVE_TAG_LBS_MSG, message + isSuccess);
         }
         super.onEvent(context, event, extras);
     }

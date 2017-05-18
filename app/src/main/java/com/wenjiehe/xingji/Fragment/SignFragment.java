@@ -307,7 +307,7 @@ public class SignFragment extends Fragment {
         baiduMap.setMapStatus(msu);
     }
 
-    private void goToMyLocation() {
+    public void goToMyLocation() {
         baiduMap.setMyLocationEnabled(false);
         mLocationClient.stop();
         initLocation();

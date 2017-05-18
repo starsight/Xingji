@@ -94,7 +94,7 @@
 
 		<!--华为推送START-->
 		<!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态、标签，LBS上报结果）广播 -->
-        <receiver android:name="com.huawei.pushtest.receiver.MyReceiver" >
+        <receiver android:name="com.wenjiehe.xingji.Push.HuaweiReceiver" >
             <intent-filter>
                 <!-- 必须,用于接收token-->
                 <action android:name="com.huawei.android.push.intent.REGISTRATION" />
@@ -107,7 +107,7 @@
                 <!-- 可选，标签、地理位置上报回应，不上报则不需要 -->
                 <action android:name="com.huawei.android.push.plugin.RESPONSE" />
             </intent-filter>
-            <meta-data android:name="CS_cloud_ablitity" android:value="@string/hwpush_ability_value"/>
+            <meta-data android:name="CS_cloud_ablitity" android:value="successRateAnalytics"/>
         </receiver>
 		
 		<!-- PushSDK:PushSDK接收外部请求事件入口 -->
