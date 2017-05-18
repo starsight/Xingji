@@ -8,6 +8,7 @@
         android:id="@+id/fragment_chat_srl_pullrefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#DBDBDB"
         android:layout_above="@+id/fragment_chat_inputbottombar">
 
         <android.support.v7.widget.RecyclerView
