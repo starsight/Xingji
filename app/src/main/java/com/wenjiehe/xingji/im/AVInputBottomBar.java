@@ -12,9 +12,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.wenjiehe.xingji.Activity.ChatActivity;
 import com.wenjiehe.xingji.R;
 
 import de.greenrobot.event.EventBus;
+
+import static com.wenjiehe.xingji.Activity.ChatActivity.hasSendMessage;
 
 
 /**
@@ -73,6 +76,8 @@ public class AVInputBottomBar extends LinearLayout {
 
         EventBus.getDefault().post(
           new InputBottomBarTextEvent(InputBottomBarEvent.INPUTBOTTOMBAR_SEND_TEXT_ACTION, content, getTag()));
+
+        ChatActivity.hasSendMessage =true;
       }
     });
   }
