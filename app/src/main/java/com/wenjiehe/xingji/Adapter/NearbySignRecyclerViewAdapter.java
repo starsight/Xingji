@@ -15,6 +15,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.bumptech.glide.Glide;
 import com.wenjiehe.xingji.Activity.SignInfoDetailActivity;
 import com.wenjiehe.xingji.R;
 import com.wenjiehe.xingji.SignInfo;
@@ -62,10 +63,12 @@ public class NearbySignRecyclerViewAdapter extends SignRecyclerViewAdapter {
         String str = Environment.getExternalStorageDirectory() + "/xingji/" +
                 AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(i).username;
         if (hasFile(str)) {
-            Bitmap b = Util.file2bitmap(str);
-            personViewHolder.iv_news_userphoto.setImageBitmap(b);
+            //Bitmap b = Util.file2bitmap(str);
+            Glide.with(context).load(str).into(personViewHolder.iv_news_userphoto);
+            //personViewHolder.iv_news_userphoto.setImageBitmap(b);
         } else
-            personViewHolder.iv_news_userphoto.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon));
+            Glide.with(context).load(R.drawable.icon).into(personViewHolder.iv_news_userphoto);
+            //personViewHolder.iv_news_userphoto.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.icon));
 
         //为btn_share btn_readMore cardView设置点击事件
         personViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +87,10 @@ public class NearbySignRecyclerViewAdapter extends SignRecyclerViewAdapter {
             personViewHolder.tpv.setVisibility(View.VISIBLE);
 
         if (personViewHolder.news_photo.getVisibility() == View.VISIBLE) {
-            if (hasFile(Environment.getExternalStorageDirectory() +
-                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(j).getPhotoId()))
-                personViewHolder.news_photo.setImageBitmap(Util.file2bitmap(Environment.getExternalStorageDirectory() +
-                        "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(j).getPhotoId()));
+            String strtemp =Environment.getExternalStorageDirectory() +
+                    "/xingji/" + AVUser.getCurrentUser().getUsername() + "/Moments/" + signInfo.get(j).getPhotoId();
+            if (hasFile(strtemp))
+                Glide.with(context).load(strtemp).into(personViewHolder.news_photo);
         }
 
         final JSONObject liker = signInfo.get(j).liker;

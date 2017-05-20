@@ -27,7 +27,7 @@ import android.media.ExifInterface;
  */
 public class NativeUtil {
 
-	private static int DEFAULT_QUALITY = 95;
+	private static int DEFAULT_QUALITY = 90;
 
 	/**
 	 * @Description: JNI基本压缩

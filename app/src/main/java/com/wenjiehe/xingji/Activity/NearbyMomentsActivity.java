@@ -27,6 +27,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.model.LatLng;
+import com.bumptech.glide.Glide;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.canyinghao.canrefresh.classic.ClassicRefreshView;
 import com.wenjiehe.xingji.Adapter.NearbySignRecyclerViewAdapter;
@@ -306,6 +307,7 @@ public class NearbyMomentsActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         mLocationClient.stop();
+        Glide.get(this).clearMemory();//清理内存缓存  可以在UI主线程中进行
         //arraylistNearbyMoments.clear();
         Log.d("Nearby","onStop~~~");
     }

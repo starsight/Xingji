@@ -8,8 +8,8 @@ android {
         applicationId "com.wenjiehe.xingji"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 34
-        versionName "1.2.0"
+        versionCode 35
+        versionName "1.2.1"
 
     }
     buildTypes {
