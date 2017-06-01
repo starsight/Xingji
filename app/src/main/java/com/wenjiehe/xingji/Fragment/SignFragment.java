@@ -303,7 +303,7 @@ public class SignFragment extends Fragment {
             baiduMap.addOverlay(options);
         }
 
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         baiduMap.setMapStatus(msu);
     }
 
