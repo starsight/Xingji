@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.wenjiehe.xingji"
@@ -10,7 +10,8 @@ android {
         targetSdkVersion 25
         versionCode 35
         versionName "1.2.1"
-
+        vectorDrawables.useSupportLibrary = true
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
     }
     buildTypes {
         release {
